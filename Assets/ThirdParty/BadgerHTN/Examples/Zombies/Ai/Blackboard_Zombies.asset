@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2081135713, guid: 753cf2b93fc73bf4e83d873efc5da7a0, type: 3}
+  m_Name: Blackboard_Zombies
+  m_EditorClassIdentifier: 
+  <Json>k__BackingField: "{\r\n  \"HasCover\": {\r\n    \"Key\": \"HasCover\",\r\n   
+    \"Value\": false,\r\n    \"Type\": \"System.Boolean, mscorlib, Version=4.0.0.0,
+    Culture=neutral, PublicKeyToken=b77a5c561934e089\"\r\n  },\r\n  \"IsTargetNear\":
+    {\r\n    \"Key\": \"IsTargetNear\",\r\n    \"Value\": false,\r\n    \"Type\":
+    \"System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089\"\r\n 
+    },\r\n  \"Cover\": {\r\n    \"Key\": \"Cover\",\r\n    \"Value\": 0,\r\n    \"Type\":
+    \"BadgerHTN.GameObjectChoice, BadgerLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\"\r\n 
+    },\r\n  \"Target\": {\r\n    \"Key\": \"Target\",\r\n    \"Value\": 0,\r\n   
+    \"Type\": \"BadgerHTN.GameObjectChoice, BadgerLib, Version=1.0.0.0, Culture=neutral,
+    PublicKeyToken=null\"\r\n  }\r\n}"

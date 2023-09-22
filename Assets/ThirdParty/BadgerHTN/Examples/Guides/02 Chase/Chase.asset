@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9b61791d322780478637e6c49d92654, type: 3}
+  m_Name: Chase
+  m_EditorClassIdentifier: 
+  <Guid>k__BackingField: 74991541accf28740b728ca28b25531e
+  subTrees:
+  - {fileID: 11400000, guid: f498629aa53dfab4daa6de8491129794, type: 2}
+  types:
+  - RootNode
+  - SubTreeNode
+  - MoveToObjectNode
+  blackboard: {fileID: 11400000, guid: a0858bd11d8b99a49849f0b8087795e6, type: 2}
+  <Json>k__BackingField: "{\r\n  \"identity\": 4,\r\n  \"rootId\": 1,\r\n  \"selections\":
+    [\r\n    3\r\n  ],\r\n  \"nodes\": {\r\n    \"1\": {\r\n      \"guid\": \"13ceb055-f790-412c-81a0-f08cd4fb0de9\",\r\n     
+    \"x\": 10.0,\r\n      \"y\": 10.0,\r\n      \"children\": [\r\n        3,\r\n       
+    2\r\n      ],\r\n      \"expandedDecorators\": true,\r\n      \"typeName\": \"RootNode\",\r\n     
+    \"parentId\": 0,\r\n      \"Node\": {\r\n        \"id\": 1,\r\n        \"treeGuid\":
+    \"74991541accf28740b728ca28b25531e\",\r\n        \"conditions\": [],\r\n       
+    \"effects\": []\r\n      }\r\n    },\r\n    \"2\": {\r\n      \"guid\": \"a0aafb99-8cfa-48f2-be6e-ad7167631405\",\r\n     
+    \"x\": 280.0,\r\n      \"y\": 110.0,\r\n      \"children\": [],\r\n      \"expandedDecorators\":
+    true,\r\n      \"typeName\": \"SubTreeNode\",\r\n      \"parentId\": 1,\r\n     
+    \"Node\": {\r\n        \"id\": 2,\r\n        \"treeGuid\": \"74991541accf28740b728ca28b25531e\",\r\n       
+    \"conditions\": [],\r\n        \"effects\": [],\r\n        \"Guid\": \"f498629aa53dfab4daa6de8491129794\"\r\n     
+    }\r\n    },\r\n    \"3\": {\r\n      \"guid\": \"9350d15e-163d-41c3-aa87-e6f9128cab6e\",\r\n     
+    \"x\": 280.0,\r\n      \"y\": -100.0,\r\n      \"children\": [],\r\n      \"expandedDecorators\":
+    true,\r\n      \"typeName\": \"MoveToObjectNode\",\r\n      \"parentId\": 1,\r\n     
+    \"Node\": {\r\n        \"gameObject\": \"Target\",\r\n        \"threshold\":
+    0.2,\r\n        \"id\": 3,\r\n        \"treeGuid\": \"74991541accf28740b728ca28b25531e\",\r\n       
+    \"conditions\": [\r\n          {\r\n            \"Key\": \"Target\",\r\n           
+    \"Type\": \"BadgerHTN.GameObjectChoice, BadgerLib, Version=1.0.0.0, Culture=neutral,
+    PublicKeyToken=null\",\r\n            \"Value\": 0\r\n          }\r\n       
+    ],\r\n        \"effects\": []\r\n      }\r\n    }\r\n  }\r\n}"

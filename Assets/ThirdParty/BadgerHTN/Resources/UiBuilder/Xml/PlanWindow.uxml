@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Htn/Resources/UiBuilder/Uss/FieldStyle.uss?fileID=7433441132597879392&amp;guid=d404aaafe2bbd034cabbf8578cc19726&amp;type=3#FieldStyle" />
+    <Style src="project://database/Assets/Htn/Resources/UiBuilder/Uss/NodeViewStyle.uss?fileID=7433441132597879392&amp;guid=d77e2b59dc144d5488d3a2be7833859a&amp;type=3#NodeViewStyle" />
+    <Style src="project://database/Assets/Htn/Resources/UiBuilder/Uss/BlackboardFieldStyle.uss?fileID=7433441132597879392&amp;guid=20390f1810a1a35488080c322ed766fc&amp;type=3#BlackboardFieldStyle" />
+    <BadgerEditor.Views.PlanView focusable="true" style="flex-grow: 1;">
+        <uie:Toolbar>
+            <uie:ToolbarButton text="Center" display-tooltip-when-elided="true" name="centerButton" style="padding-left: 8px; padding-right: 8px; justify-content: center; align-items: center;" />
+        </uie:Toolbar>
+    </BadgerEditor.Views.PlanView>
+</ui:UXML>

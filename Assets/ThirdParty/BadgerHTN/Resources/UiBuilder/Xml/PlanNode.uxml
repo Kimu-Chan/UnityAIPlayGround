@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Htn/UiBuilder/PlanNodeStyle.uss?fileID=7433441132597879392&amp;guid=5f5ae0cd596c97646b332b2dcaad9913&amp;type=3#PlanNodeStyle" />
+    <ui:VisualElement name="node-border" style="flex-grow: 1;">
+        <ui:VisualElement name="title" style="height: auto; -unity-text-align: middle-left;">
+            <ui:Label name="title-label" text="Sequence" class="unity-text-element unity-label" style="-unity-text-align: middle-center; font-size: 16px; height: 50px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="selection-border" picking-mode="Ignore" />
+</ui:UXML>

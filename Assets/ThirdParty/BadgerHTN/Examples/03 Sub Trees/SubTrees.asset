@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9b61791d322780478637e6c49d92654, type: 3}
+  m_Name: SubTrees
+  m_EditorClassIdentifier: 
+  <Guid>k__BackingField: fcbac19fa312f9a4685d5d74005e26af
+  subTrees:
+  - {fileID: 11400000, guid: 789d7038c7a626d48a33dec1fbfc648b, type: 2}
+  types:
+  - RootNode
+  - SubTreeNode
+  blackboard: {fileID: 11400000, guid: 9f99fb1d57bb31d49b58d0fcff94db38, type: 2}
+  <Json>k__BackingField: "{\r\n  \"identity\": 3,\r\n  \"rootId\": 1,\r\n  \"selections\":
+    [\r\n    2\r\n  ],\r\n  \"nodes\": {\r\n    \"1\": {\r\n      \"guid\": \"6a381917-f73a-4166-aa32-0c8a033f2098\",\r\n     
+    \"x\": 30.0,\r\n      \"y\": 20.0,\r\n      \"children\": [\r\n        2\r\n     
+    ],\r\n      \"expandedDecorators\": true,\r\n      \"typeName\": \"RootNode\",\r\n     
+    \"parentId\": 0,\r\n      \"Node\": {\r\n        \"id\": 1,\r\n        \"treeGuid\":
+    \"fcbac19fa312f9a4685d5d74005e26af\",\r\n        \"conditions\": [],\r\n       
+    \"effects\": []\r\n      }\r\n    },\r\n    \"2\": {\r\n      \"guid\": \"5662e90b-3e61-4738-bd0d-41890bb9ddf7\",\r\n     
+    \"x\": 350.0,\r\n      \"y\": 20.0,\r\n      \"children\": [],\r\n      \"expandedDecorators\":
+    true,\r\n      \"typeName\": \"SubTreeNode\",\r\n      \"parentId\": 1,\r\n     
+    \"Node\": {\r\n        \"id\": 2,\r\n        \"treeGuid\": \"fcbac19fa312f9a4685d5d74005e26af\",\r\n       
+    \"conditions\": [],\r\n        \"effects\": [],\r\n        \"Guid\": \"789d7038c7a626d48a33dec1fbfc648b\"\r\n     
+    }\r\n    }\r\n  }\r\n}"

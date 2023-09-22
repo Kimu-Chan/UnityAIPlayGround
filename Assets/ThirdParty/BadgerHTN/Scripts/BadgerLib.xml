@@ -1,0 +1,806 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BadgerLib</name>
+    </assembly>
+    <members>
+        <member name="T:BadgerHTN.IContext">
+            <summary>
+            A context used for the search algorithm. Search need access to blackboard attributes.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.IContext.Blackboard">
+            <summary>
+            Agent blackboard used in search.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.Blackboard">
+            <summary>
+            Blackboard is a key-value store that can hold values of any type. Strings are used as keys and
+            are case-sensitive.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Blackboard.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Blackboard.Copy">
+            <summary>
+            Copies a blackboard and its attributes.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Blackboard.Set``1(System.Enum,``0)">
+            <summary>
+            Set value by enum. Enum name used as key.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Blackboard.ContainsKey(System.String)">
+            <summary>
+            Check if attribute store contains key.
+            </summary>
+            <param name="key">Key to check.</param>
+            <returns>True if store contains key - otherwise false.</returns>
+        </member>
+        <member name="T:BadgerHTN.AttributeStore`1">
+            <summary>
+            Key-value store with a custom key type.
+            </summary>
+            <typeparam name="TKey"></typeparam>
+        </member>
+        <member name="P:BadgerHTN.AttributeStore`1.AttributeChanged">
+            <summary>
+            On attribute changed.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.AttributeStore`1.Map">
+            <summary>
+            Dictionary for the key-value store.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.AttributeStore`1.AttributeHandler">
+            <summary>
+            Delegate for attribute changes.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.AttributeStore`1.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.AttributeStore`1.Clear">
+            <summary>
+            Clear the key-value collection.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.AttributeStore`1.Get(System.Type,`0)">
+            <summary>
+            Get the value of corresponding key. Create a new
+            instance of type if no key found.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.AttributeStore`1.Get``1(`0)">
+            <summary>
+            Get value by key. Returns default if no key found.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.AttributeStore`1.IsEmpty">
+            <summary>
+            Check if key-value collection is empty.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.AttributeStore`1.Set``1(`0,``0)">
+            <summary>
+            Set a value by key. Notify listeners if value was changed.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.DebugInfo">
+            <summary>
+            Debug information used in search algorithms. Keeps track of a nodes visited in the path. Lists each
+            condition that was verified and each applied effect.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.DebugInfo.conditions">
+            <summary>
+            Conditions that have been verified and status.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.DebugInfo.effects">
+            <summary>
+            Effects that have been applied and status.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.DebugInfo.node">
+            <summary>
+            Node visited.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.DebugInfo.state">
+            <summary>
+            Plan state.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.DebugInfo.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.DebugInfo.SetState(System.Boolean)">
+            <summary>
+            Set debug state.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.DebugInfo.ToString">
+            <summary>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:BadgerHTN.DictionaryExtensions">
+            <summary>
+            Extension methods for dictionaries.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.DictionaryExtensions.GetOrMake``2(System.Collections.Generic.IDictionary{``0,``1},``0)">
+            <summary>
+            Get value by key. Create new instance and map it if key
+            doesn't exist.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.ListExtensions">
+            <summary>
+            Extension methods for lists.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.ListExtensions.IsEmpty``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Check if number of elements are zero.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.ListExtensions.Peek``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Check the first element in the list. Return default if empty.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.ListExtensions.Pop``1(System.Collections.Generic.IList{``0})">
+            <summary>
+            Remove and return first element in list. Returns default if empty.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.ActionNode">
+            <summary>
+            A node that is used for execution in plans.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.ActionNode.Execute(BadgerHTN.IContext)">
+            <summary>
+            Custom logic for when a node is executed.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.ActionNode.Interrupt(BadgerHTN.IContext)">
+            <summary>
+            Custom logic for when a node is interrupted.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.Condition">
+            <summary>
+            Condition have a string key and a value of any type.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Condition.#ctor">
+            <summary>
+            Empty constructor for serialization.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Condition.#ctor(System.String,System.Object)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Condition.State">
+            <summary>
+            State for debugging.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Condition.Equals(BadgerHTN.Condition)">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Condition.Key">
+            <summary>
+            Key used for lookups.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Condition.Type">
+            <summary>
+            Type of the value object.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Condition.Value">
+            <summary>
+            Value of any type.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Condition.Clone">
+            <summary>
+            Clone members, key, value and type.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Condition.Equals(System.Object)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Condition.GetHashCode">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Condition.Verify(BadgerHTN.Blackboard)">
+            <summary>
+            Verify that condition value matches value of same entry
+            in blackboard attributes.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.Effect">
+            <summary>
+            Effects have a string key and value of any type. An effect can be expected which means that
+            the planner wont apply it on plan execution, but it will be applied in the search state.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Effect.#ctor">
+            <summary>
+            Empty constructor for serialization.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Effect.#ctor(System.String,System.Object,System.Boolean)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Effect.IsExpectation">
+            <summary>
+            Expected effects are not applied in plan execution - only in search.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Effect.Key">
+            <summary>
+            Key for lookups.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Effect.Value">
+            <summary>
+            Value of any type.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Effect.Type">
+            <summary>
+            Type of the value object.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Effect.Clone">
+            <summary>
+            Clone effect instance and members.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Effect.Apply(BadgerHTN.Blackboard)">
+            <summary>
+            Apply effects to a blackboard.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.IAction">
+            <summary>
+            Interface for action nodes.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.IKeyValue">
+            <summary>
+            Interface for key value objects. Type is stored to help with serialization.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.IKeyValue.Key">
+            <summary>
+            Key used in lookups.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.IKeyValue.Type">
+            <summary>
+            Type of value object.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.IKeyValue.Value">
+            <summary>
+            Value of any type.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.IMethod">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.IRoot">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.ISubTree">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.ISubTree.Root">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.Node">
+            <summary>
+            Node used in search and plans.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.Node.id">
+            <summary>
+            Node id that is unique per tree. Used for debugging.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.Node.treeGuid">
+            <summary>
+            Reference to tree that node belongs to. Used for debugging.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.Node.children">
+            <summary>
+            List of child nodes.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.Node.conditions">
+            <summary>
+            List of conditions required for search and plans.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.Node.effects">
+            <summary>
+            List of effects to be applied.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.Node.name">
+            <summary>
+            Name for debugging.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.Node.traversalIndex">
+            <summary>
+            Index to show DFS in user interface.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Node.HasChildren">
+            <summary>
+            Check if node has children.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Node.HasConditions">
+            <summary>
+            Check if node has conditions.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Node.HasEffects">
+            <summary>
+            Check if node has effects.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Node.TypeName">
+            <summary>
+            Short name for node.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Node.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Node.AddChild(BadgerHTN.Node)">
+            <summary>
+            Add a child to self.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Node.Copy">
+            <summary>
+            Copies node members, conditons and effects. Children are ignored.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Node.Query(BadgerHTN.Blackboard,BadgerHTN.IContext)">
+            <summary>
+            Custom logic for when search queries a node.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.RootNode">
+            <summary>
+            First node in any graph.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.SelectorNode">
+            <summary>
+            Selects first child that is successful in traversal.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.SequenceNode">
+            <summary>
+            Can traverse if all children successful.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.AssetNode">
+            <summary>
+            Node that can support sub-trees.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.AssetNode.Root">
+            <summary>
+            Root node in sub-tree.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.IPlanNodeFactory">
+            <summary>
+            Node creation factory.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.IPlanNodeFactory.Create(BadgerHTN.ActionNode)">
+            <summary>
+            Creates a plan node with given action node.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.Plan">
+            <summary>
+            A plan contains a list of action nodes that the agent will sequentially execute. The plan keep tracks of the
+            method traversal index so that it can compare to cheaper options.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.Plan.currentIndex">
+            <summary>
+            Current index in action node list. Increment to traverse plan.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.Plan.mtr">
+            <summary>
+            Measurement of how many steps are needed to take to execute plan.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.Plan.nodes">
+            <summary>
+            Action node list.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.Plan.planNodeFactory">
+            <summary>
+            Factory for creating plan nodes.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Plan.PlanChanged">
+            <summary>
+            On plan cleared or replaced.
+            </summary>
+        </member>
+        <member name="P:BadgerHTN.Plan.StateChanged">
+            <summary>
+            On plan node state changed.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.Plan.PlanHandler">
+            <summary>
+            Delegate for plan changes.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.Plan.PlanNodeHandler">
+            <summary>
+            Delegate for plan node state changes.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.#ctor">
+            <summary>
+            Constructor. Initiates a default PlanNodeFactory.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.Clear">
+            <summary>
+            Clears all nodes from the current plan.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.GetCurrent">
+            <summary>
+            Get the node at the current plan index.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.HasFailed">
+            <summary>
+            Check if any node in the plan has failed
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.IsComplete">
+            <summary>
+            Check if all nodes in the plan are successful
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.IsEmpty">
+            <summary>
+            Check if plan is empty of nodes.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.IsLast">
+            <summary>
+            Check if plan index is at last node.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.IsPartial(System.Collections.Generic.List{BadgerHTN.ActionNode})">
+            <summary>
+            Check if action nodes are sub-part of the current plan.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.Next">
+            <summary>
+            Increment the plan index. Used to traverse the plan.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.Set(BadgerHTN.SearchResult)">
+            <summary>
+            Set a new plan from a search result. The nodes
+            and MTR in the search result is added to the plan.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.Set(System.Collections.Generic.List{BadgerHTN.ActionNode})">
+            <summary>
+            Set a new plan from a new set of action nodes.
+            Previous plan is cleared and new nodes are added.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.SetFailed(BadgerHTN.PlanNode)">
+            <summary>
+            Set the state of a node to failed.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.SetRunning(BadgerHTN.PlanNode)">
+            <summary>
+            Set the state of a node to running.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.SetState(BadgerHTN.PlanNode,BadgerHTN.State)">
+            <summary>
+            Set the state of a node and invoke listeners.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.SetSuccess(BadgerHTN.PlanNode)">
+            <summary>
+            Set the state of a node to successful.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.Tick(BadgerHTN.IContext)">
+            <summary>
+            Updates the current plan. Validate the current node conditions and
+            set it to running if it hasn't started. Execute inherited node
+            custom logic if state is 'Running' and let the node update the state.
+            Apply node effects if it was successful.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.Verify(BadgerHTN.Blackboard)">
+            <summary>
+            Verify that the current plan is valid. Checks that each node
+            condition is valid against the attributes in a blackboard.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.ApplyEffects(BadgerHTN.ActionNode,BadgerHTN.Blackboard)">
+            <summary>
+            Applies the effects in a node to the attributes in a blackboard.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Plan.VerifyConditions(BadgerHTN.ActionNode,BadgerHTN.Blackboard)">
+            <summary>
+            Compare node conditions to blackboard attributes.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.PlanNode">
+            <summary>
+            Node used in agent plans.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.PlanNode.source">
+            <summary>
+            Node source that exists in tree.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.PlanNode.hasAppliedEffects">
+            <summary>
+            Check if effects have been applied.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.PlanNode.node">
+            <summary>
+            Local copy of source node.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.PlanNode.state">
+            <summary>
+            Planning state used for debugging.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.PlanNode.#ctor">
+            <summary>
+            Empty constructor for serialization.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.PlanNode.#ctor(BadgerHTN.ActionNode)">
+            <summary>
+            Create a new plan node and make a copy of an action node.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.PlanNode.Execute(BadgerHTN.IContext)">
+            <summary>
+            Execute inherited logic in action node and update the
+            state based on the result.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.PlanNodeFactory">
+            <summary>
+            Node creation factory.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.PlanNodeFactory.Create(BadgerHTN.ActionNode)">
+            <summary>
+            Factory method for creating a new plan node.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.PlanResult">
+            <summary>
+            Debug information from plan execution.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.PlanResult.state">
+            <summary>
+            Plan state.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.PlanResult.#ctor(BadgerHTN.State)">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.State">
+            <summary>
+            Plan state used for execution and debugging.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.State.NotStarted">
+            <summary>
+            Node has not started.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.State.Running">
+            <summary>
+            Node is running.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.State.Success">
+            <summary>
+            Node has succeeded.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.State.Failed">
+            <summary>
+            Node has failed.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.DebugResult">
+            <summary>
+            Debug result from search.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.DebugResult.path">
+            <summary>
+            Node path taken.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.DebugResult.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.DebugResult.GetOrMake(BadgerHTN.Node)">
+            <summary>
+            Get or create node.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.Dfs">
+            <summary>
+            Depth-first-traversal algorithm.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Dfs.Traverse(BadgerHTN.Node)">
+            <summary>
+            DFS traverse a node.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Dfs.TraverseAndSetIndices(BadgerHTN.Node)">
+            <summary>
+            Uses DFS to traverse the node and each visited node an index of order visited.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.MethodTraversalRecord">
+            <summary>
+            MTR is a metric of how costly a plan is. Nodes higher up in the hierarchy have a lower cost.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.MethodTraversalRecord.list">
+            <summary>
+            List of traversal values.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.MethodTraversalRecord.#ctor(System.Int32[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="values"></param>
+        </member>
+        <member name="M:BadgerHTN.MethodTraversalRecord.Add(System.Int32)">
+            <summary>
+            Add cost.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.MethodTraversalRecord.CompareTo(BadgerHTN.MethodTraversalRecord)">
+            <summary>
+            Compares to another MTR.
+            </summary>
+            <returns>Returns +1 if other is higher and -1 if other is lower.</returns>
+        </member>
+        <member name="M:BadgerHTN.MethodTraversalRecord.Increment">
+            <summary>
+            Increase cost for last value.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.Search">
+            <summary>
+            Searches a node for a plan of action.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Search.#ctor(BadgerHTN.Blackboard,BadgerHTN.IContext)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.Search.Run(BadgerHTN.Node)">
+            <summary>
+            Search for action plan in a node. Searches the nodes children
+            recursively by a depth-first search.
+            </summary>
+        </member>
+        <member name="T:BadgerHTN.SearchResult">
+            <summary>
+            Search result generated by the search algorithm.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.SearchResult.debugPath">
+            <summary>
+            Debug information of path taken.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.SearchResult.handle">
+            <summary>
+            Handle used for async searches.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.SearchResult.methodTraversalRecord">
+            <summary>
+            Cost of the found plan.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.SearchResult.plan">
+            <summary>
+            Plan of action nodes.
+            </summary>
+        </member>
+        <member name="F:BadgerHTN.SearchResult.success">
+            <summary>
+            Check if search was successful or not.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.SearchResult.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:BadgerHTN.SearchResult.Aggregate(BadgerHTN.SearchResult)">
+            <summary>
+            Combine search result with another.
+            </summary>
+        </member>
+    </members>
+</doc>

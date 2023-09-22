@@ -1,0 +1,101 @@
+
+.unity-float-field > Label {
+    width: 44%;
+    min-width: 0;
+
+}
+
+.unity-float-field > FloatInput {
+    flex-grow: 1;
+}
+
+.unity-object-field > Label {
+    width: 44%;
+    min-width: 0;
+}
+
+.unity-object-field > FloatInput {
+    flex-grow: 1;
+}
+
+.unity-integer-field > Label {
+    width: 44%;
+    min-width: 0;
+}
+
+.unity-integer-field > FloatInput {
+    flex-grow: 1;
+}
+
+.unity-long-field > Label {
+    width: 44%;
+    min-width: 0;
+}
+.unity-long-field {
+    width: 60px;
+}
+.unity-long-field > FloatInput {
+    flex-grow: 1;
+}
+
+.unity-vector3-field > Label {
+    width: 44%;
+    min-width: 0;
+}
+
+.unity-vector3-field > FloatInput {
+    flex-grow: 1;
+}
+
+.unity-popup-field > Label {
+    width: 40%;
+    min-width: 0;
+    margin-right: 10px;
+}
+
+.unity-base-field__input {
+}
+
+.unity-vector2-field > Label {
+    width: 44%;
+    min-width: 0;
+}
+
+.unity-vector2-field > FloatInput {
+    flex-grow: 1;
+}
+
+.unity-enum-field > Label {
+    width: 44%;
+    min-width: 0;
+}
+
+.unity-enum-field > FloatInput {
+    flex-grow: 1;
+}
+
+.blackboardField > .unity-enum-field > {
+    width: 60px;
+    height: 20px;
+    align-self: center;
+}
+
+.blackboardField > .unity-integer-field > {
+    width: 60px;
+    height: 20px;
+    align-self: center;
+}
+
+.unity-text-field {
+    padding: 2px;
+}
+
+.unity-text-field > Label {
+    width: 40%;
+    min-width: 0;
+}
+
+.unity-text-field > TextInput {
+    white-space: nowrap;
+}
+

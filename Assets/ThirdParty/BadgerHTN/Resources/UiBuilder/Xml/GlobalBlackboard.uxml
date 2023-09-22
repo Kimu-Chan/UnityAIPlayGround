@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/BadgerHTN/Resources/UiBuilder/Uss/GlobalBlackboardStyle.uss?fileID=7433441132597879392&amp;guid=2b94dec33e90d2945a58c9b6fe887869&amp;type=3#GlobalBlackboardStyle" />
+    <Style src="project://database/Assets/BadgerHTN/Resources/UiBuilder/Uss/BlackboardFieldStyle.uss?fileID=7433441132597879392&amp;guid=20390f1810a1a35488080c322ed766fc&amp;type=3#BlackboardFieldStyle" />
+    <ui:Button text="Export" display-tooltip-when-elided="true" name="export" style="display: none;" />
+    <ui:VisualElement name="header" style="height: auto; flex-direction: column; -unity-text-align: upper-left; padding-left: 8px; padding-right: 8px; padding-top: 8px; padding-bottom: 8px; margin-left: 4px; margin-right: 4px; margin-top: 4px; margin-bottom: 4px; background-color: rgb(55, 55, 55); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-left-color: rgb(21, 21, 21); border-right-color: rgb(21, 21, 21); border-top-color: rgb(21, 21, 21); border-bottom-color: rgb(21, 21, 21);">
+        <ui:Label text="Add new key to blackboard" display-tooltip-when-elided="true" name="Label" style="margin-left: 4px; margin-bottom: 4px;" />
+        <ui:TextField picking-mode="Ignore" label="Name" name="key" />
+        <ui:DropdownField label="Type" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="types" />
+        <ui:VisualElement style="flex-shrink: 0; flex-grow: 1; flex-direction: row-reverse; justify-content: flex-start;">
+            <ui:Button text="Add" display-tooltip-when-elided="true" name="add" style="width: 60px; height: 20px; margin-left: 4px; margin-right: -2px; margin-top: 4px; margin-bottom: 4px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <uie:ToolbarSearchField focusable="true" name="search" style="width: auto;" />
+    <ui:ScrollView name="scrollView" style="flex-grow: 1; min-height: 150px;" />
+</ui:UXML>

@@ -1,0 +1,89 @@
+VisualElement {
+    border-radius: 0;
+}
+
+/*#decorators*/
+/*{*/
+/*    background-color: #3d4859;*/
+/*    border-radius: 4px;*/
+/*}*/
+/*#conditions*/
+/*{*/
+/*    padding: 4px;*/
+/*}*/
+
+#traversal
+{
+    background-color: #475569;
+    border-radius: 10px;
+    border-color: #1f1f1f;
+    border-width: 1px;
+}
+
+#node-border {
+    padding: 8px;
+    background-color: rgb(71, 85, 105);
+    border-color: rgb(36, 36, 36);
+    border-radius: 0;
+    border-width: 1px;
+}
+
+#selection-border {
+    border-color: rgb(64, 138, 185);
+    border-width: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+:hover > #selection-border {
+    border-width: 2px;
+}
+
+:hover:selected > #selection-border {
+    border-width: 4px;
+}
+
+:selected > #selection-border {
+    border-width: 4px;
+}
+
+.node {
+    min-width: 120px;
+    margin: 0;
+    border-radius: 10px;
+}
+
+.Running {
+    border-color: rgb(253, 132, 31);
+    border-width: 2px;
+    border-radius: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+.Success {
+    border-color: rgb(54, 126, 24);
+    border-width: 2px;
+    border-radius: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+.Failed {
+    border-color: #991b1b;
+    border-width: 2px;
+    border-radius: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+.NotStarted {
+    border-color: rgb(48, 48, 48);
+    border-width: 2px;
+    border-radius: 10px;
+    margin: 0;
+    padding: 0;
+}

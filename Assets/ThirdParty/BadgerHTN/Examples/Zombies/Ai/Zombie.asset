@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9b61791d322780478637e6c49d92654, type: 3}
+  m_Name: Zombie
+  m_EditorClassIdentifier: 
+  <Guid>k__BackingField: 078ed18944a9d334ab374db4786d4371
+  subTrees:
+  - {fileID: 11400000, guid: c16689651509e8247a9d93b5c12a061e, type: 2}
+  types:
+  - RootNode
+  - SelectorNode
+  - SubTreeNode
+  - MeleeTargetNode
+  - MoveToObjectNode
+  blackboard: {fileID: 11400000, guid: f42972862a3634f488b1335fa2cd904b, type: 2}
+  <Json>k__BackingField: "{\r\n  \"identity\": 6,\r\n  \"rootId\": 1,\r\n  \"selections\":
+    [\r\n    2\r\n  ],\r\n  \"nodes\": {\r\n    \"1\": {\r\n      \"guid\": \"f60943f2-6796-4f71-a6d0-b2a61bd83dfa\",\r\n     
+    \"x\": 0.0,\r\n      \"y\": 0.0,\r\n      \"children\": [\r\n        2,\r\n       
+    3\r\n      ],\r\n      \"expandedDecorators\": true,\r\n      \"typeName\": \"RootNode\",\r\n     
+    \"parentId\": 0,\r\n      \"Node\": {\r\n        \"id\": 1,\r\n        \"treeGuid\":
+    \"078ed18944a9d334ab374db4786d4371\",\r\n        \"conditions\": [],\r\n       
+    \"effects\": []\r\n      }\r\n    },\r\n    \"2\": {\r\n      \"guid\": \"6228f691-7080-42c7-8f03-0877e75c1913\",\r\n     
+    \"x\": 270.0,\r\n      \"y\": -90.0,\r\n      \"children\": [\r\n        4,\r\n       
+    5\r\n      ],\r\n      \"expandedDecorators\": true,\r\n      \"typeName\": \"SelectorNode\",\r\n     
+    \"parentId\": 1,\r\n      \"Node\": {\r\n        \"id\": 2,\r\n        \"treeGuid\":
+    \"078ed18944a9d334ab374db4786d4371\",\r\n        \"conditions\": [\r\n         
+    {\r\n            \"Key\": \"Target\",\r\n            \"Type\": \"BadgerHTN.GameObjectChoice,
+    BadgerLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\",\r\n           
+    \"Value\": 0\r\n          }\r\n        ],\r\n        \"effects\": []\r\n     
+    }\r\n    },\r\n    \"3\": {\r\n      \"guid\": \"4a9b33f2-b85c-4ec4-94bf-ff25adf94b89\",\r\n     
+    \"x\": 270.0,\r\n      \"y\": 100.0,\r\n      \"children\": [],\r\n      \"expandedDecorators\":
+    true,\r\n      \"typeName\": \"SubTreeNode\",\r\n      \"parentId\": 1,\r\n     
+    \"Node\": {\r\n        \"id\": 3,\r\n        \"treeGuid\": \"078ed18944a9d334ab374db4786d4371\",\r\n       
+    \"conditions\": [],\r\n        \"effects\": [],\r\n        \"Guid\": \"c16689651509e8247a9d93b5c12a061e\"\r\n     
+    }\r\n    },\r\n    \"4\": {\r\n      \"guid\": \"9d0a2868-759a-4578-b8eb-34f339aed7cf\",\r\n     
+    \"x\": 540.0,\r\n      \"y\": -180.0,\r\n      \"children\": [],\r\n      \"expandedDecorators\":
+    true,\r\n      \"typeName\": \"MeleeTargetNode\",\r\n      \"parentId\": 2,\r\n     
+    \"Node\": {\r\n        \"delay\": 0.1,\r\n        \"id\": 4,\r\n        \"treeGuid\":
+    \"078ed18944a9d334ab374db4786d4371\",\r\n        \"conditions\": [\r\n         
+    {\r\n            \"Key\": \"IsTargetNear\",\r\n            \"Type\": \"System.Boolean,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089\",\r\n           
+    \"Value\": true\r\n          }\r\n        ],\r\n        \"effects\": []\r\n     
+    }\r\n    },\r\n    \"5\": {\r\n      \"guid\": \"8fa3cf22-bc23-46a9-8e33-14cabd3dd418\",\r\n     
+    \"x\": 540.0,\r\n      \"y\": -10.0,\r\n      \"children\": [],\r\n      \"expandedDecorators\":
+    true,\r\n      \"typeName\": \"MoveToObjectNode\",\r\n      \"parentId\": 2,\r\n     
+    \"Node\": {\r\n        \"gameObject\": \"Target\",\r\n        \"threshold\":
+    0.2,\r\n        \"id\": 5,\r\n        \"treeGuid\": \"078ed18944a9d334ab374db4786d4371\",\r\n       
+    \"conditions\": [],\r\n        \"effects\": []\r\n      }\r\n    }\r\n  }\r\n}"

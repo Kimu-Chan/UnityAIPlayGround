@@ -1,0 +1,20 @@
+.unity-scroll-view__content-and-vertical-scroll-container
+{
+    margin-top: 4px;
+}
+
+.empty-placeholder
+{
+    margin: 4px;
+    padding-left: 4px;
+    padding-bottom: 4px;
+    font-size: 10px;
+    -unity-font-style: italic;
+}
+
+GridBackground {
+    --grid-background-color: #292524;
+    --line-color: rgba(190, 190, 190, 0.15);
+    --thick-line-color: rgba(190, 190, 190, 0.2);
+    --spacing: 60;
+}

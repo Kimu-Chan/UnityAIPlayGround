@@ -1,0 +1,10 @@
+.unity-text-field > .unity-label
+{
+    width: 80px;
+    min-width: 80px;
+}
+.unity-popup-field > .unity-label
+{
+    width: 80px;
+    min-width: 80px;
+}

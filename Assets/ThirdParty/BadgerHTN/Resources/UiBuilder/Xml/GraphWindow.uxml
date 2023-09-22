@@ -1,0 +1,50 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/BadgerHTN/Resources/UiBuilder/Uss/FieldStyle.uss?fileID=7433441132597879392&amp;guid=d404aaafe2bbd034cabbf8578cc19726&amp;type=3#FieldStyle" />
+    <Style src="project://database/Assets/BadgerHTN/Resources/UiBuilder/Uss/BlackboardFieldStyle.uss?fileID=7433441132597879392&amp;guid=20390f1810a1a35488080c322ed766fc&amp;type=3#BlackboardFieldStyle" />
+    <Style src="project://database/Assets/BadgerHTN/Resources/UiBuilder/Uss/TreeViewStyle.uss?fileID=7433441132597879392&amp;guid=8131fb5c7b0de264a8c0f830ffdc8637&amp;type=3#TreeViewStyle" />
+    <uie:Toolbar>
+        <uie:ToolbarToggle focusable="false" label="Show Agent" name="toggleAgent" style="-unity-text-align: middle-left; white-space: nowrap; width: 90px;" />
+        <uie:ToolbarButton text="Select Asset" display-tooltip-when-elided="true" name="selectAsset" style="padding-right: 10px; -unity-text-align: middle-center;" />
+        <uie:ToolbarButton text="Center" display-tooltip-when-elided="true" name="center" style="padding-right: 10px; -unity-text-align: middle-center;" />
+        <uie:ToolbarButton text="Reload" display-tooltip-when-elided="true" name="reload" style="padding-right: 10px; -unity-text-align: middle-center;" />
+    </uie:Toolbar>
+    <BadgerEditor.Views.SplitView fixed-pane-initial-dimension="200">
+        <ui:VisualElement name="left-container">
+            <BadgerEditor.Views.InspectorView style="flex-grow: 1; margin-left: 0; margin-right: 0; margin-top: 4px; margin-bottom: 0;">
+                <ui:VisualElement name="info-selection" style="opacity: 1; visibility: visible; display: none; overflow: visible;">
+                    <ui:Label text="Create or select a node..." display-tooltip-when-elided="true" style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; -unity-font-style: italic; white-space: normal;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="content" style="display: flex;">
+                    <ui:ScrollView style="flex-grow: 1; height: auto;">
+                        <ui:VisualElement name="exposed" style="margin-left: 4px; margin-right: 4px; margin-top: 4px; margin-bottom: 4px;">
+                            <ui:Label text="Exposed Variables" display-tooltip-when-elided="true" name="title" style="margin-left: 4px;" />
+                            <ui:Label text="Empty" display-tooltip-when-elided="true" name="empty-placeholder" class="empty-placeholder" style="margin-left: 4px;" />
+                            <ui:VisualElement name="properties" />
+                        </ui:VisualElement>
+                        <BadgerEditor.Views.DecoratorView name="conditions" style="flex-grow: 0; margin-left: 4px; margin-right: 4px; margin-top: 4px; margin-bottom: 4px;">
+                            <ui:Label text="Conditions" display-tooltip-when-elided="true" style="margin-left: 4px;" />
+                            <uie:ToolbarSearchField focusable="true" name="search" style="flex-shrink: 0; width: auto;" />
+                            <ui:VisualElement name="header" style="flex-direction: row; flex-grow: 1; margin-left: 4px; margin-right: 3px; margin-top: 0; margin-bottom: -4px; background-color: rgb(40, 40, 40); border-left-color: rgb(34, 34, 34); border-right-color: rgb(34, 34, 34); border-top-color: rgb(34, 34, 34); border-bottom-color: rgb(34, 34, 34); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 0; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 8px; flex-shrink: 1;">
+                                <ui:Label text="Key" display-tooltip-when-elided="true" name="key" style="flex-grow: 1; -unity-text-align: middle-left; font-size: 10px;" />
+                                <ui:Label text="Value" display-tooltip-when-elided="true" name="value" style="flex-grow: 0; -unity-text-align: middle-left; font-size: 10px; width: 56px;" />
+                            </ui:VisualElement>
+                            <ui:ScrollView name="view-collection" style="height: 160px; background-color: rgb(40, 40, 40); margin-left: 4px; margin-right: 3px; margin-top: -2px; margin-bottom: 4px; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(34, 34, 34); border-right-color: rgb(34, 34, 34); border-top-color: rgb(34, 34, 34); border-bottom-color: rgb(34, 34, 34);" />
+                        </BadgerEditor.Views.DecoratorView>
+                        <BadgerEditor.Views.DecoratorView name="effects" style="flex-grow: 0; margin-left: 4px; margin-right: 4px; margin-top: 4px; margin-bottom: 4px;">
+                            <ui:Label text="Effects" display-tooltip-when-elided="true" style="margin-left: 4px;" />
+                            <uie:ToolbarSearchField focusable="true" name="search" style="flex-shrink: 0; width: auto;" />
+                            <ui:VisualElement name="header" style="flex-direction: row; flex-grow: 1; margin-left: 4px; margin-right: 3px; margin-top: 0; margin-bottom: -4px; background-color: rgb(40, 40, 40); border-left-color: rgb(34, 34, 34); border-right-color: rgb(34, 34, 34); border-top-color: rgb(34, 34, 34); border-bottom-color: rgb(34, 34, 34); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 0; padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 8px; flex-shrink: 1;">
+                                <ui:Label text="Key" display-tooltip-when-elided="true" name="key" style="flex-grow: 1; -unity-text-align: middle-left; font-size: 10px;" />
+                                <ui:Label text="Value" display-tooltip-when-elided="true" name="value" style="flex-grow: 0; -unity-text-align: middle-left; font-size: 10px; width: 56px;" />
+                            </ui:VisualElement>
+                            <ui:ScrollView name="view-collection" style="height: 160px; background-color: rgb(40, 40, 40); margin-left: 4px; margin-right: 3px; margin-top: 2px; margin-bottom: 4px; border-left-color: rgb(34, 34, 34); border-right-color: rgb(34, 34, 34); border-top-color: rgb(34, 34, 34); border-bottom-color: rgb(34, 34, 34); border-left-width: 1px; border-right-width: 1px; border-top-width: 0; border-bottom-width: 1px;" />
+                        </BadgerEditor.Views.DecoratorView>
+                    </ui:ScrollView>
+                </ui:VisualElement>
+            </BadgerEditor.Views.InspectorView>
+        </ui:VisualElement>
+        <ui:VisualElement name="right-container">
+            <BadgerEditor.Views.TreeView focusable="true" style="flex-grow: 1;" />
+        </ui:VisualElement>
+    </BadgerEditor.Views.SplitView>
+</ui:UXML>

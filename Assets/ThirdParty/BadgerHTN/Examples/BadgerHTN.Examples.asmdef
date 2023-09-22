@@ -1,0 +1,16 @@
+{
+    "name": "BadgerHTN.Examples",
+    "rootNamespace": "",
+    "references": [
+        "GUID:27a3056e321bd104bb95007b0931e4d0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

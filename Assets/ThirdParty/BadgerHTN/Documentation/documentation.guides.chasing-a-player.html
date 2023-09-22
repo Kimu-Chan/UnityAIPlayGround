@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+        />
+        <style>
+            /* This is needed because the page cover bleed (100vw) will cause horizontal scrolling */
+            /* FIXME: use :has once it is ready for Firefox and lift these back to PageSheetView.module.css */
+            html,
+            body{
+                overflow-x: clip;
+            }
+
+            body.theme-overlay {
+                position: fixed;
+                width: 0;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: var(--theme-overlay-background);
+                z-index: 10000;
+            }
+
+            body.dragging * {
+                cursor: grabbing !important;
+            }
+            .gitbook-splashscreen {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                display: flex;
+                width: 100%;
+                height: 100%;
+            }
+            .slate-spacer {
+                height: 0;
+                color: transparent;
+                outline: none;
+                position: absolute;
+            }
+        </style>
+        <title>Chasing a Player - Documentation</title><style id="__style-root-primary-color" type="text/css">:root {
+                        --custom-theme-color-primary-xxlight: #cddaf6;
+--custom-theme-color-primary-xlight: #a9c0f0;
+--custom-theme-color-primary-light: #648fe4;
+--custom-theme-color-primary-base: #346DDB;
+--custom-theme-color-primary-dark: #395794;
+--custom-theme-color-primary-xdark: #263b66;
+--custom-theme-color-primary-xxdark: #1a202b;
+                  }
+            </style><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/Inter/Inter-Bold.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/Inter/Inter-BoldItalic.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/Inter/Inter-ExtraBold.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/Inter/Inter-ExtraBoldItalic.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/Inter/Inter-Medium.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/Inter/Inter-MediumItalic.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/Inter/Inter-Regular.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/Inter/Inter-Italic.woff2?v=3.19" crossorigin="anonymous"/><style id="__font-Inter-gitbook-content-font">@font-face {
+            font-family: 'gitbook-content-font';
+            font-style:  normal;
+            font-weight: 700;
+            font-display: swap;
+            src: local("Inter Bold"), local("Inter-Bold"), url("https://app.gitbook.com/public/fonts/Inter/Inter-Bold.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/Inter/Inter-Bold.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-content-font';
+            font-style:  italic;
+            font-weight: 700;
+            font-display: swap;
+            src: local("Inter BoldItalic"), local("Inter-BoldItalic"), url("https://app.gitbook.com/public/fonts/Inter/Inter-BoldItalic.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/Inter/Inter-BoldItalic.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-content-font';
+            font-style:  normal;
+            font-weight: 800;
+            font-display: swap;
+            src: local("Inter ExtraBold"), local("Inter-ExtraBold"), url("https://app.gitbook.com/public/fonts/Inter/Inter-ExtraBold.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/Inter/Inter-ExtraBold.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-content-font';
+            font-style:  italic;
+            font-weight: 800;
+            font-display: swap;
+            src: local("Inter ExtraBoldItalic"), local("Inter-ExtraBoldItalic"), url("https://app.gitbook.com/public/fonts/Inter/Inter-ExtraBoldItalic.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/Inter/Inter-ExtraBoldItalic.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-content-font';
+            font-style:  normal;
+            font-weight: 500;
+            font-display: swap;
+            src: local("Inter Medium"), local("Inter-Medium"), url("https://app.gitbook.com/public/fonts/Inter/Inter-Medium.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/Inter/Inter-Medium.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-content-font';
+            font-style:  italic;
+            font-weight: 500;
+            font-display: swap;
+            src: local("Inter MediumItalic"), local("Inter-MediumItalic"), url("https://app.gitbook.com/public/fonts/Inter/Inter-MediumItalic.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/Inter/Inter-MediumItalic.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-content-font';
+            font-style:  normal;
+            font-weight: 400;
+            font-display: swap;
+            src: local("Inter Regular"), local("Inter-Regular"), url("https://app.gitbook.com/public/fonts/Inter/Inter-Regular.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/Inter/Inter-Regular.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-content-font';
+            font-style:  italic;
+            font-weight: 400;
+            font-display: swap;
+            src: local("Inter Italic"), local("Inter-Italic"), url("https://app.gitbook.com/public/fonts/Inter/Inter-Italic.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/Inter/Inter-Italic.woff?v=3.19") format("woff");
+        }</style><meta name="description" content="" id="__meta-description"/><meta name="og:description" content="" id="__meta-og:description"/><meta name="og:image" content="https://app.gitbook.com/share/space/thumbnail/wrNt0ljEuQ5gsxIfJNfv/page/YiHF1Rb5oiVnG0ZHaxr4.png?color=%23346DDB&amp;logo=&amp;theme=default" id="__meta-og:image"/><meta name="twitter:card" content="summary_large_image" id="__meta-twitter:card"/><meta name="og:title" content="Chasing a Player" id="__meta-og:title"/><meta name="twitter:site" content="Documentation" id="__meta-twitter:site"/><meta name="robots" content="index" id="__meta-robots"/><link rel="icon" href="https://app.gitbook.com/public/images/icon-512.png" id="__link-icon"/><link rel="apple-touch-icon" href="https://app.gitbook.com/public/images/icon-512.png"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Bold.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-BoldItalic.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Black.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-BlackItalic.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Medium.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-MediumItalic.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Regular.woff2?v=3.19" crossorigin="anonymous"/><link rel="preload" as="font" type="font/woff2" href="https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Italic.woff2?v=3.19" crossorigin="anonymous"/><style id="__font-SourceCodePro-gitbook-code-font">@font-face {
+            font-family: 'gitbook-code-font';
+            font-style:  normal;
+            font-weight: 700;
+            font-display: swap;
+            src: local("Source Code Pro Bold"), local("SourceCodePro-Bold"), url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Bold.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Bold.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-code-font';
+            font-style:  italic;
+            font-weight: 700;
+            font-display: swap;
+            src: local("Source Code Pro BoldItalic"), local("SourceCodePro-BoldItalic"), url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-BoldItalic.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-BoldItalic.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-code-font';
+            font-style:  normal;
+            font-weight: 800;
+            font-display: swap;
+            src: local("Source Code Pro Black"), local("SourceCodePro-Black"), url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Black.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Black.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-code-font';
+            font-style:  italic;
+            font-weight: 800;
+            font-display: swap;
+            src: local("Source Code Pro BlackItalic"), local("SourceCodePro-BlackItalic"), url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-BlackItalic.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-BlackItalic.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-code-font';
+            font-style:  normal;
+            font-weight: 500;
+            font-display: swap;
+            src: local("Source Code Pro Medium"), local("SourceCodePro-Medium"), url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Medium.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Medium.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-code-font';
+            font-style:  italic;
+            font-weight: 500;
+            font-display: swap;
+            src: local("Source Code Pro MediumItalic"), local("SourceCodePro-MediumItalic"), url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-MediumItalic.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-MediumItalic.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-code-font';
+            font-style:  normal;
+            font-weight: 400;
+            font-display: swap;
+            src: local("Source Code Pro Regular"), local("SourceCodePro-Regular"), url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Regular.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Regular.woff?v=3.19") format("woff");
+        }
+@font-face {
+            font-family: 'gitbook-code-font';
+            font-style:  italic;
+            font-weight: 400;
+            font-display: swap;
+            src: local("Source Code Pro Italic"), local("SourceCodePro-Italic"), url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Italic.woff2?v=3.19") format("woff2"),
+                    url("https://app.gitbook.com/public/fonts/SourceCodePro/SourceCodePro-Italic.woff?v=3.19") format("woff");
+        }</style><link rel="preload" as="image" href="https://3349186757-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwrNt0ljEuQ5gsxIfJNfv%2Fuploads%2FneGHXSmBNdJgdFhIFxP2%2Fimage.png?alt=media&amp;token=9e51d23d-de63-42a1-b588-46dc8c1286ba"/>
+                
+                <script type="module" defer src="https://app.gitbook.com/public/app/public-IU2WCHZ6.min.js?v=10.9.371-7facee8e121924f9cda24c112ed1f46529fc2d8f-5490073013"></script>
+                <link as="style" rel="preload" href="https://app.gitbook.com/public/app/public-74AEKWKE.css?v=10.9.371-7facee8e121924f9cda24c112ed1f46529fc2d8f-5490073013">
+                <link rel="stylesheet" href="https://app.gitbook.com/public/app/public-74AEKWKE.css?v=10.9.371-7facee8e121924f9cda24c112ed1f46529fc2d8f-5490073013">
+                <style id="react-native-stylesheet">[stylesheet-group="0"]{}
+body{margin:0;}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0;}
+html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+input::-webkit-search-cancel-button,input::-webkit-search-decoration,input::-webkit-search-results-button,input::-webkit-search-results-decoration{display:none;}
+[stylesheet-group="1"]{}
+.css-11aywtz{-moz-appearance:textfield;-webkit-appearance:none;background-color:rgba(0,0,0,0.00);border-bottom-left-radius:0px;border-bottom-right-radius:0px;border-top-left-radius:0px;border-top-right-radius:0px;border:0 solid black;box-sizing:border-box;font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin:0px;padding:0px;resize:none;}
+.css-175oi2r{align-items:stretch;background-color:rgba(0,0,0,0.00);border:0 solid black;box-sizing:border-box;display:flex;flex-basis:auto;flex-direction:column;flex-shrink:0;list-style:none;margin:0px;min-height:0px;min-width:0px;padding:0px;position:relative;text-decoration:none;z-index:0;}
+.css-1qaijid{background-color:rgba(0,0,0,0.00);border:0 solid black;box-sizing:border-box;color:inherit;display:inline;font:inherit;list-style:none;margin:0px;padding:0px;text-align:inherit;text-decoration:none;white-space:inherit;word-wrap:break-word;}
+.css-1rynq56{background-color:rgba(0,0,0,0.00);border:0 solid black;box-sizing:border-box;color:rgba(0,0,0,1.00);display:inline;font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;list-style:none;margin:0px;padding:0px;text-align:inherit;text-decoration:none;white-space:pre-wrap;word-wrap:break-word;}
+.css-9pa8cd{bottom:0px;height:100%;left:0px;opacity:0;position:absolute;right:0px;top:0px;width:100%;z-index:-1;}
+[stylesheet-group="2"]{}
+.r-1064s9p{margin:4px;}
+.r-11mg6pl{border-bottom-color:rgba(255,255,255,1.00);border-left-color:rgba(255,255,255,1.00);border-right-color:rgba(255,255,255,1.00);border-top-color:rgba(255,255,255,1.00);}
+.r-13awgt0{flex:1;}
+.r-13fxbef{border-bottom-color:rgba(211,61,61,1.00);border-left-color:rgba(211,61,61,1.00);border-right-color:rgba(211,61,61,1.00);border-top-color:rgba(211,61,61,1.00);}
+.r-1471scf{display:inline;}
+.r-156hn8l{border-bottom-color:rgba(211,220,228,1.00);border-left-color:rgba(211,220,228,1.00);border-right-color:rgba(211,220,228,1.00);border-top-color:rgba(211,220,228,1.00);}
+.r-17gur6a{border-bottom-left-radius:0px;border-bottom-right-radius:0px;border-top-left-radius:0px;border-top-right-radius:0px;}
+.r-18c69zk{border-bottom-left-radius:100px;border-bottom-right-radius:100px;border-top-left-radius:100px;border-top-right-radius:100px;}
+.r-190qawg{border-bottom-color:rgba(227,232,237,1.00);border-left-color:rgba(227,232,237,1.00);border-right-color:rgba(227,232,237,1.00);border-top-color:rgba(227,232,237,1.00);}
+.r-19dn8jc{border-bottom-color:rgba(104,60,17,1.00);border-left-color:rgba(104,60,17,1.00);border-right-color:rgba(104,60,17,1.00);border-top-color:rgba(104,60,17,1.00);}
+.r-19nkufj{border-bottom-color:rgba(40,49,67,1.00);border-left-color:rgba(40,49,67,1.00);border-right-color:rgba(40,49,67,1.00);border-top-color:rgba(40,49,67,1.00);}
+.r-1awa8pu{border-bottom-color:rgba(101,119,134,1.00);border-left-color:rgba(101,119,134,1.00);border-right-color:rgba(101,119,134,1.00);border-top-color:rgba(101,119,134,1.00);}
+.r-1c57tb8{border-bottom-left-radius:34px;border-bottom-right-radius:34px;border-top-left-radius:34px;border-top-right-radius:34px;}
+.r-1d4xg89{border-bottom-color:rgba(170,184,194,1.00);border-left-color:rgba(170,184,194,1.00);border-right-color:rgba(170,184,194,1.00);border-top-color:rgba(170,184,194,1.00);}
+.r-1dqxon3{overflow-x:auto;overflow-y:auto;}
+.r-1edjr5w{padding:80px;}
+.r-1f0042m{border-bottom-left-radius:5px;border-bottom-right-radius:5px;border-top-left-radius:5px;border-top-right-radius:5px;}
+.r-1fdo3w0{margin:16px;}
+.r-1fuqb1j{border-bottom-left-radius:24px;border-bottom-right-radius:24px;border-top-left-radius:24px;border-top-right-radius:24px;}
+.r-1j16mh1{border-bottom-left-radius:100%;border-bottom-right-radius:100%;border-top-left-radius:100%;border-top-right-radius:100%;}
+.r-1jkafct{border-bottom-left-radius:2px;border-bottom-right-radius:2px;border-top-left-radius:2px;border-top-right-radius:2px;}
+.r-1jyn79y{border-bottom-color:rgba(0,150,136,1.00);border-left-color:rgba(0,150,136,1.00);border-right-color:rgba(0,150,136,1.00);border-top-color:rgba(0,150,136,1.00);}
+.r-1p0fg95{border-bottom-color:rgba(245,247,249,1.00);border-left-color:rgba(245,247,249,1.00);border-right-color:rgba(245,247,249,1.00);border-top-color:rgba(245,247,249,1.00);}
+.r-1phboty{border-bottom-style:solid;border-left-style:solid;border-right-style:solid;border-top-style:solid;}
+.r-1rwzld0{border-bottom-color:rgba(11,79,47,1.00);border-left-color:rgba(11,79,47,1.00);border-right-color:rgba(11,79,47,1.00);border-top-color:rgba(11,79,47,1.00);}
+.r-1tgwseu{border-bottom-color:rgba(52,109,219,1.00);border-left-color:rgba(52,109,219,1.00);border-right-color:rgba(52,109,219,1.00);border-top-color:rgba(52,109,219,1.00);}
+.r-1tw7wh{border-bottom-left-radius:50px;border-bottom-right-radius:50px;border-top-left-radius:50px;border-top-right-radius:50px;}
+.r-1udh08x{overflow-x:hidden;overflow-y:hidden;}
+.r-1w1o3af{border-bottom-color:rgba(251,232,240,1.00);border-left-color:rgba(251,232,240,1.00);border-right-color:rgba(251,232,240,1.00);border-top-color:rgba(251,232,240,1.00);}
+.r-1wgstfn{border-bottom-style:none;border-left-style:none;border-right-style:none;border-top-style:none;}
+.r-1x6f3t4{border-bottom-color:rgba(236,243,255,1.00);border-left-color:rgba(236,243,255,1.00);border-right-color:rgba(236,243,255,1.00);border-top-color:rgba(236,243,255,1.00);}
+.r-1xc7w19{border-bottom-color:rgba(0,0,0,1.00);border-left-color:rgba(0,0,0,1.00);border-right-color:rgba(0,0,0,1.00);border-top-color:rgba(0,0,0,1.00);}
+.r-1xfd6ze{border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top-left-radius:8px;border-top-right-radius:8px;}
+.r-1xutcf9{padding:40px;}
+.r-1yadl64{border-bottom-width:0px;border-left-width:0px;border-right-width:0px;border-top-width:0px;}
+.r-42olwf{border-bottom-color:rgba(0,0,0,0.00);border-left-color:rgba(0,0,0,0.00);border-right-color:rgba(0,0,0,0.00);border-top-color:rgba(0,0,0,0.00);}
+.r-4a18lf{border-bottom-color:rgba(255,0,0,1.00);border-left-color:rgba(255,0,0,1.00);border-right-color:rgba(255,0,0,1.00);border-top-color:rgba(255,0,0,1.00);}
+.r-4qtqp9{display:inline-block;}
+.r-60ke3l{border-bottom-color:rgba(0,128,0,1.00);border-left-color:rgba(0,128,0,1.00);border-right-color:rgba(0,128,0,1.00);border-top-color:rgba(0,128,0,1.00);}
+.r-6578ry{margin:40px;}
+.r-6koalj{display:flex;}
+.r-6ncur5{border-bottom-left-radius:18px;border-bottom-right-radius:18px;border-top-left-radius:18px;border-top-right-radius:18px;}
+.r-6t2glc{border-bottom-left-radius:40px;border-bottom-right-radius:40px;border-top-left-radius:40px;border-top-right-radius:40px;}
+.r-9x6qib{border-bottom-color:rgba(204,214,221,1.00);border-left-color:rgba(204,214,221,1.00);border-right-color:rgba(204,214,221,1.00);border-top-color:rgba(204,214,221,1.00);}
+.r-ancj0c{border-bottom-color:rgba(218,212,255,1.00);border-left-color:rgba(218,212,255,1.00);border-right-color:rgba(218,212,255,1.00);border-top-color:rgba(218,212,255,1.00);}
+.r-by8dw1{margin:24px;}
+.r-cdmcib{border-bottom-left-radius:3px;border-bottom-right-radius:3px;border-top-left-radius:3px;border-top-right-radius:3px;}
+.r-cpet4d{border-bottom-left-radius:999px;border-bottom-right-radius:999px;border-top-left-radius:999px;border-top-right-radius:999px;}
+.r-crgep1{margin:0px;}
+.r-d045u9{border-bottom-width:2px;border-left-width:2px;border-right-width:2px;border-top-width:2px;}
+.r-d23pfw{padding:24px;}
+.r-dta0w2{flex:2;}
+.r-edyy15{padding:8px;}
+.r-eg6o18{border-bottom-style:dashed;border-left-style:dashed;border-right-style:dashed;border-top-style:dashed;}
+.r-egco7n{border-bottom-color:rgba(253,195,137,1.00);border-left-color:rgba(253,195,137,1.00);border-right-color:rgba(253,195,137,1.00);border-top-color:rgba(253,195,137,1.00);}
+.r-fx7oqy{border-bottom-color:rgba(0,0,255,1.00);border-left-color:rgba(0,0,255,1.00);border-right-color:rgba(0,0,255,1.00);border-top-color:rgba(0,0,255,1.00);}
+.r-gav1f{border-bottom-color:rgba(24,28,31,1.00);border-left-color:rgba(24,28,31,1.00);border-right-color:rgba(24,28,31,1.00);border-top-color:rgba(24,28,31,1.00);}
+.r-hvic4v{display:none;}
+.r-hwh8t1{margin:8px;}
+.r-jqra5g{border-bottom-color:rgba(55,65,81,1.00);border-left-color:rgba(55,65,81,1.00);border-right-color:rgba(55,65,81,1.00);border-top-color:rgba(55,65,81,1.00);}
+.r-jxo161{border-bottom-color:rgba(255,204,203,1.00);border-left-color:rgba(255,204,203,1.00);border-right-color:rgba(255,204,203,1.00);border-top-color:rgba(255,204,203,1.00);}
+.r-kdyh1x{border-bottom-left-radius:6px;border-bottom-right-radius:6px;border-top-left-radius:6px;border-top-right-radius:6px;}
+.r-krxsd3{display:-webkit-box;}
+.r-m2nopt{border-bottom-color:rgba(43,46,57,1.00);border-left-color:rgba(43,46,57,1.00);border-right-color:rgba(43,46,57,1.00);border-top-color:rgba(43,46,57,1.00);}
+.r-m7id7e{flex:unset;}
+.r-m9k8lk{border-bottom-color:rgba(223,255,240,1.00);border-left-color:rgba(223,255,240,1.00);border-right-color:rgba(223,255,240,1.00);border-top-color:rgba(223,255,240,1.00);}
+.r-nsbfu8{padding:16px;}
+.r-p4pd8u{border-bottom-color:rgba(36,42,49,1.00);border-left-color:rgba(36,42,49,1.00);border-right-color:rgba(36,42,49,1.00);border-top-color:rgba(36,42,49,1.00);}
+.r-qwd59z{border-bottom-left-radius:1px;border-bottom-right-radius:1px;border-top-left-radius:1px;border-top-right-radius:1px;}
+.r-rs99b7{border-bottom-width:1px;border-left-width:1px;border-right-width:1px;border-top-width:1px;}
+.r-t60dpp{padding:0px;}
+.r-texgdz{margin:80px;}
+.r-tuq35u{padding:4px;}
+.r-tyhe3k{border-bottom-left-radius:64px;border-bottom-right-radius:64px;border-top-left-radius:64px;border-top-right-radius:64px;}
+.r-xoduu5{display:inline-flex;}
+.r-xyw6el{padding:12px;}
+.r-ywje51{margin:auto;}
+.r-z2wwpe{border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-top-left-radius:4px;border-top-right-radius:4px;}
+.r-zhp00w{padding:2px;}
+[stylesheet-group="2.1"]{}
+.r-10x3wzx{padding-bottom:40px;padding-top:40px;}
+.r-11yq8vr{margin-left:40px;margin-right:40px;}
+.r-1e081e0{padding-left:12px;padding-right:12px;}
+.r-1guathk{padding-left:24px;padding-right:24px;}
+.r-1h4fu65{padding-bottom:24px;padding-top:24px;}
+.r-1hy1u7s{margin-left:24px;margin-right:24px;}
+.r-1isdzm1{padding-left:80px;padding-right:80px;}
+.r-1jgb5lz{margin-left:auto;margin-right:auto;}
+.r-1p02zvt{padding-left:48px;padding-right:48px;}
+.r-1p4rafz{padding-left:2px;padding-right:2px;}
+.r-1p6iasa{margin-bottom:4px;margin-top:4px;}
+.r-1pn2ns4{padding-left:8px;padding-right:8px;}
+.r-1r5su4o{margin-bottom:16px;margin-top:16px;}
+.r-1unineu{margin-bottom:40px;margin-top:40px;}
+.r-1vvnge1{padding-bottom:2px;padding-top:2px;}
+.r-1w3m5we{padding-bottom:80px;padding-top:80px;}
+.r-1ybube5{margin-left:8px;margin-right:8px;}
+.r-1ydw1k6{margin-left:16px;margin-right:16px;}
+.r-1yzf0co{padding-bottom:16px;padding-top:16px;}
+.r-4amgru{margin-left:4px;margin-right:4px;}
+.r-5njf8e{padding-bottom:8px;padding-top:8px;}
+.r-5wp0in{padding-left:40px;padding-right:40px;}
+.r-c8eef1{margin-bottom:8px;margin-top:8px;}
+.r-g4w12b{padding-left:94px;padding-right:94px;}
+.r-g8va3u{margin-left:80px;margin-right:80px;}
+.r-lz04qo{margin-left:-4px;margin-right:-4px;}
+.r-mgi0kt{margin-left:-24px;margin-right:-24px;}
+.r-mk0yit{padding-left:0px;padding-right:0px;}
+.r-mvpalk{margin-left:0px;margin-right:0px;}
+.r-oyd9sg{padding-bottom:4px;padding-top:4px;}
+.r-pw2am6{margin-bottom:24px;margin-top:24px;}
+.r-r0h9e2{margin-bottom:0px;margin-top:0px;}
+.r-r26ds4{margin-bottom:80px;margin-top:80px;}
+.r-rjfia{padding-bottom:0px;padding-top:0px;}
+.r-s1qlax{padding-left:4px;padding-right:4px;}
+.r-ymttw5{padding-left:16px;padding-right:16px;}
+[stylesheet-group="2.2"]{}
+.r-100vyta{margin-top:7px;}
+.r-1029d6i{top:-24px;}
+.r-105ug2t{pointer-events:auto!important;}
+.r-109y4c4{height:1px;}
+.r-10drpc{color:rgba(0,73,215,1.00);}
+.r-10kz8ia{color:rgba(228,79,137,1.00);}
+.r-10ptun7{height:16px;}
+.r-10pyoum{color:rgba(5,5,5,1.00);}
+.r-10sqg0u{margin-bottom:1px;}
+.r-10x49cs{font-size:10px;}
+.r-10xqauy{padding-top:env(safe-area-inset-top);}
+.r-111w7nw{box-shadow:0px 1px 2px rgba(0,0,0,0.69);}
+.r-113qch9{cursor:auto;}
+.r-116b19x{padding-left:40px;}
+.r-119vxgs{border-top-style:dashed;}
+.r-11c0sde{margin-top:24px;}
+.r-11f42r{height:314px;}
+.r-11g3r6m{padding-right:24px;}
+.r-11j9u27{visibility:hidden;}
+.r-11mo1y0{margin-bottom:7px;}
+.r-11mpjr4{background-color:rgba(223,223,223,1.00);}
+.r-11udlyb{background-color:rgba(0,150,136,1.00);}
+.r-11vxtcu{background-color:rgba(211,220,228,1.00);}
+.r-11wlrp9{border-top-color:rgba(52,109,219,1.00);}
+.r-11wrixw{margin-left:0px;}
+.r-11yh6sk{overflow-x:hidden;}
+.r-11ys0m{-webkit-break-before:auto;break-before:auto;}
+.r-123mryc{color:rgba(185,94,4,1.00);}
+.r-127358a{animation-name:r-9p3sdl;}
+.r-127gp16{max-width:150px;}
+.r-12dqhl9{height:calc(100vh - 80px);}
+.r-12mrs02{object-fit:contain;}
+.r-12v2sbk{background-color:rgba(36,42,49,0.50);}
+.r-12vffkv>*{pointer-events:auto;}
+.r-12vffkv{pointer-events:none!important;}
+.r-12ym1je{width:18px;}
+.r-12zb1j4{margin-right:7px;}
+.r-135wba7{line-height:24px;}
+.r-13hce6t{margin-left:4px;}
+.r-13i40vn{box-shadow:0px 12px 13px rgba(0,0,0,0.02);}
+.r-13i4ljo{width:172px;}
+.r-13l2t4g{border-right-width:1px;}
+.r-13ll0g2{color:rgba(10,48,105,1.00);}
+.r-13lvk87{margin-left:110px;}
+.r-13qz1uu{width:100%;}
+.r-13tjlyg{transition-duration:0.1s;}
+.r-13yce4e{border-top-width:0px;}
+.r-142tt33{-webkit-text-decoration-line:line-through;text-decoration-line:line-through;}
+.r-144uupt{left:2px;}
+.r-146iojx{max-width:300px;}
+.r-1472mwg{height:24px;}
+.r-14792hc{left:-64px;}
+.r-14bkmb3{bottom:-3px;}
+.r-14eup4l{top:3px;}
+.r-14gqq1x{margin-top:4px;}
+.r-14lw9ot{background-color:rgba(255,255,255,1.00);}
+.r-14sbq61{background-color:rgba(33,150,243,1.00);}
+.r-14utu6a{line-height:8px;}
+.r-14vq63g{background-color:rgba(3,58,22,1.00);}
+.r-14yzgew{line-height:18px;}
+.r-150rngu{-webkit-overflow-scrolling:touch;}
+.r-157h22z{background-color:rgba(45,50,58,1.00);}
+.r-15czi30{background-image:linear-gradient(90deg, #e44f89, #c62c68);}
+.r-15d4u6f{background-color:rgba(145,176,240,1.00);}
+.r-15g7tld{margin-bottom:80px;}
+.r-15m1z73{margin-left:40px;}
+.r-15n4387{outline-color:#2662d7;}
+.r-15o5oer{bottom:auto;}
+.r-15ysp7h{min-height:32px;}
+.r-15zivkp{margin-bottom:4px;}
+.r-16dba41{font-weight:400;}
+.r-16l9doz{height:auto;}
+.r-16vg0q1{max-width:225px;}
+.r-16y2uox{flex-grow:1;}
+.r-173mn98{align-self:flex-end;}
+.r-1777fci{justify-content:center;}
+.r-17bb2tj{animation-duration:0.75s;}
+.r-17giqoz{box-shadow:0px 0px 7px rgba(0,0,0,0.52);}
+.r-17grq5a{margin-right:-8px;}
+.r-17leim2{background-repeat:repeat;}
+.r-17rnw9f{line-height:30px;}
+.r-17s6mgv{justify-content:flex-end;}
+.r-17tb59b{opacity:0.7;}
+.r-17tloay{opacity:0.6;}
+.r-17wrw06{color:rgba(180,26,26,1.00);}
+.r-184en5c{z-index:1;}
+.r-18ayb63{border-right-color:rgba(227,232,237,1.00);}
+.r-18kxxzh{flex-grow:0;}
+.r-18nhz7w{top:-3px;}
+.r-18p6if4{border-right-width:2px;}
+.r-18u37iz{flex-direction:row;}
+.r-18y5qoh{color:rgba(165,214,255,1.00);}
+.r-190thrv{color:rgba(145,75,5,1.00);}
+.r-19554kt{width:90px;}
+.r-19akecc{color:rgba(175,245,180,1.00);}
+.r-19byhck{flex-basis:32%;}
+.r-19lq7b1{top:16px;}
+.r-19r33im{letter-spacing:1.2px;}
+.r-19tq15n{margin-top:80px;}
+.r-19wmn03{width:20px;}
+.r-19z077z{touch-action:none;}
+.r-1a3cspq{background-color:rgba(40,49,67,1.00);}
+.r-1abnn5w{animation-play-state:paused;}
+.r-1acpoxo{width:36px;}
+.r-1aerykh{border-top-color:rgba(211,220,228,1.00);}
+.r-1aockid{width:40px;}
+.r-1armvtb{font-size:8px;}
+.r-1awozwy{align-items:center;}
+.r-1axcl7z{border:1px solid #d3dce4;}
+.r-1ay1djp{animation-duration:1s;}
+.r-1b00too{background-color:rgba(236,239,241,1.00);}
+.r-1b096ap{border-bottom-color:rgba(36,42,49,1.00);}
+.r-1b1g84l{bottom:-8px;}
+.r-1b3fm86{background-color:undefined;}
+.r-1b43r93{font-size:14px;}
+.r-1bcbbo8{color:rgba(17,99,41,1.00);}
+.r-1bnj018{color:rgba(92,105,117,1.00);}
+.r-1bwbpp8{color:rgba(57,87,148,1.00);}
+.r-1bwgafa{-webkit-text-decoration-color:rgba(136,153,168,1.00);text-decoration-color:rgba(136,153,168,1.00);}
+.r-1c681wc{color:rgba(77,222,152,1.00);}
+.r-1c6unfx{forced-color-adjust:none;}
+.r-1ce3o0f{max-height:80vh;}
+.r-1ceczpf{min-height:24px;}
+.r-1clhhh9{-moz-transition-property:all;-webkit-transition-property:all;transition-property:all;}
+.r-1cmwbt1{gap:8px;}
+.r-1d09ksm{align-items:baseline;}
+.r-1d2f490{left:0px;}
+.r-1d4mawv{margin-right:4px;}
+.r-1d5kdc7{flex-direction:column-reverse;}
+.r-1d7fvdj{justify-content:space-evenly;}
+.r-1d9grui{border-bottom-color:rgba(211,220,228,1.00);}
+.r-1ddef8g{-webkit-text-decoration-line:underline;text-decoration-line:underline;}
+.r-1dernwh{height:70%;}
+.r-1dlgt49{max-height:30px;}
+.r-1dmvmgl{background-color:rgba(36,42,49,1.00);}
+.r-1dn12g7{line-height:48px;}
+.r-1dpl46z{border-bottom-right-radius:4px;}
+.r-1dqbpge{cursor:text;}
+.r-1dumtqg{background-color:rgba(253,195,137,1.00);}
+.r-1e1gmzv{color:rgba(38,59,102,1.00);}
+.r-1efo1hp{border-bottom-color:rgba(43,46,57,1.00);}
+.r-1ei5mc7{cursor:inherit;}
+.r-1eic64l{color:rgba(198,44,104,1.00);}
+.r-1enofrn{font-size:12px;}
+.r-1etz4cy{color:rgba(194,217,255,1.00);}
+.r-1euycsn{flex-direction:row-reverse;}
+.r-1ewcgjf{box-shadow:0px 1px 3px rgba(0,0,0,0.5);}
+.r-1f2v84d{color:rgba(204,207,212,1.00);}
+.r-1f4ipl0{left:29px;}
+.r-1f529hi{line-height:14px;}
+.r-1fd96xs{padding-left:50px;}
+.r-1fdih9r{gap:24px;}
+.r-1fe0xdi{left:0%;}
+.r-1ff274t{text-align:right;}
+.r-1fi01yr{background-color:rgba(55,65,81,1.00);}
+.r-1fiaf3z{opacity:0.05;}
+.r-1fo40xd{top:80px;}
+.r-1fq43b1{flex-basis:100%;}
+.r-1g7fiml{height:30px;}
+.r-1g80fh1{margin-right:80px;}
+.r-1ghhsy9{color:rgba(52,109,219,1.00);}
+.r-1gigy5k{border-bottom-color:rgba(45,50,58,1.00);}
+.r-1glc72y{border-bottom-color:rgba(245,247,249,1.00);}
+.r-1glkqn6{width:80px;}
+.r-1h0z5md{justify-content:flex-start;}
+.r-1h815vi{right:92%;}
+.r-1h8ys4a{padding-top:4px;}
+.r-1h9q8wt{color:rgba(69,69,69,1.00);}
+.r-1habvwh{align-items:flex-start;}
+.r-1hjwoze{height:18px;}
+.r-1hlnpa{height:3px;}
+.r-1hpgsb4{;}
+.r-1hqdnve{box-shadow:0px 0px 4px inset rgba(0,0,0, 0.08);}
+.r-1hrvmjx{border-top-color:rgba(55,65,81,1.00);}
+.r-1hvjb8t{padding-right:4px;}
+.r-1hy97zq{padding-top:80px;}
+.r-1hycxz{width:350px;}
+.r-1i6wzkk{-moz-transition-property:opacity;-webkit-transition-property:opacity;transition-property:opacity;}
+.r-1i7sdiz{box-shadow:0px 4px 10px rgba(0,0,0,0.05);}
+.r-1i93rbr{right:0%;}
+.r-1ielgck{animation-duration:300ms;}
+.r-1ifxtd0{margin-bottom:16px;}
+.r-1ik5qf4{max-width:500px;}
+.r-1iln25a{word-wrap:normal;}
+.r-1ioqa4e{border-top-right-radius:7px;}
+.r-1ipicw7{width:300px;}
+.r-1j7aebl{width:880px;}
+.r-1janqcz{width:16px;}
+.r-1jg9483{width:8px;}
+.r-1jj8364{margin-left:auto;}
+.r-1jkjb{margin-left:8px;}
+.r-1jnzvcq{padding-bottom:80px;}
+.r-1jocfgc{width:290px;}
+.r-1jpmnxg{word-wrap:anywhere;}
+.r-1jsra8{box-shadow:inset 0px 0px 0px 1px #e3e8ed;}
+.r-1jxfwug{border-top-width:2px;}
+.r-1k1q3bj{max-height:300px;}
+.r-1k25im9{height:26px;}
+.r-1kb76zh{margin-right:8px;}
+.r-1kf75xu{color:rgba(12,105,61,1.00);}
+.r-1kfrs79{font-weight:600;}
+.r-1ki14p2{top:10px;}
+.r-1kihuf0{align-self:center;}
+.r-1kjq87h{width:376px;}
+.r-1knl56f{animation-name:r-1hunrpy;}
+.r-1kvn7zp{max-height:150px;}
+.r-1kx0pzc{background-image:radial-gradient(rgba(0, 0, 0, 0.1), #181c1f);}
+.r-1l0m7dr{background-image:radial-gradient(rgba(0, 0, 0, 0.1), #ffffff);}
+.r-1l7z4oj{padding-bottom:16px;}
+.r-1l94q7l{box-shadow:inset 0px 0px 1px rgb(0 0 0 / 30%);}
+.r-1ld3bg{top:-4px;}
+.r-1ldzwu0{animation-timing-function:linear;}
+.r-1ljd8xs{border-left-width:1px;}
+.r-1lky6n1{background-color:rgba(227,232,237,1.00);}
+.r-1lnfjr6{-webkit-background-clip:text;}
+.r-1lnt56z{color:rgba(211,220,228,1.00);}
+.r-1loqt21{cursor:pointer;}
+.r-1m04atk{padding-left:8px;}
+.r-1m4drjs{top:-6px;}
+.r-1maqer6{max-width:860px;}
+.r-1md8qp7{right:-40px;}
+.r-1mdbw0j{padding-bottom:0px;}
+.r-1mdsxwj{color:rgba(237,159,81,1.00);}
+.r-1mgmw1x{background-image:linear-gradient(90deg, #5f45ff, #442fc8);}
+.r-1mhb1uw{width:42px;}
+.r-1mhtwjo{left:-3px;}
+.r-1mlwlqe{flex-basis:auto;}
+.r-1mnahxq{margin-top:0px;}
+.r-1moh23t{bottom:16px;}
+.r-1mrlafo{background-position:0;}
+.r-1ms9ukt{bottom:-5px;}
+.r-1mtwht8{color:rgba(210,168,255,1.00);}
+.r-1muvv40{animation-iteration-count:infinite;}
+.r-1n20pny{width:140px;}
+.r-1n6k3lk{color:rgba(36,42,49,1.00);}
+.r-1na1l7e{animation-play-state:running;}
+.r-1nf4jbm{color:rgba(59,69,78,1.00);}
+.r-1niwhzg{background-color:rgba(0,0,0,0.00);}
+.r-1nj16ve{left:-10px;}
+.r-1nlw0im{bottom:8px;}
+.r-1nq9s1i{color:rgba(145,176,240,1.00);}
+.r-1ny4l3l{outline-style:none;}
+.r-1o9jcv2{max-width:660px;}
+.r-1ocf4r9{scroll-snap-type:y mandatory;}
+.r-1odw9d6{background-color:rgba(20,23,28,1.00);}
+.r-1oec5bt{opacity:0.2;}
+.r-1oep0n4{left:-12px;}
+.r-1ois7e2{color:rgba(55,65,81,1.00);}
+.r-1or9b2r{height:10px;}
+.r-1osy6ei{color:rgba(255,220,215,1.00);}
+.r-1oszu61{align-items:stretch;}
+.r-1otgn73{touch-action:manipulation;}
+.r-1ow6zhx{margin-left:16px;}
+.r-1p0dtai{bottom:0px;}
+.r-1p3vkdf{border-right-color:rgba(45,50,58,1.00);}
+.r-1p5i0ed{bottom:-24px;}
+.r-1p69tiw{border-top-color:rgba(43,46,57,1.00);}
+.r-1peese0{margin-bottom:24px;}
+.r-1ph75f1{height:80px;}
+.r-1pi2tsx{height:100%;}
+.r-1pl7oy7{min-height:48px;}
+.r-1pos5eu{vertical-align:middle;}
+.r-1ptriwd{right:2px;}
+.r-1pyaxff{padding-right:8px;}
+.r-1q142lx{flex-shrink:0;}
+.r-1q3nxaj{z-index:300;}
+.r-1q6j1ae{right:-88px;}
+.r-1q6rxnj{padding-right:110px;}
+.r-1q77oe7{background-color:rgba(171,183,202,1.00);}
+.r-1q9jyb7{-webkit-filter:blur(16px) contrast(110%) hue-rotate(10deg) brightness(1.2) saturate(1.2);filter:blur(16px) contrast(110%) hue-rotate(10deg) brightness(1.2) saturate(1.2);}
+.r-1qc3rpd{transform:scaleY(-1);}
+.r-1qd0xha{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.r-1qdbj55{animation-name:r-ndfo3d;}
+.r-1qefu2b{right:-3px;}
+.r-1qhn6m8{padding-left:16px;}
+.r-1quu1zo{;}
+.r-1r0uwd5{color:rgba(255,166,87,1.00);}
+.r-1r74h94{left:8px;}
+.r-1r8g8re{height:36px;}
+.r-1rasi3h{color:rgba(136,153,168,1.00);}
+.r-1rbj2e8{outline-color:#f5f7f9;}
+.r-1rdth4h{border-left-color:rgba(55,65,81,1.00);}
+.r-1rho1gz{box-shadow:0px 12px 13px rgba(0,0,0,0.12);}
+.r-1rkdych{max-width:1040px;}
+.r-1rla0r3{background-image:linear-gradient(90deg, #d33d3d, #b41a1a);}
+.r-1rnoaur{overflow-y:auto;}
+.r-1ro0kt6{flex-basis:0%;}
+.r-1ro7rbe{right:100%;}
+.r-1rttkqs{width:400px;}
+.r-1rxb9bi{row-gap:4px;}
+.r-1s3egr7{z-index:100;}
+.r-1s8p94s{max-width:832px;}
+.r-1sc18lr{padding-bottom:88px;}
+.r-1sncvnh{transform:translateZ(0px);}
+.r-1sxrcry{background-size:auto;}
+.r-1t2qqvi{flex-basis:50%;}
+.r-1t7uo4s{object-fit:cover;}
+.r-1t8m4kl{text-shadow:0px 0px 3px rgba(36,42,49,1.00);}
+.r-1ta3fxp{-webkit-column-gap:8px;column-gap:8px;}
+.r-1tazni7{cursor:not-allowed;}
+.r-1ts5s6y{aspect-ratio:1.7777777777777777;}
+.r-1ttybm1{border-top-color:rgba(45,50,58,1.00);}
+.r-1ty4vvm{left:40px;}
+.r-1tymxbh{box-shadow:5px 0px 7px rgba(36,42,49,0.60);}
+.r-1u8kdu{bottom:24px;}
+.r-1ua3vzd{background-color:rgba(223,255,240,1.00);}
+.r-1ub1aon{transform:translateY(100%);}
+.r-1udbk01{text-overflow:ellipsis;}
+.r-1ufdtu9{background-image:linear-gradient(270deg, #e3e8ed 10%, #f5f7f9, #e3e8ed 90%);}
+.r-1ufr4wv{z-index:9;}
+.r-1ug9s38{box-shadow:inset 0px 0px 0px 1px #374151;}
+.r-1ui5ee8{font-size:32px;}
+.r-1ul06mb{margin-left:32px;}
+.r-1ulgld5{color:rgba(255,123,114,1.00);}
+.r-1uql0sn{top:-1.2em;}
+.r-1ur9v65{padding-top:40px;}
+.r-1ut4w64{margin-bottom:-1px;}
+.r-1uwte3a{padding-bottom:40px;}
+.r-1uypc71{animation-timing-function:ease-in;}
+.r-1v2oles{top:50%;}
+.r-1v4p587{border-bottom-color:rgba(24,28,31,1.00);}
+.r-1v6e3re{min-width:48px;}
+.r-1v7fmog{background-color:rgba(236,243,255,1.00);}
+.r-1v7sw2p{background-size:50% 80px;}
+.r-1vamr63{max-width:720px;}
+.r-1vckr1u{background-color:rgba(245,247,249,1.00);}
+.r-1vex5ub{color:rgba(68,47,200,1.00);}
+.r-1vo7ria{color:rgba(38,98,215,1.00);}
+.r-1vutw0s{background-color:rgba(103,6,12,1.00);}
+.r-1vz48go{background-image:radial-gradient(rgba(255, 255, 255, 0.1), #181c1f);}
+.r-1vzi8xi{vertical-align:middle;}
+.r-1w2pmg{height:0px;}
+.r-1w6e6rj{flex-wrap:wrap;}
+.r-1wan564{color:rgba(169,192,240,1.00);}
+.r-1wb8bfx{text-decoration-thickness:2px;}
+.r-1wbh5a2{flex-shrink:1;}
+.r-1wezhl{margin-left:80px;}
+.r-1wfhzrg{height:120px;}
+.r-1wghi3f{top:-8px;}
+.r-1wtj0ep{justify-content:space-between;}
+.r-1wv73ep{align-self:baseline;}
+.r-1ww30s9{max-width:30px;}
+.r-1wyyakw{z-index:-1;}
+.r-1wzrnnt{margin-top:16px;}
+.r-1x35g6{font-size:24px;}
+.r-1xbve24{height:6px;}
+.r-1xcajam{position:fixed;}
+.r-1xnzce8{-moz-user-select:text;-webkit-user-select:text;user-select:text;}
+.r-1xoqk23{background-color:rgba(68,47,200,1.00);}
+.r-1y14msn{border-bottom-color:rgba(55,65,81,1.00);}
+.r-1y9xkqr{left:8%;}
+.r-1yb8zos{background-color:rgba(162,169,185,1.00);}
+.r-1ybp48z{background-image:linear-gradient(90deg, #cc3131, #b41a1a);}
+.r-1ye8kvj{max-width:600px;}
+.r-1ygmrgt{padding-top:24px;}
+.r-1ylffjs{-webkit-text-decoration-style:dotted;text-decoration-style:dotted;}
+.r-1yv4afn{border-top-color:rgba(227,232,237,1.00);}
+.r-1yvhtrz{width:32px;}
+.r-1yxedwg{top:8px;}
+.r-1yyzdbt{border-left-color:rgba(227,232,237,1.00);}
+.r-257lmc{width:1180px;}
+.r-29dh1f{background-image:linear-gradient(90deg, #eceff1, #e3e8ed);}
+.r-2awvau{min-width:-webkit-max-content;min-width:-moz-max-content;min-width:max-content;}
+.r-2eszeu::-webkit-scrollbar{display:none}
+.r-2eszeu{scrollbar-width:none;}
+.r-2fm7cc{color:rgba(139,148,158,1.00);}
+.r-2fw26j{outline-offset:0px;}
+.r-2jelyo{background-color:rgba(24,28,31,1.00);}
+.r-2jxp4q{background-color:rgba(34,39,46,1.00);}
+.r-2kxcpj{inset:0px;}
+.r-2llsf{min-height:100%;}
+.r-2o02ov{margin-top:40px;}
+.r-2tavb8{background-color:rgba(0,0,0,0.60);}
+.r-2zpn8w{-webkit-break-inside:avoid;break-inside:avoid;}
+.r-30o5oe{-moz-appearance:none;-ms-appearance:none;-webkit-appearance:none;appearance:none;}
+.r-30qeir{bottom:-4px;}
+.r-36ujnk{font-style:italic;}
+.r-37tt59{line-height:32px;}
+.r-3da1kt{height:8px;}
+.r-3dgjpp{border-top-color:rgba(36,42,49,1.00);}
+.r-3hw5f6{color:rgba(149,56,0,1.00);}
+.r-3mc0re{right:8px;}
+.r-3mtglp{row-gap:16px;}
+.r-3o833n{background-color:rgba(251,232,240,1.00);}
+.r-3pxcvb{border-bottom-color:rgba(255,255,255,1.00);}
+.r-3s2u2q{white-space:nowrap;}
+.r-417010{z-index:0;}
+.r-41syhy{max-width:504px;}
+.r-432wen{width:3px;}
+.r-44c749{border-bottom-left-radius:7px;}
+.r-493a2x{width:680px;}
+.r-4c3hy2{max-width:245px;}
+.r-4d76ec{height:200px;}
+.r-4dj0k7{box-shadow:0px 1px 2px rgba(0,0,0,0.12);}
+.r-4gszlv{background-size:cover;}
+.r-4jz4xt{background-image:linear-gradient(90deg, #374151, #374151);}
+.r-4v7adb{height:5px;}
+.r-59fiw0{max-width:416px;}
+.r-5cpxsl{stroke-width:3;}
+.r-5is6sd{max-width:460px;}
+.r-5kkj8d{border-top-width:1px;}
+.r-5ks0hp{right:3.5px;}
+.r-5kx3fr{page-break-inside:avoid;}
+.r-5oul0u{margin-bottom:8px;}
+.r-5soawk{width:10px;}
+.r-5xr8s6{outline-width:2px;}
+.r-60emj1{background-color:rgba(255,204,203,1.00);}
+.r-61z16t{margin-right:0px;}
+.r-633pao{pointer-events:none!important;}
+.r-6b6lzv{color:rgba(100,143,228,1.00);}
+.r-6dt33c{opacity:1;}
+.r-6k4xqk{margin-top:-40px;}
+.r-6t5ypu{border-bottom-left-radius:4px;}
+.r-6taxm2:-ms-input-placeholder{color:var(--placeholderTextColor);opacity:1;}
+.r-6taxm2::-moz-placeholder{color:var(--placeholderTextColor);opacity:1;}
+.r-6taxm2::-webkit-input-placeholder{color:var(--placeholderTextColor);opacity:1;}
+.r-6taxm2::placeholder{color:var(--placeholderTextColor);opacity:1;}
+.r-6uxfom{margin-left:24px;}
+.r-6wscbn{max-width:252px;}
+.r-73dpzl{border-top-color:rgba(245,247,249,1.00);}
+.r-7b7h2f{left:100%;}
+.r-7bxf49{background-color:rgba(205,218,246,1.00);}
+.r-7cikom{font-size:inherit;}
+.r-7l9xyp{background-color:rgba(255,255,255,0.20);}
+.r-7q8q6z{cursor:default;}
+.r-7xmw5f{width:-webkit-fit-content;width:-moz-fit-content;width:fit-content;}
+.r-81rbui{animation-name:r-1ak6360;}
+.r-855088{border-left-color:rgba(0,0,0,0.00);}
+.r-88pszg{margin-right:16px;}
+.r-8akbws{-webkit-box-orient:vertical;}
+.r-8d26hk{margin-bottom:40px;}
+.r-8hc5te{width:6px;}
+.r-8jwyv6{-moz-transition:opacity 0.2s ease-in-out;-webkit-transition:opacity 0.2s ease-in-out;transition:opacity 0.2s ease-in-out;}
+.r-8upyzv{width:260px;}
+.r-8v5hsd{color:rgba(126,231,135,1.00);}
+.r-9030i9{box-shadow:0px 4px 10px rgba(0,0,0,0.99);}
+.r-9111t9{padding-right:410px;}
+.r-92ng3h{width:1px;}
+.r-934yyj{padding-left:34px;}
+.r-9358xi{background-color:rgba(35,131,226,0.14);}
+.r-95jzfe{padding-top:16px;}
+.r-97e31f{padding-bottom:env(safe-area-inset-bottom);}
+.r-97prym{flex-basis:16px;}
+.r-99m41f{color:rgba(110,119,129,1.00);}
+.r-9aemit{padding-right:0px;}
+.r-9ji8r7{transform:translateY(0%);}
+.r-9jpwak{min-width:auto;}
+.r-a21fva{box-shadow:0px -1px 2px rgba(0,0,0,0.69);}
+.r-a2tzq0{justify-content:space-around;}
+.r-a5pmau{margin-right:2px;}
+.r-a9hzal{height:660px;}
+.r-adacv{min-height:64px;}
+.r-adyw6z{font-size:20px;}
+.r-ah5dr5>*{pointer-events:none;}
+.r-ah5dr5{pointer-events:auto!important;}
+.r-ak0haq{color:rgba(121,192,255,1.00);}
+.r-aqxs90{-moz-transition:opacity 500ms ease-in, z-index 1000ms ease-in;-webkit-transition:opacity 500ms ease-in, z-index 1000ms ease-in;transition:opacity 500ms ease-in, z-index 1000ms ease-in;}
+.r-b4cb4{max-height:440px;}
+.r-b88u0q{font-weight:700;}
+.r-bcqeeo{min-width:0px;}
+.r-bcycc3{box-shadow:0px -1px 2px rgba(0,0,0,0.12);}
+.r-bgnin{min-width:150px;}
+.r-bnwqim{position:relative;}
+.r-bsjocg{@media print:[object Object];}
+.r-bta5j5{right:40px;}
+.r-buy8e9{overflow-y:hidden;}
+.r-bv2aro{padding-left:env(safe-area-inset-left);}
+.r-bxaprw{border-top-left-radius:7px;}
+.r-c68hjy{color:rgba(161,161,161,1.00);}
+.r-cb7i37{outline-color:#395794;}
+.r-cdhzog{padding-right:80px;}
+.r-cpa5s6{scroll-snap-align:start;}
+.r-d822y2{color:rgba(5,80,174,1.00);}
+.r-deolkf{box-sizing:border-box;}
+.r-dflpy8{height:1.2em;}
+.r-dkge59{background-color:rgba(170,184,194,1.00);}
+.r-dnmrzs{max-width:100%;}
+.r-dse9kg{outline-style:auto;}
+.r-dvzd6p{right:-1px;}
+.r-dvzwsg{border-left-color:rgba(211,220,228,1.00);}
+.r-dwliz8{border-left-width:2px;}
+.r-e1k2in{right:16px;}
+.r-e9uq0i{animation-duration:1200ms;}
+.r-ea455c{border:none;}
+.r-eafdt9{transition-duration:0.15s;}
+.r-ecifi{max-width:970px;}
+.r-ehq7j7{background-size:contain;}
+.r-epq5cr{height:2px;}
+.r-eqo98v{top:24px;}
+.r-eqz5dr{flex-direction:column;}
+.r-ero68b{min-height:40px;}
+.r-eu3ka{height:40px;}
+.r-f4gmv6{gap:16px;}
+.r-fa5tdg{max-width:456px;}
+.r-fdjqy7{text-align:left;}
+.r-flmpir{border-bottom-color:rgba(40,49,67,1.00);}
+.r-fnigne{border-right-width:0px;}
+.r-fpub7{color:rgba(0,0,0,0.00);}
+.r-g3mlsw{animation-name:r-t2lo5v;}
+.r-gg6oyi{font-family:gitbook-content-font,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;}
+.r-ggadg3{left:-2px;}
+.r-givd4m{left:-5px;}
+.r-gl891g{min-width:420px;}
+.r-gpge5b{right:calc(50% + 11px);}
+.r-gtdqiz{position:-webkit-sticky;position:sticky;}
+.r-gu0qjt{padding-left:32px;}
+.r-gxnn5r{border-left-width:0px;}
+.r-gxopl6{left:316px;}
+.r-gy4na3{padding-left:0px;}
+.r-gys0vz{color:rgba(0,136,71,1.00);}
+.r-h2mvr{min-width:8px;}
+.r-h2q2x{transform:scaleX(-1);}
+.r-h3s6tt{height:48px;}
+.r-h7ga17{background-color:rgba(43,46,57,1.00);}
+.r-h7gdob{color:currentColor;}
+.r-ha54is{icon-color:#a2a9b9;}
+.r-hauab{-moz-transition:width 50ms ease-in-out;-webkit-transition:width 50ms ease-in-out;transition:width 50ms ease-in-out;}
+.r-hbpseb{line-height:22px;}
+.r-hd655f{color:rgba(162,169,185,1.00);}
+.r-homxoj{color:inherit;}
+.r-hq6u89{left:92%;}
+.r-hqnlqz{border-left-color:rgba(52,109,219,1.00);}
+.r-htfu76{margin-left:-8px;}
+.r-hu79xy{min-width:196px;}
+.r-hvns9x{max-width:400px;}
+.r-hxflta{padding-right:env(safe-area-inset-right);}
+.r-i023vh{padding-right:16px;}
+.r-i7h7g2{-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);}
+.r-i8xx8x{color:rgba(207,34,46,1.00);}
+.r-ia06lx{background-color:rgba(115,92,255,1.00);}
+.r-ibjss6{background-color:rgba(136,153,168,1.00);}
+.r-icoktb{opacity:0.5;}
+.r-ifefl9{min-height:0px;}
+.r-ihd41t{border:1px solid #374151;}
+.r-iphfwy{padding-bottom:4px;}
+.r-ipm5af{top:0px;}
+.r-iqs06e{background-image:radial-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 1));}
+.r-ir6n1k{border-top-right-radius:6px;}
+.r-ixzivm{@media print:[object Object];}
+.r-iyfy8q{width:auto;}
+.r-j300sb{animation-name:r-1rx4pb;}
+.r-jfrpv2{color:rgba(130,80,223,1.00);}
+.r-jn0m22{top:54px;}
+.r-jn5ml{right:-5px;}
+.r-jvuzdy{top:-5px;}
+.r-jwli3a{color:rgba(255,255,255,1.00);}
+.r-jxjwwx{left:24px;}
+.r-k200y{align-self:flex-start;}
+.r-k923pl{background-color:rgba(218,212,255,1.00);}
+.r-kcufgn{cursor:ew-resize;}
+.r-key0ze{height:240px;}
+.r-kicko2{border-top-left-radius:4px;}
+.r-kls4rr{padding-right:40px;}
+.r-knv0ih{margin-top:8px;}
+.r-kquydp{right:-4px;}
+.r-ky29hr{bottom:2px;}
+.r-l0gwng{width:200px;}
+.r-l13dpy{z-index:200;}
+.r-l27s25{background-color:rgba(204,207,212,1.00);}
+.r-l9hqf4{box-shadow:0px 1px 1px rgba(0,0,0,0.69);}
+.r-l9st2p{-webkit-text-decoration-color:rgba(162,169,185,1.00);text-decoration-color:rgba(162,169,185,1.00);}
+.r-labphf{height:-webkit-fit-content;height:-moz-fit-content;height:fit-content;}
+.r-lchren{margin-right:auto;}
+.r-lk1fr1{icon-color:#8899a8;}
+.r-lltvgl{overflow-x:auto;}
+.r-lqms97{margin-left:-1px;}
+.r-lrsllp{width:24px;}
+.r-lrvibr{-moz-user-select:none;-webkit-user-select:none;user-select:none;}
+.r-lv5dtd{padding-left:110px;}
+.r-lx1l9k{background-image:radial-gradient(rgba(255, 255, 255, 0.1), #ffffff);}
+.r-m0vln2{border-left-color:rgba(43,46,57,1.00);}
+.r-m2pi6t{padding-left:4px;}
+.r-m5arl1{width:2px;}
+.r-mabqd8{height:32px;}
+.r-majxgm{font-weight:500;}
+.r-mbgqwd{margin-right:24px;}
+.r-mfh4gg{scroll-snap-type:x mandatory;}
+.r-mfzc6t{background-color:rgba(0,0,0,0.10);}
+.r-mhe3cw{z-index:10;}
+.r-ms8t9i{border-left-width:3px;}
+.r-mwitap{pointer-event:none;}
+.r-na6qhi{;}
+.r-ng8e2f{cursor:-webkit-grab;cursor:-moz-grab;cursor:grab;}
+.r-nkouq2{box-shadow:-5px 0px 7px rgba(36,42,49,0.60);}
+.r-notknq{border-top-right-radius:4px;}
+.r-nvplwv{animation-timing-function:ease-out;}
+.r-nvvorq{top:3.5px;}
+.r-nwxazl{line-height:40px;}
+.r-nzcix3{border-bottom-color:rgba(227,232,237,1.00);}
+.r-o2ldwd{left:calc(50% + 11px);}
+.r-o8yidv{border-top-left-radius:6px;}
+.r-o9xkwf{top:2px;}
+.r-obd0qt{align-items:flex-end;}
+.r-onxxid{background-color:rgba(27,30,33,0.77);}
+.r-op3p1c{width:520px;}
+.r-orgf3d{opacity:0;}
+.r-ou6ah9{border-top-left-radius:0px;}
+.r-oucylx{border-bottom-color:rgba(0,0,0,0.00);}
+.r-oz83uh{box-shadow:0px 1px 1px rgba(0,0,0,0.12);}
+.r-p1pxzi{margin-bottom:0px;}
+.r-pex7a0{color:rgba(130,7,30,1.00);}
+.r-pi8zqv{box-shadow:0px 0px 7px rgba(0,0,0,0.04);}
+.r-pm9dpa{max-height:100%;}
+.r-puj83k{padding-left:24px;}
+.r-py1axk{border-bottom-right-radius:7px;}
+.r-q4m81j{text-align:center;}
+.r-qklmqi{border-bottom-width:1px;}
+.r-qn3fzs{padding-bottom:24px;}
+.r-qyrhsv{border-right-color:rgba(40,49,67,1.00);}
+.r-r1s0sa{background-color:rgba(255,235,233,1.00);}
+.r-r7ey0d{background-color:rgba(218,212,255,0.50);}
+.r-r9hte5{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
+.r-rs94m5{background-image:url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIgogICB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgdmVyc2lvbj0iMS4xIgogICB2aWV3Qm94PSIwIDAgMSAxIgogICBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWluWU1pbiBtZWV0Ij4KICA8cGF0aAogICAgIGQ9Ik0gMC4wNDAzODA1OSwwLjYyNjc3NjcgMC4xNDY0NDY2MSwwLjUyMDcxMDY4IDAuNDI5Mjg5MzIsMC44MDM1NTMzOSAwLjMyMzIyMzMsMC45MDk2MTk0MSB6IE0gMC4yMTcxNTcyOSwwLjgwMzU1MzM5IDAuODUzNTUzMzksMC4xNjcxNTcyOSAwLjk1OTYxOTQxLDAuMjczMjIzMyAwLjMyMzIyMzMsMC45MDk2MTk0MSB6IgogICAgIGlkPSJyZWN0Mzc4MCIKICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lIiAvPgo8L3N2Zz4K");}
+.r-rwqe4o{width:48px;}
+.r-s09aw7{background-image:linear-gradient(to left, #735cff, rgb(109 28 169), rgb(96 104 191), #008847, #FFD139, #b95e04, #d33d3d);}
+.r-s0e3za{padding-left:80px;}
+.r-sa2ff0{min-height:100vh;}
+.r-sfbmgh{z-index:9999;}
+.r-sga3zk{height:64px;}
+.r-sgscqh{width:250px;}
+.r-t12b5v{border-top-right-radius:0px;}
+.r-t3lkjx{background-color:rgba(228,79,137,1.00);}
+.r-t9hbny{background-color:rgba(211,61,61,1.00);}
+.r-tceitz{left:16px;}
+.r-tni569{background-color:rgba(11,79,47,1.00);}
+.r-tskmnb{padding-top:8px;}
+.r-tsynxw{text-transform:uppercase;}
+.r-u529wo{transform:translateY(-2px);}
+.r-u6sd8q{background-repeat:no-repeat;}
+.r-u8s1d{position:absolute;}
+.r-u92y06{background-color:rgba(255,165,0,1.00);}
+.r-u9bbvc{;}
+.r-u9z937{bottom:80px;}
+.r-ubezar{font-size:16px;}
+.r-ud0q2t{letter-spacing:1px;}
+.r-ufs8t{background-clip:text;}
+.r-uibjmv{font-family:gitbook-code-font, Menlo, monospace;}
+.r-upfvwg{box-shadow:0px 0px 1px rgb(255 255 255 / 30%);}
+.r-uweo6c{bottom:136px;}
+.r-ux9zog{background-color:rgba(51,61,85,1.00);}
+.r-v2u3o6{right:4px;}
+.r-vkv6oe{min-width:40px;}
+.r-vlcob{color:rgba(24,28,31,1.00);}
+.r-vq47rg{color:rgba(211,61,61,1.00);}
+.r-vvn4in{background-position:center;}
+.r-w0va4e{margin-right:40px;}
+.r-w9n8ly{transition-delay:200ms;}
+.r-wc24c3{z-index:20;}
+.r-wech8c{max-width:1280px;}
+.r-wgabs5{border-bottom-width:2px;}
+.r-wk8lta{padding-top:0px;}
+.r-ws9h79{left:4px;}
+.r-wwqw7s{left:-1px;}
+.r-wy61xf{height:72px;}
+.r-x1dlf0{max-width:200px;}
+.r-x3cy2q{background-size:100% 100%;}
+.r-xb2eav{font-size:40px;}
+.r-xbwjba{border-bottom-color:rgba(52,109,219,1.00);}
+.r-xd6kpl{padding-bottom:8px;}
+.r-xifl00{left:-4px;}
+.r-xky0vn{background-color:rgba(104,60,17,1.00);}
+.r-xnn892{background-color:rgba(218,251,225,1.00);}
+.r-xx3c9p{animation-name:r-imtty0;}
+.r-xzortm{margin-right:-16px;}
+.r-y3rmyz{width:120px;}
+.r-ye2ihm{background-image:none;}
+.r-yh6aho{background-image:linear-gradient(270deg, #2b2e39 10%, #22272e, #2b2e39 90%);}
+.r-yj30ev{right:24px;}
+.r-yrgyi6{white-space:pre;}
+.r-ywxogp{color:rgba(115,92,255,1.00);}
+.r-z3s97b{border-right-color:rgba(43,46,57,1.00);}
+.r-z80fyv{height:20px;}
+.r-z9jf92{color:rgba(234,242,247,1.00);}
+.r-zchlnj{right:0px;}
+.r-zh076v{height:100vh;}
+.r-zits6j{right:8%;}
+.r-znv4k7{border-right-color:rgba(52,109,219,1.00);}
+.r-zo7nv5{-webkit-column-gap:16px;column-gap:16px;}
+.r-ztyd71{background-color:rgba(0,0,0,0.20);}
+@-webkit-keyframes r-1ak6360{0%{background-position-x:0%;}100%{background-position-x:100%;}}
+@-webkit-keyframes r-1hunrpy{0%{transform:translateY(100%);}100%{transform:translateY(0%);}}
+@-webkit-keyframes r-1rx4pb{0%{transform:translateX(-100%);}100%{transform:translateX(400%);}}
+@-webkit-keyframes r-9p3sdl{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+@-webkit-keyframes r-imtty0{0%{opacity:0;}100%{opacity:1;}}
+@-webkit-keyframes r-ndfo3d{0%{transform:translateY(0%);}100%{transform:translateY(100%);}}
+@-webkit-keyframes r-t2lo5v{0%{opacity:1;}100%{opacity:0;}}
+@keyframes r-1ak6360{0%{background-position-x:0%;}100%{background-position-x:100%;}}
+@keyframes r-1hunrpy{0%{transform:translateY(100%);}100%{transform:translateY(0%);}}
+@keyframes r-1rx4pb{0%{transform:translateX(-100%);}100%{transform:translateX(400%);}}
+@keyframes r-9p3sdl{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+@keyframes r-imtty0{0%{opacity:0;}100%{opacity:1;}}
+@keyframes r-ndfo3d{0%{transform:translateY(0%);}100%{transform:translateY(100%);}}
+@keyframes r-t2lo5v{0%{opacity:1;}100%{opacity:0;}}
+[stylesheet-group="10"]{}
+[data-rnwrdesktop-166pt5r]{width:max(220px, calc(100vw - max(300px, calc((100vw - 970px) / 2 - 0px)) - 750px - 110px - 300px - 0px));}
+[data-rnwrdesktop-18u37iz]{flex-direction:row;}
+[data-rnwrdesktop-1hy97zq-1q6rxnj-lv5dtd-9111t9]{padding-left:110px;padding-right:410px;padding-top:80px;}
+[data-rnwrdesktop-1jkjb]{margin-left:8px;}
+[data-rnwrdesktop-1kb76zh]{margin-right:8px;}
+[data-rnwrdesktop-1ph75f1]{height:80px;}
+[data-rnwrdesktop-1uwte3a]{padding-bottom:40px;}
+[data-rnwrdesktop-fnigne]{border-right-width:0px;}
+[data-rnwrdesktop-gg6oyi-1x35g6-37tt59-b88u0q]{font-family:gitbook-content-font,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:24px;font-weight:700;line-height:32px;}
+[data-rnwrdesktop-gg6oyi-adyw6z-135wba7-b88u0q]{font-family:gitbook-content-font,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:20px;font-weight:700;line-height:24px;}
+[data-rnwrdesktop-gg6oyi-xb2eav-1dn12g7-b88u0q]{font-family:gitbook-content-font,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:40px;font-weight:700;line-height:48px;}
+[data-rnwrdesktop-h3s6tt]{height:48px;}
+[data-rnwrdesktop-hidden]{display: none;}
+[data-rnwrdesktop-iyfy8q-1qhn6m8-11g3r6m-1h0z5md]{justify-content:flex-start;padding-left:16px;padding-right:24px;width:auto;}
+[data-rnwrdesktop-visible]{display: flex;}
+[stylesheet-group="11"]{}
+@media (max-width: 1024px) and (max-width: 9999999.494850524510111312253100114px) { [data-rnwr1024-eqz5dr] {flex-direction:column;} }
+@media (max-width: 1024px) and (max-width: 9999999.49485052454910510212011610048px) { [data-rnwr1024-1ifxtd0] {margin-bottom:16px;} }
+@media (max-width: 1280px) and (max-width: 9999999.4950564845104105100100101110px) { [data-rnwr1280-hidden] {display: none;} }
+@media (max-width: 1280px) and (max-width: 9999999.49505648454955555510299105px) { [data-rnwr1280-1777fci] {justify-content:center;} }
+@media (max-width: 1430px) and (max-width: 9999999.495251484511810511510598108101px) { [data-rnwr1430-visible] {display: flex;} }
+@media (max-width: 1490px) and (max-width: 9999999.495257484511810511510598108101px) { [data-rnwr1490-visible] {display: flex;} }
+@media (max-width: 1490px) and (max-width: 9999999.49525748454955555510299105px) { [data-rnwr1490-1777fci] {justify-content:center;} }
+[stylesheet-group="12"]{}
+@media (max-width: 700px) and (max-width: 9999999.5548484510111312253100114px) { [data-rnwr700-eqz5dr] {flex-direction:column;} }
+@media (max-width: 700px) and (max-width: 9999999.55484845103103541111211054511798101122971144549515311998975545491071021141155557px) { [data-rnwr700-gg6oyi-ubezar-135wba7-1kfrs79] {font-family:gitbook-content-font,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:16px;font-weight:600;line-height:24px;} }
+@media (max-width: 700px) and (max-width: 9999999.55484845103103541111211054549117105531011015645110119120971221084598565611748113px) { [data-rnwr700-gg6oyi-1ui5ee8-nwxazl-b88u0q] {font-family:gitbook-content-font,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:32px;font-weight:700;line-height:40px;} }
+@media (max-width: 700px) and (max-width: 9999999.5548484510310354111121105459710012111954122454951531199897554598565611748113px) { [data-rnwr700-gg6oyi-adyw6z-135wba7-b88u0q] {font-family:gitbook-content-font,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-size:20px;font-weight:700;line-height:24px;} }
+@media (max-width: 700px) and (max-width: 9999999.55484845104105100100101110px) { [data-rnwr700-hidden] {display: none;} }
+@media (max-width: 700px) and (max-width: 9999999.5548484510512110212156113451011175110797px) { [data-rnwr700-iyfy8q-eu3ka] {height:40px;width:auto;} }
+@media (max-width: 700px) and (max-width: 9999999.554848451051211021215611345103121521109751451054850511181044549119981045397504549104481225310910045px) { [data-rnwr700-iyfy8q-gy4na3-i023vh-1wbh5a2-1h0z5md-] {flex-shrink:1;justify-content:flex-start;padding-left:0px;padding-right:16px;width:auto;} }
+@media (max-width: 700px) and (max-width: 9999999.554848451151039751122107px) { [data-rnwr700-sga3zk] {height:64px;} }
+@media (max-width: 700px) and (max-width: 9999999.5548484511810511510598108101px) { [data-rnwr700-visible] {display: flex;} }
+@media (max-width: 700px) and (max-width: 9999999.55484845491195410154114106454955555510299105px) { [data-rnwr700-1w6e6rj-1777fci] {flex-wrap:wrap;justify-content:center;} }
+@media (max-width: 700px) and (max-width: 9999999.5548484549511085011652103px) { [data-rnwr700-13l2t4g] {border-right-width:1px;} }
+@media (max-width: 700px) and (max-width: 9999999.5548484557531061221021014549113104110541095645105485051118104px) { [data-rnwr700-95jzfe-1qhn6m8-i023vh] {padding-left:16px;padding-right:16px;padding-top:16px;} }
+@media (max-width: 970px) and (max-width: 9999999.5755484510111312253100114px) { [data-rnwr970-eqz5dr] {flex-direction:column;} }
+@media (max-width: 970px) and (max-width: 9999999.5755484549491191141051201194510711011848105104px) { [data-rnwr970-11wrixw-knv0ih] {margin-left:0px;margin-top:8px;} }
+@media (max-width: 970px) and (max-width: 9999999.5755484554491224954116455311111710848117px) { [data-rnwr970-61z16t-5oul0u] {margin-bottom:8px;margin-right:0px;} }
+[stylesheet-group="13"]{}
+@media (max-width: 700px) and (max-width: 9999999.554848454955555510299105px) { [data-rnwr700-1777fci] {justify-content:center;} }
+[stylesheet-group="20"]{}
+[data-rnwi-1rasi3h-]{color:rgba(136,153,168,1.00);}
+[data-rnwi-handle="codeblock-toolbar"] [data-rnwicodeblock-toolbar-hidden-]{display: none;}
+[data-rnwi-handle="nearest"] [data-rnwinearest-1nf4jbm-]{color:rgba(59,69,78,1.00);}
+body:not(.dragging) [data-rnwi--1ghhsy9-hover-focus]:hover, body:not(.dragging) [data-rnwi--1ghhsy9-hover-focus]:focus{color:rgba(52,109,219,1.00);}
+body:not(.dragging) [data-rnwi--1tgwseu--focus]:focus{border-bottom-color:rgba(52,109,219,1.00);border-left-color:rgba(52,109,219,1.00);border-right-color:rgba(52,109,219,1.00);border-top-color:rgba(52,109,219,1.00);}
+body:not(.dragging) [data-rnwi-190qawg-hover-focus]:hover, body:not(.dragging) [data-rnwi-190qawg-hover-focus]:focus{border-bottom-color:rgba(227,232,237,1.00);border-left-color:rgba(227,232,237,1.00);border-right-color:rgba(227,232,237,1.00);border-top-color:rgba(227,232,237,1.00);}
+body:not(.dragging) [data-rnwi-1b00too-hover]:hover{background-color:rgba(236,239,241,1.00);}
+body:not(.dragging) [data-rnwi-1vckr1u-29dh1f-1jsra8-hover-focus]:hover, body:not(.dragging) [data-rnwi-1vckr1u-29dh1f-1jsra8-hover-focus]:focus{background-color:rgba(245,247,249,1.00);background-image:linear-gradient(90deg, #eceff1, #e3e8ed);box-shadow:inset 0px 0px 0px 1px #e3e8ed;}
+body:not(.dragging) [data-rnwi-1vckr1u-hover-focus]:hover, body:not(.dragging) [data-rnwi-1vckr1u-hover-focus]:focus{background-color:rgba(245,247,249,1.00);}
+body:not(.dragging) [data-rnwi-5xr8s6-dse9kg-2fw26j-15n4387-focus-visible]:focus-visible{outline-color:#2662d7;outline-offset:0px;outline-style:auto;outline-width:2px;}
+body:not(.dragging) [data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible]:focus-visible{outline-color:#395794;outline-offset:0px;outline-style:auto;outline-width:2px;}
+body:not(.dragging) [data-rnwi-handle="BaseCard"]:hover [data-rnwibasecard--1ghhsy9-hover-focus], body:not(.dragging) [data-rnwi-handle="BaseCard"]:focus [data-rnwibasecard--1ghhsy9-hover-focus]{color:rgba(52,109,219,1.00);}
+body:not(.dragging) [data-rnwi-handle="BaseCard"]:hover [data-rnwibasecard--1ghhsy9-hover]{color:rgba(52,109,219,1.00);}
+body:not(.dragging) [data-rnwi-handle="button"]:hover [data-rnwibutton--1ghhsy9-hover-focus], body:not(.dragging) [data-rnwi-handle="button"]:focus [data-rnwibutton--1ghhsy9-hover-focus]{color:rgba(52,109,219,1.00);}
+body:not(.dragging) [data-rnwi-handle="button"]:hover [data-rnwibutton-1bnj018-hover-focus], body:not(.dragging) [data-rnwi-handle="button"]:focus [data-rnwibutton-1bnj018-hover-focus]{color:rgba(92,105,117,1.00);}
+body:not(.dragging) [data-rnwi-handle="codeblock-toolbar"]:hover [data-rnwicodeblock-toolbar-visible-hover-focus], body:not(.dragging) [data-rnwi-handle="codeblock-toolbar"]:focus [data-rnwicodeblock-toolbar-visible-hover-focus]{display: flex;}
+body:not(.dragging) [data-rnwi-handle="nearest"]:hover [data-rnwinearest--1ghhsy9-hover-focus], body:not(.dragging) [data-rnwi-handle="nearest"]:focus [data-rnwinearest--1ghhsy9-hover-focus]{color:rgba(52,109,219,1.00);}
+body:not(.dragging) [data-rnwi-handle="nearest"]:hover [data-rnwinearest--1ghhsy9-hover]{color:rgba(52,109,219,1.00);}
+body:not(.dragging) [data-rnwi-handle="nearest"]:hover [data-rnwinearest-1nf4jbm-hover-focus], body:not(.dragging) [data-rnwi-handle="nearest"]:focus [data-rnwinearest-1nf4jbm-hover-focus]{color:rgba(59,69,78,1.00);}
+body:not(.dragging) [data-rnwi-u529wo-aq1qub-c1zw6o-1khlhp8-1cut0bx-na6qhi--hover]:hover{box-shadow:0px 12px 13px rgba(0,0,0,0.02);transform:translateY(-2px);}</style>
+                <style>
+                    html,
+                    body {
+                        -webkit-font-smoothing: antialiased;
+                        text-rendering: optimizelegibility;
+                        width: 100%;
+                        min-height: 100vh;
+                        user-select: none;
+                        outline: none;
+                        position: relative;
+                    }
+                    /* Avoid Chrome to see Safari hack */
+                    @supports (-webkit-touch-callout: none) {
+                        html,
+                        body,
+                        .gitbook-root {
+                            /* The hack for Safari */
+                            min-height: -webkit-fill-available;
+                        }
+                    }
+                    .gitbook-root {
+                        display: flex;
+                        min-height: 100vh;
+                    }
+                </style>
+            
+        <script type="text/javascript" defer src="https://cdn.iframe.ly/embed.js" async></script>
+        <script
+            type="text/javascript"
+            defer
+            src="https://cdn.polyfill.io/v2/polyfill.js?features=Intl.~locale.en"
+            crossorigin="anonymous"
+        ></script>
+
+    </head>
+    <body class="theme-color-light theme-radius-rounded">
+        <script>
+                    (function () {
+                        var theme = null;
+
+                        try {
+                          var rawValue = localStorage.getItem("@gitbook/themeMode");
+                          if (rawValue !== null) {
+                            theme = JSON.parse(rawValue);
+                          }
+                        } catch (err) {
+                          // Make an attempt in case it's not a JSON value
+                          if (theme !== "light" && theme !== "dark") {
+                            theme = null;
+                          }
+                        }
+                        if (undefined && theme && theme !== "undefined") {
+                          document.body.classList.add("theme-overlay");
+                          document.body.classList.remove("theme-color-undefined");
+                          document.body.classList.add("theme-color-" + theme);
+                        }
+                      })();
+                </script>
+                   <div class="gitbook-root"><div class="css-175oi2r r-13awgt0 r-12vffkv"><div class="css-175oi2r r-13awgt0 r-12vffkv"><!--$--><header translate="no" data-rnwrdesktop-1ph75f1="true" data-rnwr700-sga3zk="true" class="r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-nzcix3 r-qklmqi r-gtdqiz r-ipm5af r-184en5c r-18u37iz r-1awozwy" style="background-color:rgba(255,255,255,1.00)"><div class="view_SggA- flex_jZskO publicContainer_11UZS smallHorizontal_kBCzR alignCenter_zl3iW withStickyHeader_HQiM-"><div aria-label="Show Table of Content" role="button" data-rnwrdesktop-hidden="true" data-rnwr700-visible="true" data-rnwi-1vckr1u-hover-focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="button" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy r-42olwf r-rs99b7 r-18u37iz r-18kxxzh r-1777fci r-1ny4l3l r-eu3ka r-1bnj018 r-1kb76zh r-18c69zk r-mk0yit r-1aockid" style="transition-duration:0.15s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" preserveAspectRatio="xMidYMid meet" data-rnwibutton-1bnj018-hover-focus="true" data-rnwi-handle="nearest" class="r-h7gdob" style="vertical-align:middle;width:18px;height:18px"><path d="M3 12h18M3 6h18M3 18h18"></path></svg></div><a href="documentation.html" aria-label="Documentation" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" data-rnwrdesktop-iyfy8q-1qhn6m8-11g3r6m-1h0z5md="true" data-rnwr700-iyfy8q-gy4na3-i023vh-1wbh5a2-1h0z5md-="true" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-18u37iz r-1awozwy" style="transition-duration:0.15s" data-testid="public.headerHomeLink"><div class="css-175oi2r r-6wscbn r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1h0z5md r-1awozwy"><div class="css-175oi2r"><div data-rnwrdesktop-visible="true" data-rnwr700-hidden="true" class="css-175oi2r"><div class="css-175oi2r r-18u37iz r-1awozwy r-1777fci r-z2wwpe r-14lw9ot r-1l94q7l r-88pszg" style="width:40px;height:40px;overflow-x:hidden;overflow-y:hidden"><div class="css-175oi2r r-1awozwy r-1777fci" style="width:40px;height:40px"><div dir="auto" class="css-1rynq56 r-1nf4jbm" style="font-size:28px">D</div></div></div></div><div data-rnwrdesktop-hidden="true" data-rnwr700-visible="true" class="css-175oi2r"><div class="css-175oi2r r-18u37iz r-1awozwy r-1777fci r-z2wwpe r-14lw9ot r-1l94q7l r-88pszg" style="width:24px;height:24px;overflow-x:hidden;overflow-y:hidden"><div class="css-175oi2r r-1awozwy r-1777fci" style="width:24px;height:24px"><div dir="auto" class="css-1rynq56 r-1nf4jbm" style="font-size:16.799999999999997px">D</div></div></div></div></div><div dir="auto" data-rnwrdesktop-gg6oyi-adyw6z-135wba7-b88u0q="true" data-rnwr700-gg6oyi-ubezar-135wba7-1kfrs79="true" class="css-1rynq56 r-1udh08x"><span data-rnwinearest-1nf4jbm-="true" data-rnwinearest--1ghhsy9-hover-focus="true" data-rnwi-handle="nearest" class="css-1qaijid r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a" style="color:rgba(59,69,78,1.00)">Documentation</span></div></div></a><div data-rnwr700-hidden="true" class="css-175oi2r r-18u37iz r-17s6mgv r-1awozwy r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1qhn6m8"></div><div data-rnwrdesktop-visible="true" data-rnwr700-hidden="true" class="css-175oi2r r-1jj8364 r-puj83k r-1pyaxff r-16vg0q1 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div aria-label="Search" data-rnwi-190qawg-hover-focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-42olwf r-kdyh1x r-rs99b7 r-eu3ka r-13qz1uu r-18u37iz r-1wtj0ep r-1awozwy r-1qhn6m8 r-1pyaxff" style="background-color:rgba(59,69,78,0.10);transition-duration:0.15s"><div class="css-175oi2r r-18u37iz r-1awozwy"><svg viewBox="0 0 24 24" fill="none" preserveAspectRatio="xMidYMid meet" class="r-1kb76zh" style="vertical-align:middle;width:16px;height:16px;color:rgba(59,69,78,1.00)"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 4a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM2 10.5a8.5 8.5 0 1117 0 8.5 8.5 0 01-17 0z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M15.093 15.093a1 1 0 011.414 0l5.2 5.2a1 1 0 01-1.414 1.414l-5.2-5.2a1 1 0 010-1.414z" fill="currentColor"></path></svg><div dir="auto" data-rnwinearest-1nf4jbm-hover-focus="true" data-rnwi-handle="nearest" class="css-1rynq56 r-gg6oyi r-1b43r93 r-16dba41 r-hbpseb" style="color:rgba(59,69,78,1.00)">Search</div></div><div class="css-175oi2r"><span class="base_UAIdb shortcut_2Blls xsmallHorizontal_j9kFq base_UAIdb groupTitle_xV-vG flex_jZskO row_PhhRi alignCenter_zl3iW main_Iciyi">⌃K</span></div></div></div><div data-rnwrdesktop-hidden="true" data-rnwr700-visible="true" class="css-175oi2r r-1jj8364 r-puj83k r-1pyaxff"><div aria-label="Search" role="button" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="button" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy r-42olwf r-rs99b7 r-18u37iz r-18kxxzh r-1777fci r-1ny4l3l r-z2wwpe r-mabqd8 r-1bnj018 r-mk0yit r-1yvhtrz" style="transition-duration:0.15s"><svg viewBox="0 0 24 24" fill="none" preserveAspectRatio="xMidYMid meet" data-rnwibutton--1ghhsy9-hover-focus="true" data-rnwi-handle="nearest" style="vertical-align:middle;width:16px;height:16px;color:rgba(59,69,78,1.00)"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 4a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM2 10.5a8.5 8.5 0 1117 0 8.5 8.5 0 01-17 0z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M15.093 15.093a1 1 0 011.414 0l5.2 5.2a1 1 0 01-1.414 1.414l-5.2-5.2a1 1 0 010-1.414z" fill="currentColor"></path></svg></div></div></div></header><div data-rnwrdesktop-hidden="true" data-rnwr700-visible="true" class="css-175oi2r"></div><div data-rnwrdesktop-18u37iz="true" data-rnwr700-eqz5dr="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-14lw9ot"><div class="view_SggA- flex_jZskO publicContainer_11UZS"><div data-rnwrdesktop-visible="true" data-rnwr1430-visible="true" data-rnwr700-hidden="true" class="css-175oi2r r-k200y r-14lw9ot r-18ayb63 r-13l2t4g r-12dqhl9 r-1rnoaur r-gtdqiz r-1fo40xd r-18u37iz r-17s6mgv" data-testid="page.desktopTableOfContents"><nav translate="no" aria-label="Table of contents" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ipicw7 r-eqz5dr"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-puj83k"><div class="css-175oi2r r-150rngu r-eqz5dr r-11yh6sk r-1rnoaur r-1sncvnh r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r r-1yzf0co r-1sc18lr"><!--$--><div class="css-175oi2r"><a href="documentation.html" data-rnwrdesktop-fnigne="true" data-rnwr700-13l2t4g="true" data-rnwi-1b00too-hover="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy r-42olwf r-z2wwpe r-rs99b7 r-18u37iz r-1ceczpf r-1pn2ns4 r-1kb76zh r-15zivkp" style="transition-duration:0.15s"><div dir="auto" class="css-1rynq56 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-oyd9sg r-gg6oyi r-1b43r93 r-16dba41 r-hbpseb r-1bnj018">Getting started</div><div tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-18u37iz r-1awozwy" style="transition-duration:0.15s"><svg viewBox="0 0 16 16" fill="none" preserveAspectRatio="xMidYMid meet" class="r-1bnj018" style="vertical-align:middle;width:18px;height:18px"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.576 3.576a.6.6 0 01.848 0l4 4a.6.6 0 010 .848l-4 4a.6.6 0 01-.848-.848L9.15 8 5.576 4.424a.6.6 0 010-.848z" fill="currentColor"></path></svg></div></a></div><!--/$--><!--$--><div class="css-175oi2r"><a href="documentation.guides.html" data-rnwrdesktop-fnigne="true" data-rnwr700-13l2t4g="true" data-rnwi-1b00too-hover="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy r-42olwf r-z2wwpe r-rs99b7 r-18u37iz r-1ceczpf r-1pn2ns4 r-1kb76zh" style="transition-duration:0.15s"><div dir="auto" class="css-1rynq56 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-oyd9sg r-gg6oyi r-1b43r93 r-16dba41 r-hbpseb r-1bnj018">Guides</div><div tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-18u37iz r-1awozwy" style="transition-duration:0.15s"><svg viewBox="0 0 16 16" fill="none" preserveAspectRatio="xMidYMid meet" class="r-1bnj018" style="vertical-align:middle;width:18px;height:18px"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.424 5.576a.6.6 0 010 .848l-4 4a.6.6 0 01-.848 0l-4-4a.6.6 0 01.848-.848L8 9.15l3.576-3.575a.6.6 0 01.848 0z" fill="currentColor"></path></svg></div></a><div class="css-175oi2r r-bnwqim r-1jkjb r-14gqq1x r-5oul0u"><div class="css-175oi2r r-1jkjb"><!--$--><div class="css-175oi2r"><a href="documentation.guides.chasing-a-player.html" data-rnwrdesktop-fnigne="true" data-rnwr700-13l2t4g="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy r-42olwf r-z2wwpe r-rs99b7 r-18u37iz r-1ceczpf r-1pn2ns4 r-1kb76zh r-15zivkp" style="background-color:rgba(133,163,224,0.10);transition-duration:0.15s"><div dir="auto" class="css-1rynq56 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-oyd9sg r-gg6oyi r-1b43r93 r-hbpseb r-1ghhsy9 r-b88u0q">Chasing a Player</div></a></div><!--/$--></div><div class="css-175oi2r r-1jkjb"><!--$--><div class="css-175oi2r"><a href="documentation.guides.creating-custom-context-and-nodes.html" data-rnwrdesktop-fnigne="true" data-rnwr700-13l2t4g="true" data-rnwi-1b00too-hover="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy r-42olwf r-z2wwpe r-rs99b7 r-18u37iz r-1ceczpf r-1pn2ns4 r-1kb76zh" style="transition-duration:0.15s"><div dir="auto" class="css-1rynq56 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-oyd9sg r-gg6oyi r-1b43r93 r-16dba41 r-hbpseb r-1rasi3h">Creating custom Context and Nodes</div></a></div><!--/$--></div><div class="css-175oi2r r-11vxtcu r-1p0dtai r-1d2f490 r-u8s1d r-ipm5af r-92ng3h"></div></div></div><!--/$--></div></div></div><div class="css-175oi2r r-1p0dtai r-u8s1d r-13qz1uu r-184en5c"><div class="css-175oi2r r-10ptun7" style="background-image:linear-gradient(3.141592653589793rad,#ffffff00,#ffffff)"></div><div class="css-175oi2r r-ymttw5 r-1l7z4oj r-14lw9ot"><a href="https://www.gitbook.com/?utm_source=content&amp;utm_medium=trademark&amp;utm_campaign=wrNt0ljEuQ5gsxIfJNfv" data-rnwi--1ghhsy9-hover-focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-15n4387-focus-visible="true" data-rnwi-handle="nearest" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-18u37iz r-1awozwy r-1b00too r-1xfd6ze r-5njf8e r-ymttw5" style="transition-duration:0.15s"><svg viewBox="0 0 1000 1000" fill="none" preserveAspectRatio="xMidYMid meet" data-rnwi--1ghhsy9-hover-focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-15n4387-focus-visible="true" data-rnwi-handle="nearest" class="r-1rasi3h" style="vertical-align:middle;width:40px;height:40px"><path fill-rule="evenodd" clip-rule="evenodd" d="M562.168 159.724l325.95 162.727c15.062 7.519 15.298 28.898.404 36.746L465.19 582.283a82.875 82.875 0 01-75.639.83L123.74 450.409c-32.376-12.972-68.568 10.748-68.568 46.474 0 28.728 16.256 54.991 41.99 67.839l266.48 133.036c16.267-16.537 38.918-26.795 63.967-26.795 24.334 0 46.404 9.68 62.558 25.394L822.075 521.45a89.893 89.893 0 01-1.385-15.755c0-49.44 40.14-89.519 89.655-89.519S1000 456.255 1000 505.695c0 49.439-40.14 89.518-89.655 89.518-24.21 0-46.178-9.581-62.31-25.153L515.94 745.065a90.036 90.036 0 011.324 15.417c0 49.439-40.14 89.518-89.655 89.518s-89.655-40.079-89.655-89.518c0-4.572.343-9.063 1.006-13.451L68.622 612.068C26.566 591.072 0 548.153 0 501.205v-26.15c0-35.755 19.82-68.574 51.49-85.261l435.039-229.24a82.87 82.87 0 0175.639-.83zM427.609 794.912c19.044 0 34.483-15.415 34.483-34.43 0-19.016-15.439-34.431-34.483-34.431-19.044 0-34.482 15.415-34.482 34.431 0 19.015 15.438 34.43 34.482 34.43zm517.219-289.217c0 19.015-15.438 34.43-34.483 34.43-19.044 0-34.482-15.415-34.482-34.43s15.438-34.43 34.482-34.43c19.045 0 34.483 15.415 34.483 34.43z" fill="currentColor"></path></svg><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1qhn6m8"><div dir="auto" data-rnwinearest--1ghhsy9-hover-focus="true" data-rnwi-handle="nearest" class="css-1rynq56 r-gg6oyi r-1b43r93 r-16dba41 r-hbpseb r-1rasi3h">Powered By <span class="css-1qaijid r-b88u0q">GitBook</span></div></div></a></div></div></nav></div><div class="css-175oi2r r-13awgt0" style="background-color:rgba(255,255,255,1.00)"><!--$--><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz"><div class="view_SggA- flex_jZskO pageWrapper_ca2kA noneVertical_jpmaI autoHorizontal_dqmM- flex1_aMpAE column_C3yiR"><main translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-eqz5dr"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1280-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO relative_F68jE column_C3yiR xlargeTop_38ZbM largeBottom_v1r32"><div class="css-175oi2r r-18u37iz"><div data-rnwrdesktop-h3s6tt="true" data-rnwr700-iyfy8q-eu3ka="true" class="css-175oi2r r-18u37iz r-17s6mgv r-1awozwy"></div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><h1 data-rnwrdesktop-gg6oyi-xb2eav-1dn12g7-b88u0q="true" data-rnwr700-gg6oyi-1ui5ee8-nwxazl-b88u0q="true" class="r-1xnzce8 r-crgep1 r-1nf4jbm" data-testid="page.title">Chasing a Player</h1></div><div data-rnwrdesktop-hidden="true" data-rnwr1490-visible="true" data-rnwr700-visible="true" class="css-175oi2r r-18u37iz r-1awozwy"><div aria-label="Page actions" role="button" data-rnwi-1vckr1u-hover-focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="button" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy r-42olwf r-rs99b7 r-18u37iz r-18kxxzh r-1777fci r-1ny4l3l r-eu3ka r-1bnj018 r-18c69zk r-mk0yit r-1aockid" style="transition-duration:0.15s" data-testid="pageCompactToolbar.paletteButton"><svg viewBox="0 0 16 16" fill="none" preserveAspectRatio="xMidYMid meet" data-rnwibutton-1bnj018-hover-focus="true" data-rnwi-handle="nearest" class="r-h7gdob" style="vertical-align:middle;width:18px;height:18px"><path d="M8 2.4a1.1 1.1 0 100 2.2 1.1 1.1 0 000-2.2zM8 6.9a1.1 1.1 0 100 2.2 1.1 1.1 0 000-2.2zM8 11.4a1.1 1.1 0 100 2.2 1.1 1.1 0 000-2.2z" fill="currentColor"></path></svg></div></div></div><div class="css-175oi2r r-1wzrnnt"></div></div></div></div></div><div data-rnwrdesktop-1uwte3a="true" class="css-175oi2r"><div class="css-175oi2r r-bnwqim"><div data-testid="page.contentEditor" data-slate-editor="true" data-document-key="14371e4d049b4b538735c5f246072c92" data-key="14371e4d049b4b538735c5f246072c92" autoCorrect="on" spellcheck="true" style="outline:none;white-space:pre-wrap;word-wrap:break-word"><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="dde91bd156784e4d95ff82427db3718c" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii smallTop_crzBC smallBottom_BmSGf"><div data-block-content="dde91bd156784e4d95ff82427db3718c" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="ec298fb147e546e99de8831e9b8d1d6a"><span data-offset-key="ec298fb147e546e99de8831e9b8d1d6a:0">This guide will create an agent behavior that chases a player. If there isn&#x27;t a player in range the agent will instead wander around aimlessly.</span></span></div></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="ac0a513b34ef404791e4b36636ff5def" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii largeTop_ejwCW smallBottom_BmSGf"><div data-block-content="ac0a513b34ef404791e4b36636ff5def" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><h2 translate="no" class="r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-18u37iz r-obd0qt" id="creating-the-wandering-behavior"><div dir="auto" data-rnwrdesktop-gg6oyi-1x35g6-37tt59-b88u0q="true" data-rnwr700-gg6oyi-adyw6z-135wba7-b88u0q="true" class="css-1rynq56 r-1nf4jbm r-fdjqy7 r-1xnzce8" id="text-creating-the-wandering-behavior"><span data-key="79d572e16aaa4838bd708a48c6e6092b"><span data-offset-key="79d572e16aaa4838bd708a48c6e6092b:0">Creating the wandering behavior</span></span><a href="#creating-the-wandering-behavior.html" aria-label="Direct link to heading" data-rnwi-1rasi3h-="true" data-rnwi--1ghhsy9-hover-focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" class="css-1qaijid r-1awozwy r-xoduu5 r-1jkjb r-orgf3d r-1loqt21"><svg viewBox="0 0 16 16" fill="none" preserveAspectRatio="xMidYMid meet" role="presentation" style="vertical-align:middle;width:20px;height:20px"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.42 1.925a.6.6 0 01.405.745L7.167 4.9h3.998l.76-2.57a.6.6 0 111.15.34l-.659 2.23H14a.6.6 0 010 1.2h-1.938l-1.123 3.8H13a.6.6 0 010 1.2h-2.415l-.76 2.57a.6.6 0 01-1.15-.34l.658-2.23H5.335l-.76 2.57a.6.6 0 11-1.15-.34l.658-2.23H2a.6.6 0 110-1.2h2.438l1.123-3.8H3a.6.6 0 010-1.2h2.915l.76-2.57a.6.6 0 01.745-.405zM6.812 6.1L5.689 9.9h3.999l1.123-3.8H6.812z" fill="currentColor"></path></svg></a></div></h2></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="fd4aec7bd33b4df7b13694872f5d61bd" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii mediumTop_QDiZG mediumBottom_jdYUb"><div data-block-content="fd4aec7bd33b4df7b13694872f5d61bd" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><ol data-key="fd4aec7bd33b4df7b13694872f5d61bd" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="c9f2e92751f843bc90d1a642d0b75b7c" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii noneTop_aMiQj xsmallBottom_NnBZ6"><div data-block-content="c9f2e92751f843bc90d1a642d0b75b7c" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">1.</span><div class="css-175oi2r r-13awgt0"><div data-key="initial_YiHF1Rb5oiVnG0ZHaxr4_block" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="initial_YiHF1Rb5oiVnG0ZHaxr4_text"><span data-offset-key="initial_YiHF1Rb5oiVnG0ZHaxr4_text:0">Create a new tree and rename it &quot;Wander&quot;. </span></span></div></div></div></div></li></div></div><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="5e8e93eec7714d81aa328c2278302936" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii xsmallTop_ABm9D xsmallBottom_NnBZ6"><div data-block-content="5e8e93eec7714d81aa328c2278302936" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">2.</span><div class="css-175oi2r r-13awgt0"><div data-key="b5e73b0bdc1f46b0b0bff18903022dde" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="10cd037c18b54092b747bb02eedcc08e"><span data-offset-key="10cd037c18b54092b747bb02eedcc08e:0">Open the new tree and add a new &quot;Sequence&quot; node.</span></span></div></div></div></div></li></div></div><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="a7a28c8ca63a4c75aa98bc3dd3631ddb" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii xsmallTop_ABm9D xsmallBottom_NnBZ6"><div data-block-content="a7a28c8ca63a4c75aa98bc3dd3631ddb" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">3.</span><div class="css-175oi2r r-13awgt0"><div data-key="ab4b01d3bb794c48a9ebf77376304ae6" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="be6240a3bd6142d887acf6753d40b559"><span data-offset-key="be6240a3bd6142d887acf6753d40b559:0">Connect the &quot;Root&quot; node to the &quot;Sequence&quot; node.</span></span></div></div></div></div></li></div></div><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="bfc758f760eb46059c3fb8f98f4f4ae6" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii xsmallTop_ABm9D xsmallBottom_NnBZ6"><div data-block-content="bfc758f760eb46059c3fb8f98f4f4ae6" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">4.</span><div class="css-175oi2r r-13awgt0"><div data-key="e95bcfdaea1645f28de6c84a8f3af4b4" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="2fe7c41a3c0645e594a8a30277c8504e"><span data-offset-key="2fe7c41a3c0645e594a8a30277c8504e:0">Create a &quot;Wander&quot; and connect it to the &quot;Sequence&quot; node. The radius parameter controls how far the agent will wander.</span></span></div></div></div></div></li></div></div><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="7aff898cfe00426cbf087e6f9a32b54e" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii xsmallTop_ABm9D noneBottom_ovUyz"><div data-block-content="7aff898cfe00426cbf087e6f9a32b54e" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">5.</span><div class="css-175oi2r r-13awgt0"><div data-key="125065977f7e4102983580241e187ce9" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="7a5a3add12c74b79ba8c23626125c03a"><span data-offset-key="7a5a3add12c74b79ba8c23626125c03a:0">Create a new &quot;Wait&quot; node and connect it to the &quot;Sequence&quot; node as well. The duration parameter controls how long the agent should wait.</span></span></div></div></div></div></li></div></div></ol></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="146ada8ac4624db9a9fe58d26487fabc" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii mediumTop_QDiZG mediumBottom_jdYUb"><div data-block-content="146ada8ac4624db9a9fe58d26487fabc" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div data-rnwr700-1w6e6rj-1777fci="true" class="css-175oi2r r-18u37iz r-1777fci r-zo7nv5 r-3mtglp"><div data-slate-void="true" data-key="a17d2a5efa144beca2fc2a25178fca0c"><div><div class="css-175oi2r r-1awozwy r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r r-z2wwpe r-bnwqim" style="max-width:100%;max-height:100%"><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy" style="transition-duration:0.15s"><img alt="" src="https://3349186757-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwrNt0ljEuQ5gsxIfJNfv%2Fuploads%2FneGHXSmBNdJgdFhIFxP2%2Fimage.png?alt=media&amp;token=9e51d23d-de63-42a1-b588-46dc8c1286ba" width="100%" height="auto" decoding="async" class="r-z2wwpe r-dnmrzs"/></div></div></div><div class="css-175oi2r r-bnwqim r-q4m81j r-tskmnb"><div data-key="0eccb7e1c3fa4b1fa325ab6b3bedfd3a" data-fragment="true" data-slate-editor="true" data-document-key="14371e4d049b4b538735c5f246072c92"><div data-key="9db75e9508a94c24a189cf741fe9b2dd" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-q4m81j r-1rasi3h r-gg6oyi r-1enofrn r-16dba41 r-14yzgew r-1xnzce8"><span data-key="8b9a778462164277ac2d9bafeeb17165"><span data-offset-key="8b9a778462164277ac2d9bafeeb17165:0">A wander behavior.</span></span></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="e6d42e9d02df4c6896650e215a89940d" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii largeTop_ejwCW smallBottom_BmSGf"><div data-block-content="e6d42e9d02df4c6896650e215a89940d" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><h3 translate="no" class="r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-18u37iz r-obd0qt" id="setting-up-the-scene"><div dir="auto" data-rnwrdesktop-gg6oyi-adyw6z-135wba7-b88u0q="true" data-rnwr700-gg6oyi-ubezar-135wba7-1kfrs79="true" class="css-1rynq56 r-1nf4jbm r-fdjqy7 r-1xnzce8" id="text-setting-up-the-scene"><span data-key="565ca7d4f4c744a99200c17dacb30f29"><span data-offset-key="565ca7d4f4c744a99200c17dacb30f29:0">Setting up the scene</span></span><a href="#setting-up-the-scene.html" aria-label="Direct link to heading" data-rnwi-1rasi3h-="true" data-rnwi--1ghhsy9-hover-focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" class="css-1qaijid r-1awozwy r-xoduu5 r-1jkjb r-orgf3d r-1loqt21"><svg viewBox="0 0 16 16" fill="none" preserveAspectRatio="xMidYMid meet" role="presentation" style="vertical-align:middle;width:18px;height:18px"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.42 1.925a.6.6 0 01.405.745L7.167 4.9h3.998l.76-2.57a.6.6 0 111.15.34l-.659 2.23H14a.6.6 0 010 1.2h-1.938l-1.123 3.8H13a.6.6 0 010 1.2h-2.415l-.76 2.57a.6.6 0 01-1.15-.34l.658-2.23H5.335l-.76 2.57a.6.6 0 11-1.15-.34l.658-2.23H2a.6.6 0 110-1.2h2.438l1.123-3.8H3a.6.6 0 010-1.2h2.915l.76-2.57a.6.6 0 01.745-.405zM6.812 6.1L5.689 9.9h3.999l1.123-3.8H6.812z" fill="currentColor"></path></svg></a></div></h3></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="9dcb3c4872b94579a6e7a4b214bf51f5" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii mediumTop_QDiZG mediumBottom_jdYUb"><div data-block-content="9dcb3c4872b94579a6e7a4b214bf51f5" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><ol data-key="9dcb3c4872b94579a6e7a4b214bf51f5" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="62adeccf9beb42bb816e94b3b8e67cfa" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii noneTop_aMiQj xsmallBottom_NnBZ6"><div data-block-content="62adeccf9beb42bb816e94b3b8e67cfa" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">1.</span><div class="css-175oi2r r-13awgt0"><div data-key="6bb1139089674b618fdfedcc4e642c08" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="9f50e4e8dbcd401c9f2607223aa3161f"><span data-offset-key="9f50e4e8dbcd401c9f2607223aa3161f:0">Open the scene &quot;Wander&quot; in &quot;Examples/Tutorials&quot;. This scene has a baked navmesh and a simple GameObject with a NavMeshAgent component. </span></span></div></div></div></div></li></div></div><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="9b9de6b5684846b49fdc1cf210814e65" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii xsmallTop_ABm9D noneBottom_ovUyz"><div data-block-content="9b9de6b5684846b49fdc1cf210814e65" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">2.</span><div class="css-175oi2r r-13awgt0"><div data-key="7d9518aa0d1b4ee9ad14e750fbc242d5" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="f213716f154d4ff584af2e9a70ef9d47"><span data-offset-key="f213716f154d4ff584af2e9a70ef9d47:0">Add a BadgerAgent component to the GameObject and in the &quot;Asset&quot; field select the newly created &quot;Wander&quot; tree.</span></span></div></div></div></div></li></div></div></ol></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="f515515879614e80986e5a18fac46dd1" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii mediumTop_QDiZG mediumBottom_jdYUb"><div data-block-content="f515515879614e80986e5a18fac46dd1" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div data-rnwr700-1w6e6rj-1777fci="true" class="css-175oi2r r-18u37iz r-1777fci r-zo7nv5 r-3mtglp"><div data-slate-void="true" data-key="c758a2d44bc04eeda967422778d2d7c6"><div><div class="css-175oi2r r-1awozwy r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r r-z2wwpe r-bnwqim" style="max-width:100%;max-height:100%"><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy" style="transition-duration:0.15s"><img alt="" loading="lazy" src="https://3349186757-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwrNt0ljEuQ5gsxIfJNfv%2Fuploads%2FGqVv9TPevRBsPX9aZRc3%2Fimage.png?alt=media&amp;token=be1f01e3-2951-491d-a2a4-3d6e4abca763" width="100%" height="auto" decoding="async" class="r-z2wwpe r-dnmrzs"/></div></div></div><div class="css-175oi2r r-bnwqim r-q4m81j r-tskmnb"><div data-key="269def118c4f43eeba84a72433d24e67" data-fragment="true" data-slate-editor="true" data-document-key="14371e4d049b4b538735c5f246072c92"><div data-key="439bbb7e39744c40a1c99274753d88ea" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-q4m81j r-1rasi3h r-gg6oyi r-1enofrn r-16dba41 r-14yzgew r-1xnzce8"><span data-key="33cc1f1ac3f3417fb8f1f8a5359a34fc"><span data-offset-key="33cc1f1ac3f3417fb8f1f8a5359a34fc:0">Agent with a Badger component.</span></span></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="a1b136348f21461ab8458359c15d9710" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii mediumTop_QDiZG mediumBottom_jdYUb"><div data-block-content="a1b136348f21461ab8458359c15d9710" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><ol data-key="a1b136348f21461ab8458359c15d9710" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="66881c2b44e14a7a8bc3a6a9a67b7fad" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii noneTop_aMiQj noneBottom_ovUyz"><div data-block-content="66881c2b44e14a7a8bc3a6a9a67b7fad" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">3.</span><div class="css-175oi2r r-13awgt0"><div data-key="3c3d9df7e76143b3bfc27bd288ee8533" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="bc6b7c824f2b415ba30538dc14f13b95"><span data-offset-key="bc6b7c824f2b415ba30538dc14f13b95:0">Press play! The agent will now wander around the scene.</span></span></div></div></div></div></li></div></div></ol></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="a8ac4ff0ad98448fb6dca3b46d29440a" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii largeTop_ejwCW smallBottom_BmSGf"><div data-block-content="a8ac4ff0ad98448fb6dca3b46d29440a" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><h2 translate="no" class="r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-18u37iz r-obd0qt" id="creating-the-chasing-behavior"><div dir="auto" data-rnwrdesktop-gg6oyi-1x35g6-37tt59-b88u0q="true" data-rnwr700-gg6oyi-adyw6z-135wba7-b88u0q="true" class="css-1rynq56 r-1nf4jbm r-fdjqy7 r-1xnzce8" id="text-creating-the-chasing-behavior"><span data-key="da23e254cc644590a63156dff37f22f2"><span data-offset-key="da23e254cc644590a63156dff37f22f2:0">Creating the chasing behavior</span></span><a href="#creating-the-chasing-behavior.html" aria-label="Direct link to heading" data-rnwi-1rasi3h-="true" data-rnwi--1ghhsy9-hover-focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" class="css-1qaijid r-1awozwy r-xoduu5 r-1jkjb r-orgf3d r-1loqt21"><svg viewBox="0 0 16 16" fill="none" preserveAspectRatio="xMidYMid meet" role="presentation" style="vertical-align:middle;width:20px;height:20px"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.42 1.925a.6.6 0 01.405.745L7.167 4.9h3.998l.76-2.57a.6.6 0 111.15.34l-.659 2.23H14a.6.6 0 010 1.2h-1.938l-1.123 3.8H13a.6.6 0 010 1.2h-2.415l-.76 2.57a.6.6 0 01-1.15-.34l.658-2.23H5.335l-.76 2.57a.6.6 0 11-1.15-.34l.658-2.23H2a.6.6 0 110-1.2h2.438l1.123-3.8H3a.6.6 0 010-1.2h2.915l.76-2.57a.6.6 0 01.745-.405zM6.812 6.1L5.689 9.9h3.999l1.123-3.8H6.812z" fill="currentColor"></path></svg></a></div></h2></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="53b4e01fe7114b0cb0e6988fad2db41d" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii mediumTop_QDiZG mediumBottom_jdYUb"><div data-block-content="53b4e01fe7114b0cb0e6988fad2db41d" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><ol data-key="53b4e01fe7114b0cb0e6988fad2db41d" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="7f7143ef508c419fa371290ac4e97f3b" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii noneTop_aMiQj xsmallBottom_NnBZ6"><div data-block-content="7f7143ef508c419fa371290ac4e97f3b" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">1.</span><div class="css-175oi2r r-13awgt0"><div data-key="11abe0e198bf4397926e80e3aac46e4e" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="9918b96f0ca147a1aefc639f56de3dac"><span data-offset-key="9918b96f0ca147a1aefc639f56de3dac:0">Create a new tree and name it &quot;Chase&quot;.</span></span></div></div></div></div></li></div></div><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="326f166235c04541815acf299354b6b0" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii xsmallTop_ABm9D noneBottom_ovUyz"><div data-block-content="326f166235c04541815acf299354b6b0" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">2.</span><div class="css-175oi2r r-13awgt0"><div data-key="84ade2b9997346e1befe6be81013fc5a" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="12c4e191cd6e43998eb750d271282144"><span data-offset-key="12c4e191cd6e43998eb750d271282144:0">Create a new blackboard and add a new GameObject key called &quot;Target&quot;.</span></span></div></div></div></div></li></div></div></ol></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="0749ac7349784c19ac045d4eaa82366b" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii mediumTop_QDiZG mediumBottom_jdYUb"><div data-block-content="0749ac7349784c19ac045d4eaa82366b" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div data-rnwr700-1w6e6rj-1777fci="true" class="css-175oi2r r-18u37iz r-1777fci r-zo7nv5 r-3mtglp"><div data-slate-void="true" data-key="aa980d4e982c4164b95924ca90b618ca"><div><div class="css-175oi2r r-1awozwy r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r r-z2wwpe r-bnwqim" style="max-width:100%;max-height:100%"><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy" style="transition-duration:0.15s"><img alt="" loading="lazy" src="https://3349186757-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwrNt0ljEuQ5gsxIfJNfv%2Fuploads%2FYJRhZBxJyAa6bcSZg01P%2Fimage.png?alt=media&amp;token=68e24c45-57ae-42bd-bad4-deb6413b4afc" width="100%" height="auto" decoding="async" class="r-z2wwpe r-dnmrzs"/></div></div></div><div class="css-175oi2r r-bnwqim r-q4m81j r-tskmnb"><div data-key="eb609fd87337440cbccb5c6cef86ae39" data-fragment="true" data-slate-editor="true" data-document-key="14371e4d049b4b538735c5f246072c92"><div data-key="0c9c35ab2f39438da4cbf4b01d95db92" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-q4m81j r-1rasi3h r-gg6oyi r-1enofrn r-16dba41 r-14yzgew r-1xnzce8"><span data-key="6e49df7a50a74616ad4bc966e041a6d1"><span data-offset-key="6e49df7a50a74616ad4bc966e041a6d1:0">Chase blackboard.</span></span></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="3685c9ff27f14dc5906ba878a41ed724" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii mediumTop_QDiZG mediumBottom_jdYUb"><div data-block-content="3685c9ff27f14dc5906ba878a41ed724" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><ol data-key="3685c9ff27f14dc5906ba878a41ed724" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="79f5c092e4be42378a45eca5ac08e60e" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii noneTop_aMiQj noneBottom_ovUyz"><div data-block-content="79f5c092e4be42378a45eca5ac08e60e" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">3.</span><div class="css-175oi2r r-13awgt0"><div data-key="adfed6780f3244eda605f1b0e777bf8c" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="a9850fae4adc49c1b2b9c0c5980ebcfa"><span data-offset-key="a9850fae4adc49c1b2b9c0c5980ebcfa:0">Assign the new blackboard to the &quot;Chase&quot; tree. This enables us to add &quot;Target&quot; as a node condition.</span></span></div></div></div></div></li></div></div></ol></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="bd7d298b3989460caa9d31c127baf91a" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii mediumTop_QDiZG mediumBottom_jdYUb"><div data-block-content="bd7d298b3989460caa9d31c127baf91a" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div data-rnwr700-1w6e6rj-1777fci="true" class="css-175oi2r r-18u37iz r-1777fci r-zo7nv5 r-3mtglp"><div data-slate-void="true" data-key="1774061a9f774bed8bca5d33555e46e5"><div><div class="css-175oi2r r-1awozwy r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r r-z2wwpe r-bnwqim" style="max-width:100%;max-height:100%"><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy" style="transition-duration:0.15s"><img alt="" loading="lazy" src="https://3349186757-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwrNt0ljEuQ5gsxIfJNfv%2Fuploads%2FTCYsR2feYJnxhFqwGKVJ%2Fimage.png?alt=media&amp;token=2c84a003-b02c-4eb5-8d14-92c94ecf7d75" width="100%" height="auto" decoding="async" class="r-z2wwpe r-dnmrzs"/></div></div></div><div class="css-175oi2r r-bnwqim r-q4m81j r-tskmnb"><div data-key="878e6ee356674243ae9332841a0a6241" data-fragment="true" data-slate-editor="true" data-document-key="14371e4d049b4b538735c5f246072c92"><div data-key="7c6cee9203db45a3b752fdc4028e313c" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-q4m81j r-1rasi3h r-gg6oyi r-1enofrn r-16dba41 r-14yzgew r-1xnzce8"><span data-key="7146dcc6539b44a1a1d5b8c1c8b6c015"><span data-offset-key="7146dcc6539b44a1a1d5b8c1c8b6c015:0">Assign a blackboard.</span></span></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="361b1d32b0a84aeca6747f6826c68e03" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii mediumTop_QDiZG mediumBottom_jdYUb"><div data-block-content="361b1d32b0a84aeca6747f6826c68e03" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><ol data-key="361b1d32b0a84aeca6747f6826c68e03" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="6a46991925e9402b9cbdd8e76096f7d0" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii noneTop_aMiQj xsmallBottom_NnBZ6"><div data-block-content="6a46991925e9402b9cbdd8e76096f7d0" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">4.</span><div class="css-175oi2r r-13awgt0"><div data-key="90b30fee1d9241abb27e7f46c412534e" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="3bcf761c606c4d22863764044ab3cfdc"><span data-offset-key="3bcf761c606c4d22863764044ab3cfdc:0">Open the &quot;Chase&quot; tree and add a &quot;MoveToObject&quot; node. The threshold parameter determines how far the target GameObject has to move before we re-calculate a new path. In the GameObject field, we can now select the &quot;Target&quot; key we made previously. 
+
+Add the &quot;Target&quot; key as a condition and set it to &quot;NotNull&quot;. This node will only be explored if our agent has a &quot;Target&quot; in its blackboard.
+
+
+</span></span></div></div><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="c8ad4e76588445fbb56732f5b11549fb" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii noneTop_aMiQj noneBottom_ovUyz"><div data-block-content="c8ad4e76588445fbb56732f5b11549fb" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div data-rnwr700-1w6e6rj-1777fci="true" class="css-175oi2r r-18u37iz r-1777fci r-zo7nv5 r-3mtglp"><div data-slate-void="true" data-key="6beeb0bce93f4ccd98a7b0f019833907"><div><div class="css-175oi2r r-1awozwy r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r r-z2wwpe r-bnwqim" style="max-width:100%;max-height:100%"><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy" style="transition-duration:0.15s"><img alt="" loading="lazy" src="https://3349186757-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwrNt0ljEuQ5gsxIfJNfv%2Fuploads%2FWEN3wCbC8yhASjvhGziV%2Fimage.png?alt=media&amp;token=bf98a7ca-2e81-441d-af33-ca99af870733" width="100%" height="auto" decoding="async" class="r-z2wwpe r-dnmrzs"/></div></div></div><div class="css-175oi2r r-bnwqim r-q4m81j r-tskmnb"><div data-key="e1ba5e507a69421a982dd1e6b5ddc38b" data-fragment="true" data-slate-editor="true" data-document-key="14371e4d049b4b538735c5f246072c92"><div data-key="c5c2c702c6ec4a4d92deb0460c433bb3" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-q4m81j r-1rasi3h r-gg6oyi r-1enofrn r-16dba41 r-14yzgew r-1xnzce8"><span data-key="e1a8bcb962da4a9b823263e879e7b46f"><span data-offset-key="e1a8bcb962da4a9b823263e879e7b46f:0">Move to target.</span></span></div></div></div></div></div></div></div></div></div></div></div></div></div></li></div></div><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="e9615b4e56ce4d828cea8a9975445bcb" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii xsmallTop_ABm9D xsmallBottom_NnBZ6"><div data-block-content="e9615b4e56ce4d828cea8a9975445bcb" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">5.</span><div class="css-175oi2r r-13awgt0"><div data-key="4bf1db8c6eb34223aa1d438f665525a1" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="35df585761374e3ba979cc7377679709"><span data-offset-key="35df585761374e3ba979cc7377679709:0">Add a new &quot;SubTree&quot; node and assign the &quot;Wander&quot; tree we made before. BadgerHTN supports modular/reusable trees and you can view the search state of multiple trees simultaneously.
+
+</span></span></div></div><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="3015d34dca914afeb702077fa1785199" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii noneTop_aMiQj noneBottom_ovUyz"><div data-block-content="3015d34dca914afeb702077fa1785199" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div data-rnwr700-1w6e6rj-1777fci="true" class="css-175oi2r r-18u37iz r-1777fci r-zo7nv5 r-3mtglp"><div data-slate-void="true" data-key="8876f83bc71a4ae9be84109d38f219ff"><div><div class="css-175oi2r r-1awozwy r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r r-z2wwpe r-bnwqim" style="max-width:100%;max-height:100%"><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy" style="transition-duration:0.15s"><img alt="" loading="lazy" src="https://3349186757-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwrNt0ljEuQ5gsxIfJNfv%2Fuploads%2FPDqMonNG7Sr28Oou1XlV%2Fimage.png?alt=media&amp;token=66733f96-c0a5-412b-a834-4eb9b606f8af" width="100%" height="auto" decoding="async" class="r-z2wwpe r-dnmrzs"/></div></div></div><div class="css-175oi2r r-bnwqim r-q4m81j r-tskmnb"><div data-key="134d04f7aff5426f9418fa9ee3b264d1" data-fragment="true" data-slate-editor="true" data-document-key="14371e4d049b4b538735c5f246072c92"><div data-key="741682d6f97f409583ce128a33a074a5" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-q4m81j r-1rasi3h r-gg6oyi r-1enofrn r-16dba41 r-14yzgew r-1xnzce8"><span data-key="f5a5049e32a543b694e04be5474fabc7"><span data-offset-key="f5a5049e32a543b694e04be5474fabc7:0">A wander sub-tree.</span></span></div></div></div></div></div></div></div></div></div></div></div></div></div></li></div></div><div class="css-175oi2r"><div class="css-175oi2r"><li data-key="f642d5d431404661b4eb5f72a72b7e2b" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii xsmallTop_ABm9D noneBottom_ovUyz"><div data-block-content="f642d5d431404661b4eb5f72a72b7e2b" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2 r-6koalj r-18u37iz r-bnwqim"><span contenteditable="false" class="r-crgep1 r-1awozwy r-6koalj r-18u37iz r-1jkjb r-1kb76zh r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm" style="height:24px;width:16px">6.</span><div class="css-175oi2r r-13awgt0"><div data-key="bf2cfbda05cd45b299833102a0361038" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="32f7bf1d82d5464b8f453c49bfafcfbd"><span data-offset-key="32f7bf1d82d5464b8f453c49bfafcfbd:0">Connect both of the new nodes to the &quot;Root&quot; node. The &quot;Root&quot; node behaves in the same way as a &quot;Selector&quot; node and will first explore the &quot;MoveToObject&quot; node and then the &quot;SubTree&quot;.
+
+</span></span></div></div><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="14ce24ed848246cea37c645cb8788afc" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii noneTop_aMiQj noneBottom_ovUyz"><div data-block-content="14ce24ed848246cea37c645cb8788afc" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div data-rnwr700-1w6e6rj-1777fci="true" class="css-175oi2r r-18u37iz r-1777fci r-zo7nv5 r-3mtglp"><div data-slate-void="true" data-key="eb3040d8914a464794559ca870f38406"><div><div class="css-175oi2r r-1awozwy r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r r-z2wwpe r-bnwqim" style="max-width:100%;max-height:100%"><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy" style="transition-duration:0.15s"><img alt="" loading="lazy" src="https://3349186757-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwrNt0ljEuQ5gsxIfJNfv%2Fuploads%2FOsbR0cAT1Rua9UoABgq1%2Fimage.png?alt=media&amp;token=a141aea8-a6ca-46a3-92ac-916993ce62b7" width="100%" height="auto" decoding="async" class="r-z2wwpe r-dnmrzs"/></div></div></div><div class="css-175oi2r r-bnwqim r-q4m81j r-tskmnb"><div data-key="5bda994be9b449778984908313a24b75" data-fragment="true" data-slate-editor="true" data-document-key="14371e4d049b4b538735c5f246072c92"><div data-key="67c59d811c06402b8e129544e6ec477a" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-q4m81j r-1rasi3h r-gg6oyi r-1enofrn r-16dba41 r-14yzgew r-1xnzce8"><span data-key="1a384a3776504ec0924f0d35aec67065"><span data-offset-key="1a384a3776504ec0924f0d35aec67065:0">A chase behavior.</span></span></div></div></div></div></div></div></div></div></div></div></div></div></div></li></div></div></ol></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="7fc9130b869c4babb47aaca5676629d9" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii largeTop_ejwCW smallBottom_BmSGf"><div data-block-content="7fc9130b869c4babb47aaca5676629d9" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><h3 translate="no" class="r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-18u37iz r-obd0qt" id="a-d"><div dir="auto" data-rnwrdesktop-gg6oyi-adyw6z-135wba7-b88u0q="true" data-rnwr700-gg6oyi-ubezar-135wba7-1kfrs79="true" class="css-1rynq56 r-1nf4jbm r-fdjqy7 r-1xnzce8" id="text-a-d"><span data-key="e282a6f5ed6541cf8021be933c5870be"><span data-offset-key="e282a6f5ed6541cf8021be933c5870be:0">Ad</span></span><a href="#a-d.html" aria-label="Direct link to heading" data-rnwi-1rasi3h-="true" data-rnwi--1ghhsy9-hover-focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" class="css-1qaijid r-1awozwy r-xoduu5 r-1jkjb r-orgf3d r-1loqt21"><svg viewBox="0 0 16 16" fill="none" preserveAspectRatio="xMidYMid meet" role="presentation" style="vertical-align:middle;width:18px;height:18px"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.42 1.925a.6.6 0 01.405.745L7.167 4.9h3.998l.76-2.57a.6.6 0 111.15.34l-.659 2.23H14a.6.6 0 010 1.2h-1.938l-1.123 3.8H13a.6.6 0 010 1.2h-2.415l-.76 2.57a.6.6 0 01-1.15-.34l.658-2.23H5.335l-.76 2.57a.6.6 0 11-1.15-.34l.658-2.23H2a.6.6 0 110-1.2h2.438l1.123-3.8H3a.6.6 0 010-1.2h2.915l.76-2.57a.6.6 0 01.745-.405zM6.812 6.1L5.689 9.9h3.999l1.123-3.8H6.812z" fill="currentColor"></path></svg></a></div></h3></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="69a1b10438e140498b7a49dfc2cd102b" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii largeTop_ejwCW smallBottom_BmSGf"><div data-block-content="69a1b10438e140498b7a49dfc2cd102b" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><h3 translate="no" class="r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-18u37iz r-obd0qt" id="adding-a-player-to-the-scene"><div dir="auto" data-rnwrdesktop-gg6oyi-adyw6z-135wba7-b88u0q="true" data-rnwr700-gg6oyi-ubezar-135wba7-1kfrs79="true" class="css-1rynq56 r-1nf4jbm r-fdjqy7 r-1xnzce8" id="text-adding-a-player-to-the-scene"><span data-key="00026d90f06a43c489afcaeedc0e8bc7"><span data-offset-key="00026d90f06a43c489afcaeedc0e8bc7:0">Adding a player to the scene</span></span><a href="#adding-a-player-to-the-scene.html" aria-label="Direct link to heading" data-rnwi-1rasi3h-="true" data-rnwi--1ghhsy9-hover-focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" class="css-1qaijid r-1awozwy r-xoduu5 r-1jkjb r-orgf3d r-1loqt21"><svg viewBox="0 0 16 16" fill="none" preserveAspectRatio="xMidYMid meet" role="presentation" style="vertical-align:middle;width:18px;height:18px"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.42 1.925a.6.6 0 01.405.745L7.167 4.9h3.998l.76-2.57a.6.6 0 111.15.34l-.659 2.23H14a.6.6 0 010 1.2h-1.938l-1.123 3.8H13a.6.6 0 010 1.2h-2.415l-.76 2.57a.6.6 0 01-1.15-.34l.658-2.23H5.335l-.76 2.57a.6.6 0 11-1.15-.34l.658-2.23H2a.6.6 0 110-1.2h2.438l1.123-3.8H3a.6.6 0 010-1.2h2.915l.76-2.57a.6.6 0 01.745-.405zM6.812 6.1L5.689 9.9h3.999l1.123-3.8H6.812z" fill="currentColor"></path></svg></a></div></h3></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="f1f45bb3a35941adbecdc8b4fa758faf" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii smallTop_crzBC smallBottom_BmSGf"><div data-block-content="f1f45bb3a35941adbecdc8b4fa758faf" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="de0da8cef18a420eaf205f29612f56fc"><span data-offset-key="de0da8cef18a420eaf205f29612f56fc:0">Our new agent needs something to target so let&#x27;s add a player to the scene. Add a new Player GameObject and add a player controller to it. You can add any type of controller you want and there is a sample controller in the &quot;Examples/Guides/02 Chase&quot; scene.</span></span></div></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="7a5f693fe10d4fd8bf43c00ad8b8e884" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii largeTop_ejwCW smallBottom_BmSGf"><div data-block-content="7a5f693fe10d4fd8bf43c00ad8b8e884" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><h3 translate="no" class="r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-18u37iz r-obd0qt" id="making-a-targeting-script"><div dir="auto" data-rnwrdesktop-gg6oyi-adyw6z-135wba7-b88u0q="true" data-rnwr700-gg6oyi-ubezar-135wba7-1kfrs79="true" class="css-1rynq56 r-1nf4jbm r-fdjqy7 r-1xnzce8" id="text-making-a-targeting-script"><span data-key="7cd6b900789149049499002399190574"><span data-offset-key="7cd6b900789149049499002399190574:0">Making a targeting script</span></span><a href="#making-a-targeting-script.html" aria-label="Direct link to heading" data-rnwi-1rasi3h-="true" data-rnwi--1ghhsy9-hover-focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" class="css-1qaijid r-1awozwy r-xoduu5 r-1jkjb r-orgf3d r-1loqt21"><svg viewBox="0 0 16 16" fill="none" preserveAspectRatio="xMidYMid meet" role="presentation" style="vertical-align:middle;width:18px;height:18px"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.42 1.925a.6.6 0 01.405.745L7.167 4.9h3.998l.76-2.57a.6.6 0 111.15.34l-.659 2.23H14a.6.6 0 010 1.2h-1.938l-1.123 3.8H13a.6.6 0 010 1.2h-2.415l-.76 2.57a.6.6 0 01-1.15-.34l.658-2.23H5.335l-.76 2.57a.6.6 0 11-1.15-.34l.658-2.23H2a.6.6 0 110-1.2h2.438l1.123-3.8H3a.6.6 0 010-1.2h2.915l.76-2.57a.6.6 0 01.745-.405zM6.812 6.1L5.689 9.9h3.999l1.123-3.8H6.812z" fill="currentColor"></path></svg></a></div></h3></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="8d131c344cc24ef6b6716c2ab00eccc1" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii smallTop_crzBC smallBottom_BmSGf"><div data-block-content="8d131c344cc24ef6b6716c2ab00eccc1" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="08ee4582b73b4a4287183d63b6973933"><span data-offset-key="08ee4582b73b4a4287183d63b6973933:0">Our new chase behavior requires that the agent has a target before starting the chase. We can make a simple script that updates the agent&#x27;s blackboard with target information.
+
+Create a new MonoBehaviour script and open it. Here is an example script to update the agent&#x27;s target when a GameObject gets close enough.</span></span></div></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="72f41fb410794b93b02ed3abf0f561d6" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii mediumTop_QDiZG mediumBottom_jdYUb"><div data-block-content="72f41fb410794b93b02ed3abf0f561d6" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="codeblock-toolbar" class="css-175oi2r r-1vckr1u r-z2wwpe r-bnwqim"><div spellcheck="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-5njf8e r-1dqxon3"><div class="css-175oi2r r-2awvau"><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="966325c995e147638d45dde9bfe41780"><span data-offset-key="966325c995e147638d45dde9bfe41780:0">public class TargetCheck : MonoBehaviour</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="4408873a6bf2462485d3b6f9b557749b"><span data-offset-key="4408873a6bf2462485d3b6f9b557749b:0">{</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="1a5ee6b0ba414b10a5c6231a513cc400"><span data-offset-key="1a5ee6b0ba414b10a5c6231a513cc400:0">    public GameObject target;</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="786488286de7437bb35f71ec73af143c"><span data-offset-key="786488286de7437bb35f71ec73af143c:0">    public float range = 2f;</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="98ab16b5f53a4f6bb6f76944efbab869"><span data-offset-key="98ab16b5f53a4f6bb6f76944efbab869:0">    private BadgerComponent _agent;</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="1ceabc82660f43d6bd631132fd952ca7"><span data-offset-key="1ceabc82660f43d6bd631132fd952ca7:0"><span data-slate-zero-width="n">​</span></span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="40a27223c5c3497197b4756627dacecc"><span data-offset-key="40a27223c5c3497197b4756627dacecc:0">    private void Awake()</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="8cb5f4d73c5a43dcaf720da37441b0ee"><span data-offset-key="8cb5f4d73c5a43dcaf720da37441b0ee:0">    {</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="86d019833f504031b61bf8ab5fff77c0"><span data-offset-key="86d019833f504031b61bf8ab5fff77c0:0">        _agent = GetComponent&lt;BadgerComponent&gt;();</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="7151d402f38d44f68a13268e57428f12"><span data-offset-key="7151d402f38d44f68a13268e57428f12:0">    }</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="def4d8db55794f51bde191da88dea8c8"><span data-offset-key="def4d8db55794f51bde191da88dea8c8:0"><span data-slate-zero-width="n">​</span></span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="5de87ea25bf448879a1f8b2e6f347321"><span data-offset-key="5de87ea25bf448879a1f8b2e6f347321:0">    private void Update()</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="480d7c12a7be41f499c1ca9ab54a16bc"><span data-offset-key="480d7c12a7be41f499c1ca9ab54a16bc:0">    {</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="12cced79a21c421ea42dd2bdc45c4e0e"><span data-offset-key="12cced79a21c421ea42dd2bdc45c4e0e:0">        var blackboard = _agent.Agent.Blackboard;</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="23af8a02a092400abdd8a61517a7ffa1"><span data-offset-key="23af8a02a092400abdd8a61517a7ffa1:0">        if (target == null)</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="df408cdf774140ceafa34755f9e9336f"><span data-offset-key="df408cdf774140ceafa34755f9e9336f:0">        {</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="18016216ec524cbe9907e656f64d907e"><span data-offset-key="18016216ec524cbe9907e656f64d907e:0">            // Exit if not assigned or missing reference exception.</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="033da8d484ba4882887cafdaed6cda15"><span data-offset-key="033da8d484ba4882887cafdaed6cda15:0">            blackboard.Set&lt;GameObject&gt;(&quot;Target&quot;, null);</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="7aa3c0427d074b26b5cfbf38d68a2ef4"><span data-offset-key="7aa3c0427d074b26b5cfbf38d68a2ef4:0">            return;</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="5b7af7de565542aebc5ba2c25eed95d7"><span data-offset-key="5b7af7de565542aebc5ba2c25eed95d7:0">        }</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="45c0de083aed4dce9c965ab5ba271dee"><span data-offset-key="45c0de083aed4dce9c965ab5ba271dee:0"><span data-slate-zero-width="n">​</span></span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="3837497e52df401b8c36a7185011179c"><span data-offset-key="3837497e52df401b8c36a7185011179c:0">        // Distance to target GameObject.</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="bb3133b554be43deaf92a779fc3ee469"><span data-offset-key="bb3133b554be43deaf92a779fc3ee469:0">        var distance = Vector3.Distance(transform.position, target.transform.position);</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="cd67526dac8b4d859edf14710b74cc42"><span data-offset-key="cd67526dac8b4d859edf14710b74cc42:0">        bool inRange = distance &lt;= range;</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="a6ff5a7447824b078f557aaf0c3a26f8"><span data-offset-key="a6ff5a7447824b078f557aaf0c3a26f8:0"><span data-slate-zero-width="n">​</span></span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="6171b1a426e64f17854e459cfa3ff59c"><span data-offset-key="6171b1a426e64f17854e459cfa3ff59c:0">        // Set target if in range, otherwise null.</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="6e4d558922ec4672a5cc42cbb9a0c528"><span data-offset-key="6e4d558922ec4672a5cc42cbb9a0c528:0">        blackboard.Set&lt;GameObject&gt;(&quot;Target&quot;, inRange ? target : null);</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="3b13366d871143838dcda70826af29bd"><span data-offset-key="3b13366d871143838dcda70826af29bd:0">    }</span></span></div></div><div class="css-175oi2r r-6koalj r-18u37iz"><div contenteditable="false" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-1janqcz"></div></div><div dir="auto" class="css-1rynq56 r-1v6e3re r-i023vh r-yrgyi6 r-uibjmv r-1b43r93 r-majxgm r-hbpseb r-1nf4jbm r-1xnzce8"><span data-key="4edf6fd2019c476588b9d2788d53126a"><span data-offset-key="4edf6fd2019c476588b9d2788d53126a:0">}</span></span></div></div></div></div><div contenteditable="false" translate="no" data-rnwicodeblock-toolbar-hidden-="true" data-rnwicodeblock-toolbar-visible-hover-focus="true" data-rnwi-handle="nearest" class="r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-u8s1d r-3mc0re r-18u37iz r-1awozwy" style="top:7px"><div aria-label="Copy" role="button" data-rnwi-1vckr1u-29dh1f-1jsra8-hover-focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="button" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy r-42olwf r-rs99b7 r-18u37iz r-18kxxzh r-1777fci r-1ny4l3l r-z2wwpe r-1472mwg r-14lw9ot r-1wgstfn r-1jsra8 r-1h9q8wt r-mk0yit r-lrsllp" style="transition-duration:0.15s"><svg viewBox="0 0 16 16" fill="none" preserveAspectRatio="xMidYMid meet" data-rnwi-handle="nearest" class="r-h7gdob" style="vertical-align:middle;width:16px;height:16px"><g clip-path="url(#Copy_svg__clip0_1372_9671)"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.5.4A2.6 2.6 0 003.9 3v.9H3A2.6 2.6 0 00.4 6.5V13A2.6 2.6 0 003 15.6h6.5a2.6 2.6 0 002.6-2.6v-.9h.9a2.6 2.6 0 002.6-2.6V3A2.6 2.6 0 0013 .4H6.5zm5.6 10.5h.9a1.4 1.4 0 001.4-1.4V3A1.4 1.4 0 0013 1.6H6.5A1.4 1.4 0 005.1 3v.9h4.4a2.6 2.6 0 012.6 2.6v4.4zM9.5 5.1a1.4 1.4 0 011.4 1.4V13a1.4 1.4 0 01-1.4 1.4H3A1.4 1.4 0 011.6 13V6.5A1.4 1.4 0 013 5.1h6.5z" fill="currentColor"></path></g><defs><clipPath id="Copy_svg__clip0_1372_9671"><path fill="#fff" d="M0 0h16v16H0z"></path></clipPath></defs></svg></div></div></div></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="a4f8e3914ccf4a5d9b2ae0c05d7b0fd6" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii smallTop_crzBC smallBottom_BmSGf"><div data-block-content="a4f8e3914ccf4a5d9b2ae0c05d7b0fd6" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="3aeebd99fcfe47fabc8fcf96e077c2ba"><span data-offset-key="3aeebd99fcfe47fabc8fcf96e077c2ba:0">Attach the targeting script to the agent and assign the player GameObject to the &quot;Target&quot; field.
+
+</span></span></div></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="215a7837fc8f4636a01214e41a01590e" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii mediumTop_QDiZG mediumBottom_jdYUb"><div data-block-content="215a7837fc8f4636a01214e41a01590e" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div data-rnwr700-1w6e6rj-1777fci="true" class="css-175oi2r r-18u37iz r-1777fci r-zo7nv5 r-3mtglp"><div data-slate-void="true" data-key="0b2c5e96e89940cdb06a173fedc73734"><div><div class="css-175oi2r r-1awozwy r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r r-z2wwpe r-bnwqim" style="max-width:100%;max-height:100%"><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy" style="transition-duration:0.15s"><img alt="" loading="lazy" src="https://3349186757-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwrNt0ljEuQ5gsxIfJNfv%2Fuploads%2FE8u8la1hMXNCB24bASnr%2Fimage.png?alt=media&amp;token=1183fdf6-86ba-48fe-bb39-f7ba58ddc536" width="100%" height="auto" decoding="async" class="r-z2wwpe r-dnmrzs"/></div></div></div><div class="css-175oi2r r-bnwqim r-q4m81j r-tskmnb"><div data-key="ee40da2e1b774e7a8d0c3cc973d699c5" data-fragment="true" data-slate-editor="true" data-document-key="14371e4d049b4b538735c5f246072c92"><div data-key="57898ddd04834fe1b15f33d461310658" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-q4m81j r-1rasi3h r-gg6oyi r-1enofrn r-16dba41 r-14yzgew r-1xnzce8"><span data-key="bd3ec2986f314fd39458b5d93b001a00"><span data-offset-key="bd3ec2986f314fd39458b5d93b001a00:0">Targeting component.</span></span></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="9a3e87c23fdd495399b614622da56d47" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii smallTop_crzBC smallBottom_BmSGf"><div data-block-content="9a3e87c23fdd495399b614622da56d47" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div dir="auto" class="css-1rynq56 r-gg6oyi r-ubezar r-16dba41 r-135wba7 r-1nf4jbm r-fdjqy7 r-1xnzce8"><span data-key="98372b11c34545d095aed6e5de0fe08c"><span data-offset-key="98372b11c34545d095aed6e5de0fe08c:0">Pressing &quot;Play&quot; will now have the agent chasing after the player when it comes in range.</span></span></div></div></div></div></div></div></div></div></div></div><div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM-"><div data-rnwr1490-1777fci="true" data-rnwr700-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz r-1777fci"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div class="css-175oi2r"><div data-key="d636fc2963564110a3cec1896b51731f" class="view_SggA- flex_jZskO block_UxARL mediumVertical_-Vaii mediumTop_QDiZG mediumBottom_jdYUb"><div data-block-content="d636fc2963564110a3cec1896b51731f" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-eqz5dr r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010 r-1ro0kt6 r-16y2uox r-1wbh5a2"><div data-rnwr700-1w6e6rj-1777fci="true" class="css-175oi2r r-18u37iz r-1777fci r-zo7nv5 r-3mtglp"><div data-slate-void="true" data-key="d1f067a12e7942f5b9bc6bf807eb54db"><div><div class="css-175oi2r r-1awozwy r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r r-z2wwpe r-bnwqim" style="max-width:100%;max-height:100%"><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-1awozwy" style="transition-duration:0.15s"><img alt="" loading="lazy" src="https://3349186757-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwrNt0ljEuQ5gsxIfJNfv%2Fuploads%2FPSXCFPGNGhSyyjMzchwk%2Fimage.png?alt=media&amp;token=d21936f4-f4a2-43d9-b220-997e9e50eb3d" width="100%" height="auto" decoding="async" class="r-z2wwpe r-dnmrzs"/></div></div></div><div class="css-175oi2r r-bnwqim r-q4m81j r-tskmnb"><div data-key="aa550f2579ed4f41886fd9340e14ca7b" data-fragment="true" data-slate-editor="true" data-document-key="14371e4d049b4b538735c5f246072c92"><div data-key="bb6ae7f0b9554c01944c200f7ceb6997" translate="no" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-bnwqim r-417010"><div dir="auto" class="css-1rynq56 r-q4m81j r-1rasi3h r-gg6oyi r-1enofrn r-16dba41 r-14yzgew r-1xnzce8"><span data-key="06bb84c23f914f3da7105c8dec24f611"><span data-offset-key="06bb84c23f914f3da7105c8dec24f611:0">Chasing the player GameObject.</span></span></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div class="view_SggA- flex_jZskO blockWrapper_y0Ubs noneVertical_jpmaI autoHorizontal_dqmM- largeTop_jdaOn"><div data-rnwr1280-1777fci="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-18u37iz"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div data-rnwrdesktop-18u37iz="true" data-rnwr970-eqz5dr="true" class="css-175oi2r r-1peese0"><a href="documentation.guides.html" data-rnwrdesktop-1kb76zh="true" data-rnwr970-61z16t-5oul0u="true" data-rnwi-u529wo-aq1qub-c1zw6o-1khlhp8-1cut0bx-na6qhi--hover="true" data-rnwi--1tgwseu--focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="BaseCard" class="css-175oi2r r-lrvibr r-1loqt21 r-1otgn73 r-190qawg r-z2wwpe r-rs99b7 r-1udh08x r-1clhhh9 r-18u37iz r-1awozwy r-nsbfu8 r-1ro0kt6 r-16y2uox r-1wbh5a2" style="background-color:rgba(255,255,255,1.00);transition-duration:0.15s"><div class="css-175oi2r r-88pszg"><svg viewBox="0 0 16 16" fill="none" preserveAspectRatio="xMidYMid meet" data-rnwibasecard--1ghhsy9-hover="true" data-rnwi-handle="nearest" class="r-1rasi3h" style="vertical-align:middle;width:24px;height:24px"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.924 3.576a.6.6 0 010 .848L3.95 7.4H13.5a.6.6 0 110 1.2H3.949l2.975 2.976a.6.6 0 01-.848.848l-4-4a.6.6 0 010-.848l4-4a.6.6 0 01.848 0z" fill="currentColor"></path></svg></div><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2 r-obd0qt"><div class="css-175oi2r"><div dir="auto" class="css-1rynq56 r-gg6oyi r-1enofrn r-16dba41 r-14yzgew r-1rasi3h">Previous</div></div><div dir="auto" data-rnwibasecard--1ghhsy9-hover-focus="true" data-rnwi-handle="nearest" class="css-1rynq56 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-gg6oyi r-ubezar r-135wba7 r-majxgm r-1nf4jbm">Guides</div></div></a><a href="documentation.guides.creating-custom-context-and-nodes.html" data-rnwrdesktop-1jkjb="true" data-rnwr970-11wrixw-knv0ih="true" data-rnwi-u529wo-aq1qub-c1zw6o-1khlhp8-1cut0bx-na6qhi--hover="true" data-rnwi--1tgwseu--focus="true" data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="BaseCard" class="css-175oi2r r-lrvibr r-1loqt21 r-1otgn73 r-190qawg r-z2wwpe r-rs99b7 r-1udh08x r-1clhhh9 r-18u37iz r-1awozwy r-nsbfu8 r-1ro0kt6 r-16y2uox r-1wbh5a2" style="background-color:rgba(255,255,255,1.00);transition-duration:0.15s"><div class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div class="css-175oi2r"><div dir="auto" class="css-1rynq56 r-gg6oyi r-1enofrn r-16dba41 r-14yzgew r-1rasi3h">Next</div></div><div dir="auto" data-rnwibasecard--1ghhsy9-hover-focus="true" data-rnwi-handle="nearest" class="css-1rynq56 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-gg6oyi r-ubezar r-135wba7 r-majxgm r-1nf4jbm">Creating custom Context and Nodes</div></div><div class="css-175oi2r r-1ow6zhx"><svg viewBox="0 0 16 16" fill="none" preserveAspectRatio="xMidYMid meet" data-rnwibasecard--1ghhsy9-hover="true" data-rnwi-handle="nearest" class="r-1rasi3h" style="vertical-align:middle;width:24px;height:24px"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.076 3.576a.6.6 0 01.848 0l4 4a.6.6 0 010 .848l-4 4a.6.6 0 01-.848-.848L12.052 8.6H2.5a.6.6 0 010-1.2h9.552L9.076 4.424a.6.6 0 010-.848z" fill="currentColor"></path></svg></div></a></div><div class="css-175oi2r r-1ygmrgt r-1yv4afn r-5kkj8d"><div data-rnwrdesktop-18u37iz="true" data-rnwr1024-eqz5dr="true" class="css-175oi2r r-1awozwy r-1wtj0ep"><div data-rnwr1024-1ifxtd0="true" class="css-175oi2r r-1ro0kt6 r-16y2uox r-1wbh5a2"><div dir="auto" class="css-1rynq56 r-1rasi3h r-gg6oyi r-1b43r93 r-16dba41 r-hbpseb">Last modified <span aria-label="2023-03-15 10:13 UTC" class="css-1qaijid">3mo ago</span></div></div></div></div></div></div></div></div></div></main></div><aside translate="no" aria-label="Page outline" data-rnwrdesktop-166pt5r="true" data-rnwr1280-hidden="true" data-rnwr700-hidden="true" class="r-1oszu61 r-1xc7w19 r-1phboty r-1yadl64 r-deolkf r-6koalj r-1mlwlqe r-eqz5dr r-1q142lx r-crgep1 r-ifefl9 r-bcqeeo r-t60dpp r-417010 r-k200y r-1rnoaur r-gtdqiz r-pw2am6 r-146iojx" style="top:104px;max-height:calc(100vh - 104px)" data-testid="page.outline"><div class="css-175oi2r r-hu79xy r-1peese0"><div class="css-175oi2r r-5njf8e r-wk8lta r-1mdbw0j"><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-18u37iz r-1awozwy r-1guathk r-oyd9sg r-dnmrzs r-7xmw5f" style="transition-duration:0.15s"><div class="css-175oi2r r-1kb76zh"><svg viewBox="0 0 16 16" fill="none" preserveAspectRatio="xMidYMid meet" data-rnwinearest--1ghhsy9-hover-focus="true" data-rnwi-handle="nearest" class="r-1rasi3h" style="vertical-align:middle;width:18px;height:18px"><path fill-rule="evenodd" clip-rule="evenodd" d="M12.525 3.474a2.4 2.4 0 00-3.394 0L7.717 4.89a.6.6 0 01-.848-.849l1.414-1.414a3.6 3.6 0 015.091 5.091L11.96 9.131a.6.6 0 01-.849-.848l1.414-1.414a2.4 2.4 0 000-3.395zm-1.272 1.273a.6.6 0 010 .849l-5.657 5.657a.6.6 0 01-.849-.849l5.657-5.657a.6.6 0 01.849 0zM4.889 6.87a.6.6 0 010 .848L3.474 9.131a2.4 2.4 0 103.395 3.394l1.414-1.414a.6.6 0 01.848.849l-1.414 1.414a3.6 3.6 0 11-5.091-5.091L4.04 6.869a.6.6 0 01.849 0z" fill="currentColor"></path></svg></div><div dir="auto" data-rnwinearest--1ghhsy9-hover-focus="true" data-rnwi-handle="nearest" class="css-1rynq56 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-gg6oyi r-1b43r93 r-16dba41 r-hbpseb r-1bnj018 r-1ro0kt6 r-16y2uox r-1wbh5a2">Copy link</div></div></div></div><div class="css-175oi2r r-146iojx"><div class="css-175oi2r r-18u37iz r-1awozwy r-1guathk r-5oul0u"><div dir="auto" class="css-1rynq56 r-gg6oyi r-1enofrn r-19r33im r-14yzgew r-tsynxw r-1rasi3h r-b88u0q">On this page</div></div><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-18u37iz r-1guathk r-855088 r-ms8t9i r-15zivkp r-lqms97 r-14gqq1x r-dnmrzs r-7xmw5f" style="transition-duration:0.15s"><div dir="auto" data-rnwinearest--1ghhsy9-hover="true" data-rnwi-handle="nearest" class="css-1rynq56 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-gg6oyi r-1b43r93 r-16dba41 r-hbpseb r-1bnj018">Creating the wandering behavior</div></div><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-18u37iz r-1guathk r-855088 r-ms8t9i r-15zivkp r-lqms97 r-14gqq1x r-dnmrzs r-7xmw5f" style="transition-duration:0.15s"><div dir="auto" data-rnwinearest--1ghhsy9-hover="true" data-rnwi-handle="nearest" class="css-1rynq56 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-gg6oyi r-1b43r93 r-16dba41 r-hbpseb r-1bnj018 r-1jkjb">Setting up the scene</div></div><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-18u37iz r-1guathk r-855088 r-ms8t9i r-15zivkp r-lqms97 r-14gqq1x r-dnmrzs r-7xmw5f" style="transition-duration:0.15s"><div dir="auto" data-rnwinearest--1ghhsy9-hover="true" data-rnwi-handle="nearest" class="css-1rynq56 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-gg6oyi r-1b43r93 r-16dba41 r-hbpseb r-1bnj018">Creating the chasing behavior</div></div><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-18u37iz r-1guathk r-855088 r-ms8t9i r-15zivkp r-lqms97 r-14gqq1x r-dnmrzs r-7xmw5f" style="transition-duration:0.15s"><div dir="auto" data-rnwinearest--1ghhsy9-hover="true" data-rnwi-handle="nearest" class="css-1rynq56 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-gg6oyi r-1b43r93 r-16dba41 r-hbpseb r-1bnj018 r-1jkjb">Ad</div></div><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-18u37iz r-1guathk r-855088 r-ms8t9i r-15zivkp r-lqms97 r-14gqq1x r-dnmrzs r-7xmw5f" style="transition-duration:0.15s"><div dir="auto" data-rnwinearest--1ghhsy9-hover="true" data-rnwi-handle="nearest" class="css-1rynq56 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-gg6oyi r-1b43r93 r-16dba41 r-hbpseb r-1bnj018 r-1jkjb">Adding a player to the scene</div></div><div data-rnwi-5xr8s6-dse9kg-2fw26j-cb7i37-focus-visible="true" data-rnwi-handle="nearest" tabindex="0" class="css-175oi2r r-1i6wzkk r-lrvibr r-1loqt21 r-1otgn73 r-18u37iz r-1guathk r-855088 r-ms8t9i r-15zivkp r-lqms97 r-14gqq1x r-dnmrzs r-7xmw5f" style="transition-duration:0.15s"><div dir="auto" data-rnwinearest--1ghhsy9-hover="true" data-rnwi-handle="nearest" class="css-1rynq56 r-dnmrzs r-1udh08x r-1udbk01 r-3s2u2q r-1iln25a r-gg6oyi r-1b43r93 r-16dba41 r-hbpseb r-1bnj018 r-1jkjb">Making a targeting script</div></div></div></aside></div><!--/$--></div></div></div><!--/$--></div></div></div>
+        <script>
+            // Rendered with GitBook 10.9.371-7facee8e121924f9cda24c112ed1f46529fc2d8f-5490073013
+            // Space wrNt0ljEuQ5gsxIfJNfv
+            
+            window.__GITBOOK_WAS_SSR = true;
+            window.__GITBOOK_INITIAL_PROPS__ = "㞂‖འ츂аⶁ䱀⸐ࣁİ㦊Ĺ輀瓸ॣᘐ䀵馔䈀㓘┊(⌘ᡂᣀ⮪㠰דּ蛄✮　䭇貍♒　㥇䀞胂ᴺ⭕ꃌ袈䧥䇐葦퀶鉉蔃　뻬䔐ꇰꋠȈ썸腰\ud9c2ꀂ、뀃뀀イʰɰ̰r⇃䂠엄捤❥ꗗ헸者Ӏ萁ࠂ稈͈疁䀤°ꐃ멤ƻ瀀砃訌Ƌ灵쀂㠃쪅愠ƛ熵ꛧ졁Ꮰ⇂倁磈䇊怃ࠀꠁ⡴ň䀁ꠀ죪敃沌㨀䴀ඎ臢ੋ쥰⡭舌䈉荱衈䨔਋␒僠恢㔈蔐넔ᓐ䚐ù耮瓭鄓໇ꂠ몘ᆑ\u0007⌃䢂VQ㄀ᅓ⾂腍觛垧㭮㞓捱䑪᷌䬅뉝꺷㡈⮎섋凢ꁞ뽈樰魌斺퍣돘ᴢ㘱ᒃ\u0002捷냄㩜が℗䊁ꈷ䪢唡釋楢駌ꅗ裥틵㪏贾섆灠UὟ뎣폨ආ捉곁撵塬뚻綡\udf5b蚠Ť‰섈㑂췃졠퐐暄\u0001ᔐ䡐刭粑쿄ጉ쐞৻ᱦ財愨⃪ᬤΣᅡ휢笐䢂⌃留ὢئ쮰레⏉≮ເ䡎惤䮔풁餵臧쀮⛍퉹⠏즴좁㹉덉㥘™О打≬⸀୒艬ḑၣ塿Ł␂脎茌ᷦၐฤሌ⤀乆戅爦쾑Ӏ爮贃襁規馰馃৐끥ৡф㠉뛉멥ᡈ숀൜ంҐ⦄ᘔ㜁ﵞ⠁ǽ㥜♧飹䔩넄霡ᇨ䲍≬昩蕢研辉瀋蔀ᑁ␀ٓ느䛍⁉멿㬰Ş捘鸻鈪涔事ʹ琐䖊神డ⢹蔟휁垜敋怔໠䡆ᄉۉ蝃ᳮ「鸔գၐ堞↌騖긃樺꺧ꣁُ䡂‐涆٫媔ᶬ켃ŉ\ud840襴뵮ခ仈뀯脢礲粇鈨ἇ삞ŋ梅䲒顂皳泅そ뽬㮎펼껛뻬棕溮ᮨ쁵⸇숀";
+            window.__GITBOOK_INITIAL_STATE__ = "㞂⁦ॠ上惎Ű㶬䀮净ค〱밃퀎爈À඀嘂蠊肬Ι쀇肒怅♌7璠୩☀㬄烄耏겡Oⰱ킂䀈회㰈䀅䈏Ⱌࡠİࠢ挊떛떡ೄ㤤끁Ⳡ貑旭ᓐĘØǙ⧣堁㠁頀㣓ⵤ煤酂␢ꉓꉓ⠫⨬걬푴ƥ퐀ⳡꈀ姣襙萀ᒸǄ먀쐇핤ĜǥᳵⓀ߫⣓荴ꇘ½氡쉴ƄT헸退퐀撱壠솉퐁㖨녏ꥢ㟬惀㡆㔁1腁␐㠜ძ⇐䅤浰䐄쥡䏼ꀼࢌஃ꒠|\udabb托ਅƬ恍⼩ʃ䁠뀸\udc3e₄䆰䔢ꀨᄅ⏘᲎桀甔⥠炢ꊠ嚇宫ퟩെጩ鳁撱妬鐒䘼鴀ɧ홙ᡘ笭臌꠴娝ྏ삀ऄ䉡抺ศ陈ꐲ響๏⁕癅킩䒥䊪撎妨㡄\u0015哞桨퉀닎轏꠱ᮍ☳禢\ud96a띘䯬⢀Ⲓΰꚡ⃰哻ۇ삆ꉸ䀀ᅚ伢ᗃⲸЛ䝏擯眝㸣ꖘ䔈臨⃔ᑊ欈쏐⻰᭐踊ރ欵ꤷ灌㡚셵湷箔\ud96d뛔醐\udb78㒙\u000e꛵拍们嶙罞炁\udecb갛쭁隔ᤌ݄漩쏂끥껀Ũ䁥꧇腴댓䓯鯎ꇁ涘쵃븼㑇و㜵ك౯ᩆ嫐퐛䮄釟輅큑挢ᰱ션ẀK鳔ḋ↖⤳䷆煰䀁꽡둯⒅썐찬輧\ud84f뼇à侙ಇౣⴁ▖퐈ᘱꑵꬉ䆖쌗ള鳢䷎猾쌃탔⒀̨劬⒊婐턳䫥웪᥯䆌댹챰ե뜘퇨殺ു凧㼇ޅ묳ӻ\ud8a6냏쌈ㅢ̃᳑ㄇ艈⤅↱⁚Ⲍ熴礻̃鰰㓈쏀਺ߩ堵沇吵䵋唑瑆蠏慀㠘喵絘휵蠔伒墰㓤秂常銑㑎犰ᤓ쑰㬎쎜츥ᄜ똥쀸൒\udb08䛕듭筁푴鵧䗝党ꗢ죀딆悄렁܀郤ᔇ䄰氧ீࡂよ䈭㎸与㶛盛럭蝱\uda77鷑㚫做⸨൨硶꾂픺ᮐ攐窥㱁遤鐠\udb93㡌ᦠ넯긘䚖㸃〥ꫣ鍿瞅俸脭㑓猌첳泀槍먼\udf3f코렝崨肳Ẇ\udb20贱恈Ꮷ聀ᤛ乳ᶒᣄꋫ퍪뙛裔퍔ᒂ⃙硰ሣʢ․꫖롩벩餪㦪꾘橅뚤苪⸫࠴驦鵆ⶓ뽫潫厲쮯⿓ह伓쐩㺭邀江ꃥᚵ兆䍼ൠ䁘Ӣ뒀ᮐ狠胼㶃版찘ଓࠚ㡋낌䬱陝⍢袶✭䂋뀀Ğߋₒۼ玄瘗潹㶁붐閫륋刺↼洠꛹륯家ﶾ爻새ూᩇꃀᶮꅶቓ뢀転쐊䀱栳뇀竍\ud853⼉㞴ꑾ읂ܘజ㘘矖釃㈪泂ꣳ㪤ⱚ闀䚁䘴見㪓㜎莡ꙅ쮘霊馫㟴᳎頚梂춵護ᶺ睻ꗡ箖࿮㰍달玍䔤⻀졺ạ遆؀쀤嗔搉笶囌熉꧰\ude8eຩ羟䀤ׁ〓耠吉臕ৱ셢ล搩잰眅⁀焦䇵㔁롈ᶁ\udc66蒁恼༖맇䌠퐒Ž葀셽윆陰\uda3a恔妙勦㕀夵㫀ꇉ쪇숀㎒曎䰱Ջ嘘局㪰嚥\udba2쐮謐㈟ம᰽ŴἯ촨⑦ꡢ≅眝̣끗臠椘䆼愅Ƹ듃悮佃\ud83cݱ⠱ؠ쒯⼌扠㦥ㇵر혽Ҁ뜃抱㨃앸鼗偉ॡ∥䒯렽Ǡ晴菔∢Ѯ㱀ꑤಁ䈊佐扫뎉착Հ⽥ﱒ羱槩⒱䨥ྂ瘡䔡㮐剜ᩅꇕ㺄錄᤭뙴ⴠ䓄皕톢ᕷ騵쵘㋘謑䲈謙淛鉈\udc42㩊ᆀ⁢จ瀮솸斏䋈㴏ᅜ겂쀼᳡㸃高砠䅀⟀揠ੇδ᷊㟧ﳀ崑腨⼅邺᝔㚈셢㍃퀷鉀搜٘䂘ט涞쌰⸀ち纰阞턔ꃤ庂κⴎ餯Ӥ꣨䈊屵℥⤸꜐슐璥炡ꓒ음퍚服⡩Ḡ늪魜䭺ӈ턘暌쬎㈅擎鄢뙄蛐ۢ찃↶夋䂉ᜇ푯ᾂꄀ땪瘔욜堂殒淲ꗕ뫩৫뵥׵ﺰ㜆㜓ᡛ佂뀤Ā測蘘鐎ୱᰅ삠⋵瀮퐷쒄咊綴歅ᶣᕤ퓈騈繍踤㢦✲馚퀆䖈㦶꘰냒숋鴩권륛␪獀͘撌턟쨻꭮ᕿꙤ耈0研͸ᒛ譱毝ᇄ鏢㳡똌蟘ꖡ褸㕆ᅵ匐っ㪇Лઐꙣ\uda7b콥랾붪ఃᢱẢͺ\uda17к侖⃀経퇯䴥ï봀mဎ櫾䀪֔Е芈圀ꅆ읝꺽흮齗偨\ud80f㯆᠓艨伉鄺♘ᬟﴀ䙆Ơ㰆䃨ሀ.騍䤱뿵워儝胎⨡蔾㦐튔䮠ꤌ⪕摛僃⣴褋鑤ᶫ틐쩅恩Ƶᇱዚꑙ᳁ᑲ臨⠃炦᭦ᣴᚂ큾ແ꘼䉼侞ꃜ戃㪼テ฾၏ݑ쓪橣䵩쑋Ꟙ㺜㏆渉ⓖುꈜ處ᒍ⊰᠉↎ᤇዂන왮␐\udf71ꪈ噪䶞窯䷫봏꧴뺍轼䶙낶囆\ud9dbݤﴃ携垗ꎁ嵍ၰ镘扞聺礭쵎ᄎ细銆佃끭⋄㊍蛺䚵惱স䙮넲﫴쿮삋ꎉ瘁콶ↅ㣼ଂ\ud962ې젚䑰ꭤ̌䘁Ä廙䰷滮젇듶廛\ud8fb彧檅ህӿ狌᷵㦧듩\udf3b䙤챬䵿矜꺽篯珯綠蚏뇮宔⁷ᘕ듙݊픎裰犯卖\ud87dⷃ諙嫰蟩⎍밃치威蚘퐝苄䜏憢㪀ꓥኃ㐴먍쉐ゑ쨈䫽࿹攷膂剗觴ᢏൕ䫩운嚙஡ꐁﵛ㥴﫫픗⃈硉↍䀃ꋀ嵏戈ꖮ綃賧໠肀ဖ΀栐舐䠋ôⱡ樨ᵿ뀳绀嬎ˀ傍籈䤈䆄┄‽Р瘁䐫鉀ੀZ⸀肬Է笃式ୠ䁯䈂䁂ۀ簇耀ԧ퐱莤⡤摘慤ѡြଘፁ개҈ਈࡳꍬ⟅㡺ӧ稇恽䁀䜄ꀈֈ瘆蠊෰痴\udf76\u0000縜Ą\u0005勁쀀̦䀪䖐ई㌬虈ௐ胿　肮苨ᰁ耈ௐ㒃V鰁쁖Ơ﬇ⴔ薈ᒆ崢莰礅㠆鐐몤⁡བྷᴃ켂ዳ⼊櫷푚⛒ꙙٚ絣\ud97bМƕ怲剄ࠇ恓絁䠖뒇ሶ艫䘄瀸옐稁䡩腦昁耞o㶄䋨潀̄탯㱲嘫೗཈᳧蔚生瘗ὒ➴ᥖ끥➷굞埴旲ঀෲ\udf26퇟㷱ꃃ㗓㼋᯶耘޿傇ꎪ㗱罰靿俳联෿翴àഀ덴胨඀쫀䂬ɀ룴ೀ큥샼ఠ虁虦䞆㙆ညઠﷳ耊ै㛆⁡腈⸅怛蘘Ђ米茀榆—蜸戆㠻耐헲㣡ଐ줎邈ΐ蔋选ঀᒃ=զ⩉타ᅈᴈ䢜킈ຈᰄ渮螰碁聨蕠痄끇ஐЁ烉斘輈墕테ⲉ좼蠨ꊉ⢲袨뾀袨詐ᢋ袴ɧ㠱$襈鉕㮁쀶蕠朣䡳螨琡ͬ甂텂数䛱꣘㑈ډ윦蹍〵棴튃ຌἨ苕轢힫҄欌蔨㉕齜㉻״壝菲㼓쯶뽛蟰㣧㎊？\nࡀ〈碘஀鞋碔ബ谊산悠뾎蘦䎆噄䙐䮊灋쒽ؐ昃舄ň爅礴蟠碇偡螈ㆃ쒡૪≈䀩ಔ㉏䶨꺄Ѐ䂀쁘蒠ᴌꁪ䭤뒄꤈଀㒇뀘ꇀ҅\udd53⃘◵汙辘\ud851买휏쒘ڔ㔐̴譊듪ƴ뭏ꀇ䩴靏哮쓔휆풡엔팤끃䵈됅思ꅮ䤇㠷葰妄臠䨂聸虲䘁̘⟁䠪詯ᢇ⡮围ｵ쥦迴ꊴರǰꬮ辩ᣲ椺끏ҁ䋈ἥᣄ쩈擊ᨥ譌햌쳳뽼칀䎋颓譿᎗㢏躸請룰઀\udace磄ເ瞊沯軀衍柸컍⃠䷬듎늱莛嗲籙蕲厁䠸⎂ḃⱾÈ榲啙聜艊峱ड़鉏峅๐뀀졸茀梃퀽Ӥ钂昝๦洋큊퍤誅┖懀⺃쀔葞⦉粟쭼迌㸱䢔誮㔿쫰꼆시⿂몊⊒⬢訪ꊚ⼈\ud82d葨赗ᵉ攖慂順䢴⣈ᙑ湗嚈榃쀲Ǡᰆᡨ肤␀ᡊ⛜戆晚⳰ঊ昦⽯ᘫ坢탳짢쩶ἯЭ㣳䌉亰鋺矔૦鋧쥟䗏ﲙⵌﷷ鋵豒궍첽豿甮㢢컒鋋䂽ⶸ꫏뢣⩸㋤ࣸ⽬Ӯ켠ﰋҚॲ輬ࡩ窆ၡ菀㣂팘㚇衾ղカ飂䲊헉郹ࣜꔋ쁊È⺂ᓖ悀떀ꠝ઼ꏎ삮臐ᢃ㝈﷌☑䦪꿌钟챪耭髹걚嫵곚밆\uda8c膂뤃苐B镂૆圸쎸ࠇ⢨޽㈅\ud873䬀樁婌ڨ衺軋䀶앖ⴺ郲❊ዢ캎뫨īἶ鉦境퓴ꥺꠈ窯ટꤜ㾩墌찆춉첝贆苊㣍⸬讍Ⳙ沬䚺쥆䃴檲뛍늎줠ꁉ毬쉨ꃴ⎗汋큣莋㚄灗■愃桡藘毖暷친Ⓨ涊봃o䇀緍擽䆀⦩탦垰㌊벴肀밆蔚Ҫᣢ옧礅ꫯ졪켈ʻ橀ݪ皗歶轭ᩯ樶좈᪭䨚쐩ꅽ䪶貖쀶셄稂쀸⍨Ⰶ゜ϐЂ奝궭ૣꨃ彍̰廴軷䚎몒䍛ꢌ섯ꝅ择䍅朴㓩೵ᅙ⿺싨㒬츆틭劧졨ｨ檸蛺웭碳ⱬ雬닖즲梅欠遍⢠詅⋢誢鸆멑ꂀ੄遦芬荐廖渤뗍床䶈ᐠ䡘蟸㷉䡻Җ膢〼ꯀ㰃㻭႘趖׸犪煮ﯮ囬钝ʁ迵膄ށ쐞䇀䍁谛栁Ǵވ幣᪉굎⹑湱⋨£᠄٠䘆顙͸犄븮ൠ焦ഷ䯶\udd4a杤㰞㪂ḏ∟梨\ude28ꇞ趫Ӭ晈№촔湦歌쨴꫰鯎䲵裡ꁩ⺕⿘딬ⳓ誆蛡ᮮ葫ᆓ⢑푨늖째興櫬ꔚ狾쿀膅牱☸আ᠊⍨圧偵؂嶁\udc62¤ጘ誳ᣦ僻ߔ㊂朰Җ\ud859쁽䇐撘ꗴ㙏䪪䰁䨅\ud8eb쨉꜏ᓇ錇ꈩ⦲颩ꪝȤ֩瀞ﺓ滾ಙ荞槉ꍏ㛖慮從頔膸瘇偊֠历桉玂㞃汮⋠㛅၆鮢\udf45낲獩郩㪮駯ẝ↾馎냏矨쓫賥柔蓏ꝓ␙䦍﫥順떞⻥⯌궝⿡鴩껃頲髊䛺첑둩醫髆聋맇⥑잛ᠨ֠焥ꁺ肤厂ꋮ☐焧ሯ漸栜遠崐뙮誋ᩐ腋丣צ쌏끞懐䖼ǚⅪマ欀᠁꟔⟊캀饦饌ﲂ奖꟩钒嫰湝尕ᗱ岕斴鴶╁ꌁ\udd49ⓟꁓ蚀㒀䁗⇠㎥㐔苀㮇㡙蓁ꁞ悙ꕝ윕堧㕚ೞ骺ꜻ게ꄪ昷ꩌ駰㍟ౌ馈妙䩙뤯懓\udb5b⻭鯡\udd98ᇽ騑鮊㧃⤹㧦园釫龑\udb98犞뻭ꃼඐ᠆ᡮ✒圤逍ឰᦷ뀺槠ㆂൽ䕍ꗨ췰墐﬍恨蒅胿虎鴏퐜ڈ䌉\uda0c臐\udb1b쀌菀ᆭ衻蟫涢壭ﶳ鶼]ꗙ嶵\udf12ේ\udd9d\ud91d둤ǘ豂칷権\udb48珉渱莋樁䠱芚㞇㡊΀碂䀎㇂暃\udd94蛴䆦㷼ᨏ㏛梋\ud8d5ꯚꜞ趽ᢦ攨儯衸쥽全᜵뿛懕鰃魙ڞἆ쫫\ud9dd⵵菣⾃蛎鳆鮟㯆갽凼੼瘂䒛胈Ɔ怲Ό⠃z蟾䇑롾ި㨿䷳ᱣ钩Ꮨ航筎끤ﬂ㻏倚㌌뺷꠽봆昴릝糰饭몬涵梉꼅㏵ܳ쬸橫㶳לּ玸♳钟ﻭ㽉\udd38㐑蠴旝䬨ᛦ⑚ɑ㰆ꁣ茬Ѕ䒔肝ⷘ鹆᝴郀㷊㣢讬붊動븫軝徏᨟椦擃㓮䐼ﷹ黺캕顒孋Ꝝᆲ캃띘滓鿋讘웶銾렦鰺㉙׭㴃舽ʟ焥蠧왎⨭顺Ҡ玆奞옽Ꮋீ䒮탖3墆㲻Ὂ뒅擵ꌨ匦死ː鰂鎐飛\udb17뭻辺ﮟ믻뮀ޭ㲈鴹퓸蔥㙛䋅絠ᛣඤ᠘♥ꁁ썈ㆇ倪\uda80Ⰴ㳵얕붭┄謇鏘蟮츫纽삺ꇡ齴愬㑃\ud899杊혘⻄볡趛떰槙괨菌몧痱ᮧ⯆稠웥Ἣ﹙樻퀞婼⠇䫶ܒ甅\udf7eꢭ梐鼠濔洍荮䠾﷋쫒蒮雅禀䝺筛閾涥浭킜\udbce\ud900ེ쀯稊\udf7f️쨆ᒡꃔ퇚旫뷔諦瞒午ಋᤶ슕닀ᠷ臀̠촁쀿Ƙ౰㞃䐞肫던꾴鍲폎辔㱈挐㈘ל㋱폕ꥩ먁蔨宣쨠쵠颇螿Ὶ㺄銔勪伲綾劾節꾍㳲穹띎䙍謽實켗⮏ំ挅怔Y䳀墂鰘悪ꂀ㍀嵏㥼௯촶鋱誅⑰ೌC鐕⩼錀∬멀⤵﫳퓺䕗뀘巆㔐ᯈ﹆詡Ｖ쏿퀁쀍x̠ᴀ뗚\udbd0檯ᬨꝭ⵨肷ៈ鲺衻䘀䜁㸚⁤˨ࢸွ\ud9bd䄠唠䲼ꀻ誉京﨤輐먳軂\ud934馚ᤲϊ㈅貚腖뉋鴂䧪弰㮗\ud9d6ܲ꾨赲玛ퟁ黜ல靴寠噠瀃퀍鳰࣠厁洑胜鎌ⴭ㙾ਨ㊁龬啸紋꠬쉖㕤靈瀊絊ඒǗ䠁Ź蒪►蓊ꪊ혉떃뽮\udb1fꪟ\ud821呇䍇褐쐵胱૰綽Ⴅ쩪캢渜ી㴁ڐ\u0011䓍嬽ƖḠ輸ޮꕄꠝ咅⚆㸁铈䤸〙ꬤﭠㄞབྷ椓㧚얟⢸欆蒳㊸拍ꨐܢﬁ픮谈쮋굚ᱳ皅㝊䙈燵酜駫샾蔆큡挃᠒ŎҀ娃焟倔蘐㧁岍䀩쮰ᠤ윀ﶗꪠ곛꠪籏攰띀ꄳ䄟嵺ﲐ肁飀࢐ᒨꩠʰ竝❇蟭谑ႊ葌⌤܈갑ඉᆊܻꌬ춦耬騂㻮⻶欋灅㴂谎Ԉ부쬌퀑ꋬኀ꜇힘粰濍皢戰㰨ৄ䑴邊爒⼡䌵쁚粸䝃矺鐡鑼틧℘ꨐ会蘲㺁ഌ疸ᶚᔇᘅ됣활蠫띃僣삾蟜졑ㆤ臆ੰ椢제䍨㑢쬎䵸膼൑౴龉즓귐ଈ燀韦꼼찮慝䕍妜騐鎾ᣛ殅\udf5fᙶ跇莢骠氶੆Ⳓㆋ꼜戓ጪ擇퇏噍ⶬᣔ언稁酠諤縀쀄峔ܸ㒂쬈兗訡丁ẗ벒˒᎘뎩벘঺ꃍᥲ혲ꉒ⁰㵳竆嫁酀癬祵嬔킊竗媞灰ᴾ⃟Ẅ⣀㚘瀐䔄쁱⇁ὐ팅½甃焍ꃩဘੁ霚낊䧠ᴑႍ䆎萫䓣㰀ᛍ鋺蔰䐄谍륌祒劸뤻⦖\udb46ዌ⚶৐ࠒ삛뀈╁㖀か艂ኰи濆巌皯蟼䌉蕪芹ᘠ簆䃮ຠ਺㠗怼ˀ㴁뀴苌Ḡ稄䡺唨ʐ艹भᓂ焍蓘蒱Ԍ亵別놙腼觧働颶√涌扖岻᭟ฅ琫臽跨抍ͦ\udf61䟐̠谀젌憢ې㋁ҘơẀ➫ ωⰖ鏶蠐覌⽠㇡꿂亻ૐ膄劥ｋ쬥⋂ᤇᮩ沙칸﭅㛇犲䧽ᒐꖅ∩挂詌勢邔꒤ꔳ쥶躥Ꟈ⟄倡픁䀨뱗ດ놋ꁭπ㡭瘎퀤⒴覦蚅貛⢳᧞㘫蝏⧘䠤湂ᇯ邒䐾얘괥⎹聅ᩄ帮鄍躢焽᪗䓦ꐱ㈎铴⎻ႇ湇넯녾뀔僢ڞ콡荌۠숁䠩상ନ嬨쀀恫䇀ᰐ鍦逥ꕋ퉾&蠘|茀叫ꑅ踺ᔨᇴᅤ唍ࠖ였稔葖ꥤ餻失턩蔆攁솜擃⸙࣍판ꩊচ᧟⛕@㵁蠉䀙䗱ᮈ㶡䇘Ř夃ࠔ⁻럦멀킕裴蛦㬙靑졮ኂ琱霜ꦤ쵏ڱ饋ᜊ⒦䪉藱ꉽ䈙麗ૹ눵餹睦嵼礑쒞ꕱ㒮ﰎ쎋铴ฤ榁됉枰㒁䤡Ý茈ౠ凍ꀢ눵Სњ髮ㄪ袜蓢읨廀諰\udeb4﷔᧪஦\ude2a츿놼匋昇㪀쇎怨珃鸐⣧⺔냽勲䯼産䈀曤횴蚁渿ǵȄ콑逊ô˨㤕頊瀄vᤨ깁玨鐇캌탪꫎㻐ꅢ哼⟞좡飴议爱椪픦臖끪䥽쮞佦攱㖁ⱉɐ쇇觸᜝㧁倮ϰᵀ踃벤⍜蜄瘀豈恣쳍늄㈈晢꯳䈂᳧킷ᰶ䡡ᨊ䭟㙥㿰\u0007⼞㜎뱭틷鷡矤履췾企ﾘʤ̀뗙\ude4b頻틼齅濺堎ࡶ촅ሁi腽튊댇倍삺ޠ怑楙㜁晓颠鲌╣㵖牓虳❙㫈劬䉹䥉苺䒗⺙砭νኘᕜ鄙댣ꦝྮ眳諫첪ᚷ⊂꜀聜ǎܿ᠃躖䁜ͨ⮔愬퀎룰놎嬨᎞藲ꡡ噣룋ꂻᔰ觓먍꒒ꭴ꼀ķ钠鷤\ud83a\ud93aڱ持江拇ᐠᧅ긯照设鷠팖胐ᤱˉ뤂䜤싛⏆흢ꕕᴠྨᥛ℠킞铌徊躠ኜꔄ럎ℭ乡匨掀銦炆㉌읪㙽ꙡᝊ晝㋱堬汩珩骒왧꒥ꇕ즯괽㪛鋮ꑐ꾩㱊⥾Ծའ䬡怙ꃓ愹ੀ鼅聦Ɉʐ쌂쒓䬧碪ᨗ䇂⫐釴멎⋻फ़䶒ㅲ꒎呏⧖҄ꢺ亻즲翑⎉ᣥ崅㥅㐮屢믧묦╓냂虀宇聵ϐධ搆ꀵ뱇☄뒁섃ⁱ茠↱⨦飪ኒ覬챣쮺泲苅ྍ䮽눽࢘逨壧⩦儅㈘愪ᑜ￙ⒷԠ灵ꐫ夝ૌ铗㬥汎䎯귲奂鑔嗌恄ꠘ⒁明쀷耸ڥ팃缽䃣如趌閱啖绥Ⅵ봳ॲ奞㴇뀑씷壈늅⩂⒠⥸嚭탾㞊钺誼ªꕔꪭ唫댬⚫땛ꪐ⑊뿑䫁ꄹ詶襢\udd03ಫÑƊ厁ꈄ聗섾ᡠ侃耝션좐\udf42䟈㪍ᛊ昳쵟἗闀갥Ἤ♁굠셈됕䐒ꑮ갮妓椛פּ韕⮆珛ዌ샖슽脹⫦戫썜論窢걠骻°ذ烥됔ˠ눥岄匴荌ᬵᒖ䪹䇰ހ洅ඏ䆵괰銨愍ꐱ䃲뺇蠗᷊ꦗ\ude36끠ڝ泫ᰏ㫅휮땵奟썫䭷⧛ꑖ₢‘㜑栀铁➨ᡀ封鲵ƨȔ薳㧀햜প㆘䍳\ud81e닕ꆗ螂୭列㣊Ṕ疱⾧ų마븆\uda36ꇵ㓊嫺舗〳ൢ朳䍗좁쐁ꖹ冯ሀ䃠ཐ剃밞⠾⏀⧀鼇ᡚ릀ᤍ䨕낞臒ꬋ叨镅ꕈ넲妅헪줣ꞟ仲ꉲᬃ薛嚢\ude55ഗ跼滈闙蓚⛱㐭觰杴羍鉢쐪앂⛣䠳퐋〼ʽ쮠瀆怤ꦄཐħ퐖胬Ղ≂費鞴쇥箬卌ଏ啪ꦄ짴⡜賩咖慣\uddd5ᚴ뉸따蕭䫉尪罟曆﫵㮉聪赀퇄贀ㆂ젌ꎚ洀\ud847懠ᝠ꜆୥⒲ʐካ０슢珐眩䰡㕲巅ﲒ樤謥犰\ude97䮺䶳훳茵떭쐇歧宺\udbd6혵묽赤浛ⰁႱ烀Ạ엢ﹿ)ހ簡\udc00뚮䞯ƫᗯ娹㙀눞뢉왨䮭府袔㌉⁌솋ꕓ䒮ﭛ픨뀦Ẩ䮚\uda99Ⴠ욅䊣뇖椡䜳笗﫾䑆ꓭ솷뀵Ǫཐ⺀分び띠㱀퓣쁲琌Ẁ૊塷푖Ჴ\ud8a8綴栱督벭됣ᝫࡴ땉와툰혂팤\udd32\ud9b0Ļఌ仇ʓ벝铮Ꝙ䕊\uda93寧勉ẏ졻띀툂\udc36쌹ᓠ찀脛遨콀㎃鴔䏝醜ꅭ專᚞쌡塉乑\ude12쾕阱頉凁躚㖌츥똋냍寎գᙦ趴눲뤁ꦃ韫泟⻲៾룭칮ඍ㯵܀㻻ꪑ聱薘⤡츃䅸茰ᘈ꽨Ꮍ廊ત蔔⑓⨾䍤踁ퟗ륩宠毩ꄤ쩡훚➥㶱͏石㏝ꍃꃧ댝ᕬ즳⧌崾絀뜎싱֘ᘀ蟧șꗆᘠ挃厨Ќ͗䭉頙䧋㷋䵒㛨ᕤ₩鍫印巵洭Ⲁ鄮뷜샂蕂鯞擥ᒭ둝孳⌥\udfea춤⫪惻ᗔ螳케嵗îߏḂ鰔塭ʛ㼀塗띘喀垐葼䀴⁻✙ꬰ乚Ⴎ✤ᷙ홒횢첪蝖헠濶﾿ﵤퟔဆ䀹\udc42⤃᧽銫䢢䖶吢俷吂肬͝屡␌裰ꄠ᱈쎗㠕\ud810ठ㷘즱嚃漇ꉳ犜ዥ㟴웶ᗭ㵾Ϛ쪂㜐劀ꥯ申讖⻚⑂귵굏摐櫶툚\ude46ᶩ를ౠ쮔뀄⎨໠๱렾ꄤƅ嶁밀䗘㶁廜搌㝺ᵨဗ繮춢ທ㖅ꌹ偈Ẅ륋㕻ꞕ팪蝬㽡렂㡹썲쭰잇谿뗝짹ㄅ茋熎 搣ꢒѱ泀؍決ͥᓠ褌䠪䄙푞ꓤѹΪ潹焢࢖屾橔銩\udd06ꩋౌ킑닥⑲촙⪠諸ู롽뤘ꂙ䁍഼䋱㸞河¤᭠㳔瓝㧗㝒뉳喐䬈⋐仉픥ሬປ䤔⇅ꍙ✣㐂䓴ℎ숍౲贀坘！㘿偭軬罣င㣰膎㼱犝ﴦ隨ⴁ椠耙≎䫲〆櫠Խ嫁똋앙㍿盪늜㚅㘠缩룎㵝쟯晚Ẃ玒ꤱ灉篆䠾⺦Ꜥ筭ꤛؑ堉ꎷ㜤ᏸጿౣ弅큵Ɓ꣌㰃耿ð݆娲붽律닉덆ꀶ↞耐ೂ॒㺱葹헉⩉횢鏂\uddc2퐱纾乐S鈂ᓚ䁅㘩襍匜鵿蘔೭닱袷R砙悟ఠ䜣ထ貴뚘ॐ\udb0a䔾땲聭뀚᭼ܕ㚀뎥ηᠦ䄓曜䒣妓㺘깵퓼䟵㢑謵涪춿᳤岺졖᫺༂硱⹓氣Dᬐḉꙸ֘㺠榭ေ茰ຣ좚멪⟇鉤꧳ꔡ⨚ᗍ咴ບ㑶㡦⩪͇︬䂫洙䎮㎭곋照䬾姊콖泘疘泎曾鯎ꖌ㷏刅㋀㤺젌瀊䌞謀砅ɔ僠蘰搢砊웗맇넟坜恦ᳬ꽤䫉᫋氍庴臸᾽唂芎津ᐘ﵌鼊职⹨ፖ鹜씄؆\ud847ងʈ쪢耨镦ಜ昲蒕騳蛵闣쵍윲鷹솝쓷䫂\udbe3ϛ암桧퓧քⴡ攋깃䋆ᘈк킒盦᳇ꙸ稣‭耸厨\udd46騋兰逌ㄷ⊟氘왺㘰\ude87豏ꀫ䖤\udf11퀒⮇톰ܭ픂躦䂓ۦ脕ಣ㠅爳䃛ܲ㠁逃⁰䃘⸁怏 獸৴윇ﹺ耲֔媻퐛衸䞠㴀⤌瀍臎呩튵ꀓ쵀㣁划業ܨ鰠勍偂롃ᅳ췌삟燁蕆ᨱ톁豌慣ᬙ츁옮㌻Ԙ짂蠈ń콺嗚㸙풒ؐ㓀ҟ쁗㨸ẵ犟暠凙홶벻댶ꭀ죌ኦ鱳쭪皱疏ꤻ䉺恲莎䰐㐹Ⰵ牻ʙ蛣 尾耶ޠⴒ߄۹㿡ꢏ톶ஂ桂⊐უ௼篂蘢ⴀ袦ч̨耈斅鱜Ĝೀ炑섄锄䚍萁炁萰₡ʈ熄䛅ↈ褠㞁理裌ݐぉ缋мŰᙠ쌃Ⱛ醎ฤ窀쌱\ud8b2تĄ瀏偩茗鳠촇霅㟘܄⟁阞괓裦쌁䂋ꇨ薶จ㓞ꀅ⃠臸⹮ࠨ\udae8⸐옆੉̀⊐ꀶ⮈ذ㣃ⵚ胑丘⥹풇쐞ͱ̨醎 欧⼔焠ݻ䣤囒Ⲁ㖺搞ťذ\uda41ᗔࠝ⺹쌉꿔ᭀ憟ꠛ胻涂砀눒₟ਸ਼❨疡ࢫٚ꣘茡暄ᄆ驛䄃뤬랃褌䷖쑮\udce1ᨆ슰฻ෟ彰샣倁哌ݠ␬씂㵞ಀ簽뜃딤䖁뭒\udd28⋀枰㶐䉆セ䩏蒴挜࣠稁甙ꂉ\ud9d2㦐や萈勁ྈ灅ꀳƈݸ務陥魀䛼᠑뼂䑈Փ硸民갆럭뺤⇭\udc19舸ܸ⌊옌瀘渥⧰띧皿\f詰䐘ུ庳Ѱ址撌쁪⍞ᙜ힅ꀙĤܘ絁市郯ͮ\udb41ꪅॢꃜචᠵĘն᫭轶篸툁婢⁻⁄索挅今䄂蹽휡怑쀔蚾윐셍ꑸꋔ溛踌꣫\udccd뭀勁ℛ虠ଐ䁋硤Ṑᒃ悮顰В䨁꺬䞼㣖瀌‗洂ᢀ껜什ၟ뚃숢㸚㙱꭬㌁⨾⌌ဴ遃砙遇豀‡览ࣶ`᯸풁掵흐ջ皽-⋭䠍蟦㼸ᘀ޵쀰-骀ꊫ邀谬鰀\udc0eࢌܸ⻁闭⌕嗮态鈗\u0016举녬䭪宗涖₸\ud93c軞佘졓铬恥㶠Վꩳ厺鰴䴽䒋ໜ僐ᝌ⃦ڌ㹡휎\ude00\uddf6ᾉༀ돞࿫뤭뷯뀑螌\u001e詺쏊ðᣠɈừÍ빴ࠁ㭑샄Ѱሷᰌ〸ϐẠ쌁紽䀐罆됆鬪꣖\uddaa⽜⎰ښﰰ融쒦㠸耴䂤ᘶ\udbbaỔ您饁렂Ɔξ恟职ᜐިῡﳝ䑽䃰ȧ\ud856ȋ褠♝Ė需㨖\udb60⤍话舸ဨ\ud853㛹쁸۩밝⣯\udbf5௃亗㓠嵭숔厂䙘Ⅿఈ衷葰ఐ㥸偀ࠈ䊸훍섐륃୮だ䥿㄁丆遳釷瑻堍샒Ɲ鰣廉筯㦾\ud9b7宸鷧☃燀ကꇍ삸ತᮀ\udcf7䌐\rꦷᡆƖ᳻㼿ꠔǏ빰ṛ鍼⒐䊒ഐ砼ⶲˋ钇닡ᛣ뛐矁됈흘\udb36⡵涳浪걦䋚䅚펓ꧬ曮뚘ༀ덱㷔滐ᯤ례蔤佘ńဣ୾肬Ö\ude79\udda4榼௰涃ꅹ럶縭쥮쭦宎쏩쒌싈恂⊝糀䨟➧࡭臫灈璂ﶪ≩ಀ患蓟ܘ⭈〙ꃛ⌠๑쨿ᐶ\udecf硠傺秣㑢蹐Ḁ틥瀿蘩萁鷃ᚹᠷꆿ෹皣眘ᣟటꃱ뱍ᰀ궾\uddb4᩠⽌嗌遟뻭㣂\udb76聊伲ව＆\ud837莿篠쁇퐂ᆅ뫸瘿\ude95䔸㫮孰\ude47玷倅㠜ೀ统魭鬲䌡픷иꗞᡸ离㛆ཨ΃먗뇲ꍬ먂㌁㩹믩滴﹛팅ᘲ뛦隭닂䠘\udbea묲ਮ靴疥㾑ᓠᒄꀤჳ묄⅟뭆✸㮌㯶잺̐᩵л䇧皣뛁瀌潻ૼ䆍⤈鷟\ude2cᧉ呁黹蹧닃貁Ǥ࿏㣁콏ᷝ⊮숱╃㛼ᯘࢉှ鳾袬㺈ʪﶙ\uddfeƴཀ봹큳느䘃\ud814䛢ᥡ똋ॷ山ؙ㒾痄\udd3d콺楩չ﯎砋蟯鿡﹪踂⏜ᇌ丒㯝姻굯胹閟䓾ﷴ궎齐秢밻ĵ冃룔ꋲ쿚뿳\udbc7䄉倅逘鸩࿛ꐡʁ辘䙂⚪㑾䑄ᒄ뛥ắ੻Ｖ❒翓띷ⶅ漰륛に困䠰褄䋝印㒖箅횮選ퟡ浫瘈\ud843ȽŹ릭ǉᕶ󠖿硒⋬ﱻ﬿ꠡ쾎礗骣㡳࿘篙\udf25楺Ϧ幘綗멌䤟⾃\udc2b켁諺味鳃㵀군훮餫맭긜㺔污竢ഈ깹⯛齐൧ែ꤮̔㘲❭ꃂІ抄㶄㸫醿뀴폶ଉ撩ӻ蝣Դ⵸繷\udc4f䮠쐁\udecbﭭ맺䢩䒡\uda8e肇䐴⍙ᒁꈨ买篜臯➜䙫恇ĭ䖭ꇼ份¸ఒṮ䄌蠤䌯\udde1缁귂\ude59陻⟦醍\udc2d蟟⫶✷ˢ⫶鶤ϐࣗ懸尦部蜍턗쟥ﷱ쬐\udb07鹜⊛晈㜆Ȉ跖앗뀔㾎ظ㍁炡柡肯貿㯭ퟵᝌ㨂ȑ뼆玹὾ᨁ㍌ⷞŸ讯꺂鉘胡⍂⿡\udda6䑷셼\udc77ᅭ禰鬗霺_뇦貳捬冱숈❘粷爳\udea0␁芖㼪\udcd0蘷巚且佷⿕ﭞ浪㚏첝㐡᫱∌蠠↍퉂᷁ậ騃꫍艈夨◡큇擬䑷刌䜳٨ᶀᤜ躳᠎\r鶎҃잀榀전瀛륆ᴝ낀क़ᵑ쿃\udec2Y耠Ϗᵈ㤡⃳\ud904蠱䇫뇠ᘠ͵ꙵ৆淎薨챠㈀Ꚙ聅ﳭ猘ᾀ樱搁\ud902慳Ґ઼䓬⡵숇魳浍늼ಝ៭츅⇛漰℠ᜲȨ厀顱쇃젻섣愁탅嗬资Ỗ䀨Ზꅘᭀꈕ駖耜\udde4甉쥷Ṩ⢆鷐衬居뜯쟰椡ᥲﰒ衺듅牼᪨玁狱뎟蝀쑷솻䪌ஷ懔伋Ό̽ᡬ杰撚ࡊᴨǁ셕†峴툔뙈↬헏㱭쯲쨖᳈̕\ude54䉝巶蠘䁢ꂷ딢ᢕⰁ넦᠖ୣ臁璡퇘㍬㒅툖蠺沟Խ퉀縀ᐌ何轧㱦ࢅ૗絁艃⇚칱崣ᛶ쵠鉜쥴怙荥熘ڥ죫ᤡ둢퇆ࠛ\uddc7皣왠랁㕳舌\udb6d莏൷゜쬄뗐ᐉ巽퀛们倉ׇ聺聶ト᠐駜뀢⁉刵\udf50昀첃숝众셹눝\uda88㱭듷ꀋ㲸с馠暁즶頛蠂衒°⧰墅엵菌ࡸ癹쒳㹼⒆ဵ蝲⦞璳魈Ѐ䮳鈁唔胣ްሻං뉲毗꽏鱩烗\udbdb䃬┌Ở쬨᪠ஷ聦ᴤι쥉⎡曵⿊酕ࢲᢧ稀㞷⻀ŀ耀쐤痵ﵶ鷙蜶淸藎\udea0杽㫶驏錨妈޷쩻乹좠࿜טּᅏ釀᠂᜜\udb00尗ｲ‹獈㎅ᰜ⽵폆眖峋㌡욈稁⵷࿍眨Ӣ眱\ud97b䒝鉱锂ﬔᆘ׌㻀ੁ\f헎驳ↂ畻骀伂꟰䗙࡫倸蚭\udae0\udbb0䁰觜䠲̧ↆ塠涁꠆燞儋盂େ樠⻲䈅魜‿腾튏嘡\udd17⇐ࡤↅർ᷀뒁⾲䀊䇭뙊ቛḁึꯕ崺샳퇧卼△ﷅ\udf69ꒆ왗푯犔䩣舎　适ş헟ஜ䞆\ud804催벥೫臰ᕕ巳韃䂩䛠㠀᯴秗衄㵙ሠ᠀᮶ꏑ鼵鷢㙯㥂捵휄\udd03퇀醥ฉꗁ悆涘ⓂỰ⡃윏怒휏쀞੡줈ᯀޱȌ蝳聓\ud860甡욖矗怀屷튀㘢뫐ꏏ܉灟痼ỏᗬ쵴舂遗荒萊᪏䒤艶뷆❂\udca8㺈崌瀆栐ᑗ끩炚坠㣀夋戇ⅶĬ⨈匢禰졇ת톽튇䱬전Ԑƃ犑휰뾐ଉ绌뽂粸퓗⍜㼅珙࡞汔痂ࢊ㗝漍黃₉淗횢鲊ᥬ쏳肣巾ᇬ㫽䡳蓂楍泟ǲ⏻歐植䈐Ｖ胧࡫\ude88◂䮶\ud80e蕾zઊ埻噝愋ሾࡠ⃌藱᝛ᯀ쬴ࡴ泇⏸塂ꨕ耘싚ং㵞䣬逇琰锧숋넷턯㿃嵳谸㼝ﲐߠᣠ╅폘㝈㶱噠ថၡ쀫聆菧슊⯐㐍숵瘸u䇏챻Ԃ鐈\ud822遟㶔艥\ud9f0⸀蕑巁畱ꑌ駧ᒀ鍵갿༑姖嚛ⴝ퇅ﭭᣯ̚⫠맼쇱爰࡝耰藂ᇬ␠➧ᬋ聖\udd5a툰蟀藂䜍䷏띳肠ź唟ಃ傇ꐺ⃇뎘㣝㜽ꭴⷌ蝩\udc42熛썇๭遶淁颁㴞ᑡ榁䓰췂伋㷫瑟\udd47啵᝱鿑ﭣ밹뚊䙯㗼灲藜\udb3eॠ蔖썷㡽逊쀌g⁜૊ᒇ絜靷衬ⅴ안朣舍ꁄ⴩諣\udd90톂ꀖߙꀲƢѨɈ睩\udbb3耓묊䃛댘ጻ❼뚎鯅䃀抰\ud95fᦽ攋毁꼛綾蠢㳧嚃⍷껂鶸ੀỈ謜᫴ꀍ艶䌃풏৅ꏲ㰢㘩ﱁἘ蹝声廬楆巙珲㤽㌠⛆淊ᜁ瑘ᣀ㋁牳᠎ꭸ씓뎡䚈ᕔ梆ﻒ蝗荼燻퉛㿭쯰쇁Ⴅ\udd82䛜⎛䕔\uda06X㤲Ľ猘ࢨ蝽讋∸䝽臢ॠ㡇儝쑰麋聇ė諻ᕇ㸠꼆赜\udb41沐蟦\udfa0簇괒⇭뒳쿿㰠䱲䗞✖싓놱\ud907嬁ᱳ耙윰ﵻ鞅쳈ˬᘌ瀏ݔꂅ냱ᧈ쀓臰觓孻톜숔လ၌뇘朶쏘ˬ㑨濼镳Ꚇ䡟㷍럈㹠￁익\ud81a蜲᳁\udb4fᴠ돖鲐ঢ়\udfa7ᅹ拾࿃접∔௜㾸ꐠࡴ舎騍淈ᒐ뜃葋鏁聤衅挅૸趬弊쏈\udf60⌘瞹즀湲衞鵀Ǹ괂ᛱ䷊'샄싏梥声怕䎱뀻얛␠酶簞沚视슈㾑起阱颥挻瓮䞷兠햰폚꼀ꅆ੪ⅷ⍬ಁ刄烲᳇䜡쮛儼렇ﻔ蝴ℐళ\uda44웭扤逎0ﳉퟸ榡ꐡꎜ쫠꼝⍡ꈔ蓾奔侮㲝暁츁필쓅簃炱㚗䣄璀䖛⠆뷹㉛ⱼፐ㧂䡣鵀血ᰈ젣䢀퇚椨$虶\ud8ff縂農ꈿ耸쀚쮟丂颏쏋岯Ǧ贈儒뼂ᠹࠖ₊ॹ㠈ⷣ༏訝࠮汘퐉窀뉰ᓒ筁润Е좏ᾝ䣷䈍䷤烽윇⳼友坱\udd9cシ矁極⟏ܪ簛똙\udc14핵蘆䢂ॅ巟־쑸㇑䓴핖샇넀⿤激좇ߛᜌꋀ蕲㏯␼忄⿙୪巎䈂ᆏ䓽笌움子⃡ト㛰ಃ툋⇆ᝮ듇䟳埸ㅝ뢁㤸耖ᶨǊी셰觗怺Š膿\uda6c睅㈗怀菰♈沂蝲面‱䤦\udc57ዬ넎闗Ⴗಀ嘓ъᠥቛ삩㬀蘽쯱㠢蠬ﲰ聸⮂㋌ꛕ졚순틐\udd0cፕ鈔ꂟb蟷館஢྆먶⇮覍홁埬庋㧍묏ꏸ˺⟗威纊짟䲁諢И씃栒콾Ǹؖ쐨㫀妰㼆छ腸螠ܪ᠘ʀ㫍ᢔ\udc55닆㢟ᘡ᪈Ǘ鬱탦௰㍈繜조⟞⌃䖱얐봽䤹飷鳎畍\udf50ㄽյ䟀풃ོ᳑᣷⓬ᬋ厈炠⠴넣⵳Ồ蝛뷮\ud958칣䶀췀j绝➊돐윜Ȭขጨ⛁ਹ伫菉ूヘ쉼ꩉ꓇ᓧ擆ⵛ索墆嗖壯⎪ピꮃ\ude05ꈘࠑ汾㙷崡ᶷ慙耬ş눉ᇸﬁ좣븨袣鳓䦩壿䳓숐࢏ᔸ眞생䯡㮱啒ཕ肬佗쯛Ὥ⍴쿗ࣱ⃺㹌㋴鸼鈗ູ㦀䰼옂⻞归벺ힷ죔农抅﹎ƺセᘝ﷠\ud9deꀏ㰯뚟啈笉엏ݭᏂംȶಃ숃圥\udd5b\ude88恼榦鈺죹≁獸ᣠၜ쬃戶᭿飩ଚ㯠寀志냧披쯰梅䈈ߚ켱峆ԋ㛈ﬢ畇כ\ud8fbଲ༛⦢ᅲᷕ켣揍낽\ude77Ɑ鏖딕תּ᳛낊㠷䤀㉷鄌舵둚㞏䌢禳밓ὧ㲿ڊ乿ǃꃎꍱਪ⎯ᵐ小\ud898岱䪼᧷崼₅㠂ᐊ㱰腥읗窵葈绖✵쎺讂ឨ闂瀆䠶⁰嵷ࢽ쪛〠륍︊拋Ⱄቢ靱툘存錅眯쪠骃䈡ؽ籙ᭈ威夁炊䄸໠㞀ﰈЏਸ䃑τࡧ\ud807椃逫蠑蹐㖌抜 倾뒭ɴব͔\udf10ꀃ퀄ѵ©Ɬ܀㍬섁렛⃅⁴ர⟧ຂ瘳而嬘沱뒢鄈搜뼀✴ꈇ눿힏͜끈\udfda낰዇뛅힀ᖃ븈⨗傭苍瘘ᡀ犬㗉蒈 睼ʐⅬꂆ∑Ȕ࣒ປ₝涶䈄⢃≟뙳⌐꾂襶蠗䏆쑠ॕ灝ɷ봼졣淍랶킈嬼\ud882Ȏ摳沰䨶캨훽丆䐬坌䊥燄㙗䅤݁\ud8d8耶쇁矱\ude54쪌榤꣝ﭷ䔑뇠ࠨ쏣⨳ꐶ邁丿\ude10\ud842䒆栗恺¸∔⍛元胲䈹쓭⇠舫쮯㎜᮲毎࢕㏝࠷嵠\udee4఍꒗擨⊄ී㲸鯈䏑蝷籒ׂ㩩秃᫶毆뷐谿햯縁ᴇ㐮꽽ƌ蝖퇘瓬壍珝䲉⁧닙❤퉈舫㭅㌲트玝⸋舗僱朞\ud8a8瓔乏踭“⋂퇱刡\udd72託杶ǈꋪ薌땓㠘胰豎챈嘰鯜㍢ᑘᴠ千るἿ貭ﱠ銖핝㐣똀⻕聵玒⮇㟼큵哭䋈Ԉಯᮢ뀁谫\udf31䍀㾀ളヴㄛ벫䈒휧䵓땍舦筬≿౱⸏倽ඁ뒖恥ⅴ쒃혡ઽ邶埚ༀ뙭㐻筼ᠮ묖삢脘嗨ၡꗆ\udf7c낛쇸ﻳ⨐英薈䜧Ὥ咀ị酪⁒ʖ첦ᮢ矇쏔㘕벶ˆ⥷㳬﹌巛補˛؞ᐐ뒂黔돒Ŋ˷譠҈ၒ셎쐿衋‿訣\udf22䕜흉ᰮಙ㶡瑥≐빜㒌퇒蠎剁∐밀襉Ѕ⊲变¥⟿ᵭ悂4ï쇄轊\udead∲辏᷑\udb78₠蒨튘葓察钸섅䯉ㆯ柀딟퐢\udc5cບ瀓\udd23ܺ崤詝셸⻑η唨䊹솮A쵈쵭\ude07鍊᝷䕘⫔\udec3㒈훚ᢆ㷵䯱\udeff䐡砃輻႙峱ຣ\udbd4땭﷈귍Ⳡ綎஡传쀠㟵舅铝೴猓堤籬㦰䴢鬁胼푿⑻㸲俌ﲅ뵵䢦솏嘱\udfd8뒤T詔受綜캁萁ᘶᶒ蛐⦴죄ン렙⥔ත㫴榋攕ＦѠ鎔㢀㚭ᗢ遚㔧쐠̀ᑏ嬲䟁鍩臚틸맏䯜曚⅛쇈芷⼷崠ŏ툯蒖沔㐉㮼ᖈ篃뜕拣ś쫈Ɫ⍏瑅ህɅ뜸뻴믓ʇ삁꣚䏽覕㈁䴠袀叙೸絷癫蹶㮁옑흣쎰즣\uda3c쟁葉鈚睷棨ǈ⇴ꔥ\udda1꘯靗℥䕶펂怵噉柍鼼ଣ裸ዠ纳맳跗鼟峛쩒寚❝隠ጨ\udf1e떋펼釂᮴핁뭰劣댹쒨ᰠ쫰㨬\udb23ꍜ虎㙠千櫲訃悩쑽띘⭟磣캅퐦봔ኤꓧ㎜诐㭚ૈ蠞푐겝ꙍᯛࢩ洯蔴⓼꣬刀橤꧟㘏䳋쮶詛蠲¸膲@㖵⠄﬛൭燰뉀㼊蝴礿샼炢᫔횓伉뢰蝨捪ユ\ud982䱝ꦠ㜡뭤訡䲲ኀ͊㾌ꔦ쀹닦\ud8ef刜궱ⷚ\udb7c鍋଩⼰貳暈怂낖綉䶨범馱쉆⟊圤䍂಻솬辘叱뷟튰鴐慾셰猡\ude09ḗ铚塢錦蒬꟭ꢨ︓潣숪줢݇㡂⭷⻀졆岙ಒ㙸縥\ud8a9䂨î쭅Ⰴ識ᶵ簈䋙뇁쉐軌渪齷䖗ᘼ흓碳풤Ŝ螘ኛ妝旅Ꮯ퓴汛희⡊蓃汹ꒁ㪷⪊库㊯佖롨譫쇰㨼캂㲱裳⻮弧汋萌㠟ዋ눤뱈ቊ䉇懈䂝ʬ㪒\uda4a后⧁銂赓甉햀朒䋃錨Ρ춫瀣述쏀勼㳮䡖캧ೝ蠇ꠋ苂疻᷀蹂\udfb2☨윜ꊮෆ쑠貣ꉰ㈃靸錕跔ꌷ伒裵Ꮤ輓첷㚰齷咧ᜄ劭贓\udde0儽留갶ࡺ詭誑℟⠁잢㼕ⓢ⯴瘉ӯ搜릱Ḑ\udb5b副μᴛ◜\ud803⏞蠆台畲րӋ\ud803᠍끻緘烒߰塲㨆⠷脐誙㛟唋ȩዢ쫰⻊ࣂ䴳捱쏊踔쒨᭽쟈삯䳋苳눟⟛㘝騈판\udf75נ륟皳◴✡⠍荢녟䮜ᡚ楕ਥ\udce4ᅌ໙ꃠ\udde1ⵣ훈㙍怯肪༘ꂣ뙙㑻䣝禩෗ﳫ텎犬빯掀蝷療쳥炞焫⊈嗣蜌䗈惴귙煕刈廔靵৉檻艐蛭⎛帀撊衆죂첋ⴷ唣Ȁ\ud9c2ถ⏌舜瑲쬼㊏솨蒢̛溪鎈⬳\udb22댜貍荛J✓렴벶ꯌ蒒✇嵜肂䗖ࠜ匓톛쭪㫏鰃ӹშ\udf20讀輶ǧ畂ന舄㢨⁦ଓ膀芢殶⨧呪䊢ॷ࿝ᅳ⤢鼰⃟뚻\udadc뉽\fᘭ삊ኼⷼ◲窌每ꢜł莙Ҭ썫㹏搾睗艬궅쁈鲢⍠쬩蝘崌衳챗ን橔ԃ쩎엸訶嚡᳞䊑찐㔜넂␍∊䂙̤ΐ⼜훒✤鳍͗懐㊊㮀怃㗁줛莎Ƹ۠棕頁렐孓腞샀㧈瀳ꪼ⬘ǰ㨔҇먹㴔\udd5eᎻㆈᠡꏈ觑咴⁀膒ᠼퟭ玉툁棃⊑ජឰ\ud8f3殶ꯌ銁塧␸ᔫ焃햲舚퍦焜㯯㯀≏拢獨뮈ﵨ㡈滜䂒궐珁먠⎂뀉ꚁ考밗苡Ⓖ鶼휯ꃦﵯŏ썪궋憪魖ᬨƜ芐㴼架⊩ᬠ緡ළ㷑⍭衲笲ႁ焒ꪛ㑃ⅴ쬗͊ቈ蚂⛇ퟆꔘǋ눿㳠砼壍⸽ꃇʨՒⓒ鍪咀ᠥ竓獢๟흈ᅭ峉娢炎﷨蟅죊힊㵌ᙒ挝跘Ւ㕏䣘\udcf2咶Ⴉ\udc2a쨕㆐ꯁ铳࠹\udc2e⤛妱쾰꼖꼨㰶䬛씰駭嵱᰷꼏䉒ۙ㝨蚃␭芣糝㙌蔠괎䲡묤쎴膝춯ಽ솭㲩勧┫녠뽻疒\ud8cb谔묰魆야⿐鮀̋訅⼙쮴菵연ﴋ㮶霄썌蘪Ṽꏬ≯菁ᦟ籩絶簩꽙Ɲ닫쵰禾\udf7b脘僿⏲곡캻ۭ鐬禰띶镀똖辚ᅯ㦡僩殬菎켖\ud932쬆撧뼠᰽ꐕ\udd3b稀蓊ई鲒櫚༮⼆꿆哜屈蚦遰﯐䞃쇃鬜ዑ༲<굝귍뷃႓ᨕ઻᳆䱵爀恟卞ࡶ\uda08⯁ষ皮틹睹㾗災羅椪뫨蕒蕲ᡠ濽춵廚뒁ᶂ檳✈ˬ澈ᇇ曢ꃗྰ净각\ud803伦᭛洓틼፛ⱬ坰젺⤕㝰봚\ud882밈咀錤ꥸ뷔쓲湶㠉聨답世첈ޫ꺫餉衴ꋼ込ភ斫䡳ﰘὪ⇸䫼஀暁Í鬞⁩ᱯ⯩권华柔蠬쫧刡僶ꀇࡩ쯅퀈롪刨낭볷䈝湷퀚芓걱校훍变瘂⡶\udced䷊蹕琒욗灓鬇琠늯䍔൵꬧൓ݮ툟ࣥ냤테逽掷軒聾ƨ蝣⌴\ud9c1룎簧棌떙ꘈ\udc72忎⨜椙⪺ܳ㣄뀝䱎됰㝥糈޷졲四㮷涼\udbdd浮틧⌉ᵱꗗ\udf58萭泅놻⭂ﮱ氅傃쭍༢㸎햀ꯄ锦緁꺽믰믛ᓎ촩훵ඈ䖟⠊肿耸ਁ걎킂톛迳槉䥱됮⑰七D穄ᱢⶳ섈㑒珔惕ᱍ爗㌿睅⢃䠾\udb4b⏨ؿ셟೜췔\ud854緟痆탖蘁ⶵⶒₔﱈ첂՗㹝㕱웜\udb6d⍸ퟷ磜꬧閷✮쉁⸶簍铤؂࿖身ꦵ 潀타쨟\udab8鄠䃕槏❥糹㟌륟ซ깈묨玘凐⌈㿜分㠃孼檲田ꦗ簼䪩갌㼑燝ꗭ䯻ࡂ컳휹霂粻딿⁋\ud827說鼷௢ᖃ屳䎫ᗊꠘ津俁㡠쪍嘨☣첢⡰猵즈㼓䟷緑ꄀ荮촼࿟䉆❢⟏㷢뫒㔠䛨ϋ둂컭璢돶믈ኞ౟돠襠㓭⯚‵⇍੕뫗㟭袯䈘衿㓇䂍锨낺땳⤢汏⎷โ궿嚂䂂햤쭯﷬ɹ\udcc4盬₅鈖⺪괍궎\udf69남\udf36쇐䨫괠椅ུ仕\udd4d라቎힂䜍箁邀⃼쫆튇䂡绫Ⳛ㚆Ŧ쮠ౚ핔孴堓\udb5b䦮讻✇㓼潲ਾႀᏍ䴬߻ƪ뤌훁靨핔䫏➀粠\udfd8ჟ쯠뱬㢁ᡟɼ⎗쫲ᢧ㛁⠇ใ魥먳଀आಀศ∅着楲㭬텸쌭훇삏셹뙏徜Ⴊㆺ\uda80╚种爍ⓖཻ롸⟜䭷භ뢨ˀ䤞㍄ꍜ䦋Ȃ逈␩돆홞근ꊃ䤲㩛⹷\udd40௝왩⻃꼛\udaa8똰ﬅ퇭蜙ᷤ䋖퍄홝渋뛐㣽獈쉩擵ɲ\udd2e뜰⇭넁\uddaeꙺᦉ枮좇⌗꠮\uda48睅Ŋ䐲蠜ዋথ⚺늓꘺푛셥엠ά铜뀀制䁮쏔胈溴쩍练邾ↀ།ꈧ≺鿶딑䑠↣챬↞頽㫩႞ǿ伅푸훽ꊖ뒧ᬍ诞䰖\uddf0勀媌ࠡ璺ᖏ힀ᰁꪂ㨂ẫ鵎甴ᇘ匓\udf91ञ⽠ꅳ蹬\u000eꗻꫦꀟᄛ╆賽⨴›퓢鉎䰋㬟㳃좀㔧轨惚뫾鱃ᗎ䫟宏ៀ끑硫簔幯솭䥼֐ꪛ̮䛳郥鐎웨脳Ꮹ耐坿鳱ⲥ퇸΋⪊曋ꇸ䶶젧倡\udf75猺㔼菠蚋삛䂡킂ᠣთ筜蝷뻮퍬槕愧ݸ䊯߈⬨뉂異ඥ钕⃣囒ທሠꀉ鯐地▿눞쓺鹰盎秘ٹ誫ठ㣁訐ꡤ쎧냈ᴾꎢ돪㻯숆و謀妁䐞᠑ᲲⲢᅊ耂ꡊ濖蓼΄ề鈈‹됥⻯䜺잶玬鋌抄ి䅭㒅厩᭵﷔深쮏禣頥䗓魳浜讽⪏㉽讷눷铯ݑ裌▷撠憳㖿몽鎩趲넛 굲쑷䕨耱톏猠饳稿耽،Ṳ亢蚋햴㿑铼抵狋Ⓨ쬵랺眲촴ᓠ鿤\udd8d抵ږᐚˀ஖⯶衟ꫳߔᶤⲇ㟭Ꭻ䠮輴 狘癴ꂃ\ud86e螕浕ꍯᑈ䷭坒ࡧ䭅殼ᛷሆ猸房땅\uda01䭛ౕ}묔﬐慡췼銠ၦ驆ے㨩Ắ⎠钆塖ᜃ漐ဦ鋻Ĕ额뼃⺯霋Π쩝잰艭鑀윁紵⾃\ud873ꡨ缆鏤䗑큰霆驍몭퍟덼፛㚓▏₰튳纠冇ꚓ힥蕗熧홇〠৮ꊯ㭷새燑혿䚼济㢮耰Ω⨨볈絇젚뾹麪ّ‒厊饓띊쀫䇠笨꞊૷ⱽ\ude00㬼⋒ᷥ쿠睠╪⋲쇑ↆ㈜ᙏ鄛廱ⅰ껠䟂ﰰ뇧਴薣Ҩ༊䴙ꂉؕ⋺㱷壇䬎᜹ხ뗈䢒봈⌝麮悆ࠒ苂誻봢ᮻ愜㼟稬엻眽摠䓛ᬳ켻剽굅屖㰀꺀侴紀䤙䱱묄⇄༝뚎굻ࢢ쏓\udf20뱖ᆻࠀษ㣄乽짤셣୳휭ꓢ泎ਙ⤈䣙יִ\ud870熷箇Ḙƀ圠愪魐鲯̻늈妺싪锬܀⯄袷ꆊ驭厮蒸ﷸۜ珁嬨꬝這으脷ࡋ\ud947捬䌮엊\udcf8萾㒁聽㼃㛊쪴鯑躻紜灊챎뼀쉢璵콣뱩땝㝃㗪䢃ȁ㪺勥韠ḇᓼ旬䧩➄܊庠敃ᱍ懇狾聠覆凰偳鲖簮髺脞試蛊韜㩕卿쩸騐ᛴ朷৷뱜焖\udc84軫徵ὗ뤮\ud8ff㔒㑳Ԓ岲찵眉㓬컻⠜〱蕗籡뀕퍬ㄝꬻݮ穰皫뼂⬼ᑰ戓⛚ﳅ畠ग़匝鉻솈狦主옜뉴∕ẮĞ밣ሚ㭗쭐∱夀炉ẝ䘕뫝䂿ᴼ\ud8d3읱簈\udca6崟ᶂް邜ԕ⠲\udced⺦싱臆ᗷ큿y춘ᔟᭊ\uda28㯔㲤沃⠯㠔蠡壳ꛀ⻜₺ᬹ헻益⦲舛⧩⛎鱡횵׃᠂䡼ﬔ蛬猆뢊ꁉ崤ⅲ࣢࿦妣ಸ齖㲲๥\uda01䪆猬鑥캤~䆶ి楋ኛ콇䪯眗㪷༦◇䗚뽤ᶺ頡춂ړ踂㑶䧚꯾猔ᵈ命맩꺤ﺕ⯧瞞锡䡰ﰍ꒶ǟߖ鯰簡ꦈ玸ᦚ螥ᬷࡿ㞀쪌㫑㰐ꩦ瓞⦈㈼Ⓔ崚⮐쏽쓒\udfd7邿鷉猘벗ɂศ堯삫샭⨠ ⪲䡪波ف஻䙿ᜡﱺ槽蜽䯊嘓皨紬몃涠䷈篤†砵舑ٸ嶰컹ई盽㖵䫛Ｕ兎颇빉퉵긤진䮀誹⳼洴뼪ࣽ鈮衪ꞷᾜ覚䗆풂叞঴ꌑ頡됛ⓞ胲ᒰ뵊٩캩䛥鋀ႀ䯬鶍렦몯섙狋㺿ݺ聴଺蝈‟я얏䳚ᣱʆ䝑끲鱏랹罸鞍淎蕅聄쫗벯毳愤ਝ䀫䦛൳퐹뚀ꂉ䥯\udb9c࿸㘒綀賉ꄐᢙ驑\udde6읡︍揗傻摳狉꺁ሞ䡩\u0005曶褤㋏榋긟虜捀肵⥄옡樷凛铆ꎏ엞\udfc6暘蝨Վա㏉쌢ʀ鈺㼪\udc28藑챿ᇃ⢁鿐Ҽ紵ꮪ㐉䒬⪀쉦庙鏒Ⓨⶇ㬌頍䴠⇃㎗땹킯䜀滊圡똯릴퍬쏲詏Ẑ\uda78ㆵ⽊뿽ᶱ舄臷ᴯ䤢戔䘠⿪੹觞ﮊ쩲㙏̜䍊嫣嵌讆橈ㅇ濊賙臂覺ㅯխು荙䶗௰浬᫊﬜뽾ኳ顂ُ䮽ၦ읫戴蕦油\udc9c瀆爝耰ﵡྲྀ騶梆돍즷Ʞ쯢Ǫ쀡쿷ﻁ惨態䬬؛㎧䀟੓⽐\uddf0諁ꍞ쿛ꮲ靚ជ듐ꛒ䌔ᜉ\uda3c殺㡃뚲簤㒜炝찭은緡猵ꉸ炃腮킯橼㕻杪ꈌ扫뺮뭐捨ᕈ⎃泩轂ℽ眒㪏䶪迲㈿麟獫೮뺭ິ鹴䋊▯ڲ螎㲱뜊㰮齉횣甮溹꠰ￓ쳈뤢㦛銌ⵜᵞ뗛㣂ώ꧇鰻Ѫ禩萭꬛砑뭼ꁩ牳\ude8a윅\ude4d厴嚕㋛鯁연⺫ꈝ䉶ᦄ搅蠁⠁諆岧\ud856柰帟\ud8f3封Ⱅ퀔飼≏窯\ud924ÆĤ箈笃ロ懍몼쌇燘嗆殘瞸孕\udc4c詺ꦨ㒇∍ꪎ﨨ᴑ瑤걀Ῥ躡钳ۭ䬡뷹전춏㜸沯⋽殲ꨈ㇐앴宬恱蜴幨̠′⸇끽᭟靸龕㟮엽ႄ瘀젇⛟⺖㐔붧崮䀺恞䎕뀔㍘ꙧ豷簅젊쪙軽츋뜮铵嶣Ẁ冏眥頄軁秵쮏췙橸줁蹲貥㻕耳늉괚閒펉Ⴁ㔆㏔艣㢚떚䐓鐪㦰∠調✂ꀣ瀯Á◛ௐ詜눱伋閪怎〘댂蔈⃅쿁艁结輿䣶潛窲榥⤥璋ɂ즶갬\uda30ᶫ䶼⦠⅑俳䞢\ude97䷊ꊸ흚动ൣ줅誻﹢원ᑼ눛尫⾾빲끲ᮦ캂\udbf7ഞ㊏慒씿潠醩ꅪⷨ뫏뉫릮ې猬칤睨ɚ꟏훭먂侦縈滦졬氦❹돘༢駀냽岏ࠡ䆉⭧콯棛좭亥䉫ꨮ犏⺢ᜎ麹热聮쪐摷䔝ꂅぴ풄屇蘵뛬徳袃互♶갅᪠뭠鋪ࡷ᳣鰴翪팡﫾ȟꦍ촜㇋纣鬒㊿껊굀멭䧏ﺼ̶٠櫨ᓠ渡䶴鈭䰗餔鬬ἠ枴鑲쐞삮猱Ĥ⌟摇텵鏑䇀΍洟콛Ꮭ曄硐↞Ⱙ넶뱂뻕Ə䟾昣㷬랓㒀᭮ꘅ麳중\udf72ʉ졪뚎ⰵ꟣鹶怖擒੩睗閌䳢풞埍뛃쬈趶기꺴ᾊ঺㕣紣嵳昵졘ꅳ\udf7d㊡暆랻咗并Ở㧫碱诚欛ⶼ煷귂蜴剾₻㏺쫪Ⱝ\uda59ꏰ쾲⏅⁴뛊᪼κ괪L汮眫茀茸딹ꯀ儜㮪鬐台겞탡ꈫ쎔ㅰ₯ᵑ鮦閈䐭鏵숚拳涠\udbe6濉蘫䂠䎯ᡚ㉰鉽邁鷙ܤꍹ癫ꑸḖ\udfb0톸１招덕㩊혝땋붪䇛ﱞ驓먈䴡뾷ﬧ䝗㶢鐨⎺苬䭨蠽䶃紴\udb7e鄋圡츂ឺ퍻维韭෈ࠉ녷ྣ倢펂떰ׄঀᤴﳭ塭삭傲淴⦯罂撁릭뜴䩊낊ꬒ袽焭誰銠✒괤餪튮س⪂珩⪽ৰᗜ༃谚씸쁬苠ᕰԓꝲᲔ佨腗똍횪ꅊ塓悉2£⦈㱩懡䛀ⲧ⠶䙠ɂई벱䰂歚㇨쑣ᑲ\ud9ad\ud8c4谔憖脿 憁⦡鵁P\ud829ౠ⾹聬謫ƶ֐ၐ⻡솃㠒臮Ѹ᧠垀㸂惧䈈\ud93eᏔ࢒䠕⁌膫菹䒠᫕떆㐔⁣耟쎴Ӥ̙ 끻ê螩\uda39⛐ĂЄ၌䆨᰽鰑埇鰃끪혆턤⿠稠蛀䱸}ዛ萀ὶ긅렁聞˳䐽뼘磇⽾Ꜽۢݬ뜰਀䀇ṻ\uda3a꙽욡ꂉ䁩棞ꇣ鵁━嗁퀔\udc73煫␐言甀쾢䀆뀨ěiᄀ嶸틕롇䀴ŷ\ud93e᠀\u0000畤Þᗽ럷\udfd8ｳﶷ⌾蝸⤀․ᰅࠤԿ罽헱࿚肎䡜飐Þ\u0000才Ⓧ̞\u0000湧\udedeᾐ䤀:䐆䁣㶀能ꏶꀺ㒆Ϙྐྵ⇦赙ᐏ搃䃯﷌ༀ㧀鐀쀺\udc08ﶅ솈㮀嶤먄ꃺ莌ະ㨀옏è﷐案㨵䶰㡍렽ｷ莺ྀ㤿灃萸瀊䃄㽫ʸ⸏倾郷砾࿨㾐☎‿ළ䎒༱혠⤏퀹탶䎁ฌ㨐旅젎촂耕䎸ູ◴᷹䨎뿚﷓Ɵ\udef0꿡헦剣࢔Ǩ谀䏠㘀裪萐±ΰ೽ﱵ྇쬲သ\udac8ٯ䪃ᛙ⼤裺ꁕ敖鋥öゎᩁ逑큍䄣Ứ⿌Ꙇꠅ蹅碆᐀笭莃⍇Ṱ郐̨渰孢ꣲ쀪ᄰ軲䊏▆⣹ꏦ㶘諁ㅵဦ㢍혏褃苜៲䮙ࠄᰋ뀅偰ޜ࡫測ꨠ灤쌇Ṍ䡰铄庁莨$⏀裎⺐␿ꠖ䈚쁟삐鹂氎怀邟䆁İ᪠♠༦笛ᙁ轛ؘ䥐儇裭sӷ僾ఐ묆ჹ䀘서뙐ᱣ琥婇⩑⥾㧐ΰ蛕琇怍&쁗蒨縱힂ጄ䰱ひ㩖ᚯ吘낶ꎦ踁㯙೼灀퀁萎쀉躼ì᭸㇁笂︕踖㣢˩ഓ椼쓴\udc2b酚蟄⮠뾇煒ᙝ৶န׀셨\ud816\bന숨෌堀洗퓊揞♜ᕰࠀ‖扱겊ؑ䖔⪨爿偗蹧넍ꕰޢ䕎쪀娆U伐Ⅼ\u0003眀肐평쀍ⓔ힉꘾꾏厕샗ش协숇㓿偋伬褪㢀铺⎐㧐ᗈ擡뜇쨊腍슈肁⏪砤α贳뉏갢ꒌꁹ伝㹔鴁怡瓿簍丁̗䋣튁㴠◔䈀\u0003薰灠街橝⌻㔲㓢崎᲍碵쎟โ㦈鲎䨹꣠᠖踓촗ꇫ苝੉飥掊렣聨帹昈乍酄鉎䅡嚰䓺ꀖ\ud956⟖ᦘ吙⠉䀮֟暂㪠៝逈㏪죗쐸ᜫ嬀\uda01임瀎仅⋤﹕䏸᪃\u001f塶냯⟀ᣈ䬰ᨹ쐟렉锬Ѵᇋ绡樒\ud883뎚떒̐툀减¿뢘஌ই㴢燏盖﵃⌆뇢\udf99ᜨ⎈踒㣈̣陻㗎棥筟玶㢏㦀எ収봂邯㬓鑊涤灆㸄栥h뱈䃶璈㖮㆛凶匡齤뵝퀷\ud862㋂㪥윴猦斧㙢噳羌໑鳹븾斨咻关츮圽㣾⺷㴱鱾巎䋔Ā㦏㻣賳褯Ӣ鋤丙⽠얼ᛕ喠뽁严㢠ٝ蘁㔹䰐펗瘰⳴᷽挹ᭂ댐武⺶㬷恪䈀粲옕怾耦ᔬ猁䔅ࠍᱻ參唚ર㐀ⳇ䋸摥⇂㰯ᤔ⋫뎒⽻㼢ﰂ䨮蜹ᳶ讝듒ぢ꘮蟑拹쯁斅锖屙孈ꖑ陎备셞텖䵙㮱㖗欏踺襘螎䥩꼠㌄\ud973ធ퓅䀆勠픔敓ꄺ츃礵캱杔봉땈냴ߐ扤イꩂ饬禛턲婥뵒拏핮ㆲﶋ綵Ꜽ湖珁䕘뢠襫酤양耂奵꼯ꓚ㘡阑\udcedጊ䡶뽖彫躻화搮뵁諫뼳諡㖿鎶嚒ݤ렆虖᥾㑝鋊ﶍ佤ଶ。긱ꃘ抮ㆽ䘒∲꿖蓆רᱡ\ude87옂뇪릀ജ璈門썖㈴⾼Â龨窸ꌟ௫빈䡫눯ךּꋢ殱캦봴칳娌뢵ᛩᯧ⽨垡内昕塒ꢣ蔮ᖤ럡䚄ᐡ䰡ᅀ숁ꇄ原橅嶉㩆隗鹑ꀟ휀Ế싒렩꧔밉彵ㆵȳ螆洨鑐叧䌅㳹㛠퍼ᒧㇸ옛暻쥘欹쾑릡往嗜ᡒ慅蔉㠽볡娠渕벹֗쯂溔⛩E㽯葕⍐㯷ᒑ䎎ワ摔軡䔏촯ኤ\udcfd䲴\udf90﹇/鏾䀅―놘닇줳ᔠ덂負濹־૊쨑澲ㅯ餘煮ꈢ雩껥렊욫ꕯ쐠櫲쀷촏柾ᐾ皯떼촽溷תﶳ轤袾设칦㠜懲\udecf墵⻲玁븾ꀴ䩔\\ꔪ\ud8aa冩亥憀ᩕᾝ믥Ի뼞䖥㹨堃ꕨ듔뗩咼䥩⮄᥈쀑閒ƺﮯ돂塦熓묵呭␌唳璏댨镼钢\uddd0碔᳁譒థ홢쨛衕닣譻⸑뱲⣕⥂ꕤὪ坄贇욕ほ㳗蕜Ớ倡∞穓徔螁镊꒡樟ㄹ㋦篝ⱆ㄀ᙥ禔᱒煄⠕鐼嗘ͻ축꫕\ud95f⮃舾ꔙ侻먍᠋믲쪫蕯ঃ뻬倕溛䀳ᬶ捤떺㸓ை璊뗂ꎯڹ\udbe0ḭ밁觎暺臡촇潠窍偺㒁螥ẝꀉꆞ蹺ᮁ뚸\ude93푭㏞郫쏩辢㎌廓ꓴ࣎᨞켐Ⳳ㣄䟃棸㒽仭螮춾븒訥濵鸰캈ᮂౣ㔆℟ശ봈ῲ羜킧頟摾ඔꟲ黇ꊩ喙姩几鯱摩ﳺ暟䓯夓絳鮧鯨璱ﳚ쟗ꙶ鰐⿩㶥ﺇ鯪Ⴚ䚫䈆伟િ髬宀鼥뼪Ｍꪼ囮꯻礀᝙幠䲕绣ꯄ鼈㟖ꀹ趾⋣⟸F뢤౫퀟䜽짾课竈퟇ﶟ蔗䬥╲ᑋ㧠⒲Ꞌ鹔ᗡ䙋按氣㺝絓࢔땊鵁唭蹐틍偭႔ŋﺟ䙎詮倨됯弋䴮펾틳蟲ⳉ쁏灄挮鉹姣픶튲憼拢믍輝먃䆗裥蒱旬䭶庤닥﬇鹞ህ鋟鞅ⲅ窭䕋✙야㲒埭ⷩ룋嫇ﴬᚤ㋃롣ⵌ듂헇چꭖ쬰待먪銯ɹ藤⟹漂떪拏둰괖≂⹸鹵볾濮඿ﯴ鼀縥쭮⥾髪鞻潶綥惙蘕ᡞ︉蒦ᆘ乡օ廗塂㌭蓯▹΄磧熔ꀻॎᄒﷹ乕䎅闩䯺἞례䘃惨왹仵蟎첮뚙㉄䨑헷则駸絛峋ꍞ믗絎讆\udecd㓢\ud9b7餟孾ᑝ랱蒻缸ᩡ䵃筹቟럮脇簓顷\udd85ۣᷨ\udf5cٷ讅챺䧲잏鿯ᙸ吡㓕\ude12衆ℸ蓧纾䈽竷ﴐќ애䕆䂰࡛쏮卻㟨徥뷲튫곟澼䗲➴焏⟘亢ᾎ\udabc엷寒\ude52翔\udf17耟蚿㛼殜鼯禶ꗽ鸡ꑆ錚䉩⦤暗煞楅ꑝ罔垅喤눃\u0003楥禢맚䪶䌈谢撜텻蔺䎬⇶掻闩矬⳥Ꝋ妇萌⺴﫥䴙딽Ƌ膆ّ㷸荁Ἃ뫸\ud8bb춞쵻⻠Ꞛ廯繗偩憥䚕俸ⷄﮚ䕔⤾㝒㻖道政㊥叿植㺎雓崾Ꞻ浖滯ဂ臩傥슔詚⥘ꗢ鑊天壟歂嘓ྖ㦰Ｐᜏ䘟잉濑蘣롞쉹췩឴灷䳐⋞㾽裛ꮲ\udf71禵閏퍮襸韉깍㚠훛ꁹ淧쿶禞敹鷦侙빥呂嬺粁暓墩Ⅶ薍壴⏐外䌉ം㲕칾䦘裂匥巰枅弼ȳ譍匿\udb30﫦ḲϬ\udeeb熘ᛓ샟䵰㼈〵赺非랞㼤篣ꍖ寭꣖粒迦Y뛿௥ፈ뼘ﴠ䎿⼦㯩ᙝ║悻殾照ӳ⾐\udfefᐩ颦劙쩤ꦚꙚ姒鞥逗陠燖\ud94b䵪뽪蘒ắ鄁᫿㻣㟒㹯롅膭갂섇쐤\u000f薸帋ڳ샄ڨF━礔 Ȼ胅⻢`㩩ୋꛝ䀒裋신飓ﯩ\ud801ᨋ롃࡫ά὘䳡匐댍ᰤ䁨≗琴\udbde㽾䁓熨̰豍ᷰ쾥耟ŉ⌔໐⠁骀𓟨䀽ﶷ擽齾⧈肅d蠑ǐ\u0000⨈ﻜ杷⽾昰〈࢝ᕫ栈꠱쐈쀉兡۴ﻀ猁课Ꞓ䀉养΀ᪿ蠈꠳者瀞뇊㪌㲀ᐉ뾖ﻛ﷧ਲ਼였ꀁ࿰堐䀠⎀͠鏰툀邑ﶁ邧쎟跡埀邖ళ堿⛐鳺᷀ధ>䁴c챀닀鹰\udfe2Ȥ傼ߤ遤㇡痢昍㌁䣟悀鐨泌쎘쀾뇞ુࠈ嬂刐Ǝ듈ීꆧ廀萀萂忥\udfca(䀕젒ꇧܴນ흐㦀෠➐㞃Ё밝쎚䀍탟䋨Ƽћ㬦僠躁\udf21砂簈䀎羢ⰽ룄ë샏ꔅԀࣞ뭚၀崁䖖須⒇搜Ｈ躺胟牢甯ዟ뛻婀鹀憓䐃͉ꒇ䰽杀ì㢟됴ἠ᧿@䁁震 踒쑳绎ﵩ腀Ėپ\uddb5ൠ亼廑清띨槁\u0000ܑꂑိ胭肟\udb90ڀ瑎侠찡픀邍㸗侥䀍胂Ƙ㣨ѰƟ편Є䯬斝힂⒃ꀟ‖H耶̀䋟⯀ㇿ圠 Ⰰ␉〔紖晑䣽籙菖蘔쩞Ņਐ䯾闀谂덷\ud843锎䀼HᲐH䈊삐ヾ\u0007ༀৼ㨺굠䐼䃋젣䁰㡕˷恿즖鯀ẁ◽꺁ࠈ꿢※肱㢒ʤ苢݈᳟\uda9e⭿㴀㨹齄\udfd5次尴ﶵ﫫⁯죟댊䨀栀ᄁ\ud805퀘〱恿罕膃ﲨ㬏蛀ࠠ⩠ࠑ圃ꠃ᫡跌刄｛皙ⅷְ≂ͼ祰笃萀ퟧ\uda08鈓脸ᇥ쎜ં䅯쁪Ⲅ愀ംퟃ邁☂䈖嘨 ↘Ư茀ಠ`዁䜀炂㬊적㩇솁耇뒷敻僠ɀԉẫࣀ宰侀쀁瀆倉噞ꀐ쀈¼뇦䀬臨ᾉდ빿壀衐䆲彉䪔䣻ॵ쎗苓Ἢ▄⬘徽弱ᕆ䖁愗程⠊Ვ䂙⃚䀴ლ⋀譠加Ϻᡁ䰆䩗\ud93d쐞脪鱎䍇⋰ۅ踂✤䨀毠刁꾇ⴈ䰅렺뼈óⅰꉊ✚䙘Ꮔ⧲㬀⸑歒鯰렔蠪㎨㘛繊í繁葷藟ꠀ䣾瀁ꏻ柷ႏ῜徠缟÷\udd43ﮇƟ쨿陿壾馂ﷺ⟱\udc0d㾡悰恩艋ݻŬᐠ㹿Ⓛ퀂琀ퟵ恈‼뾔杕災ﵫﯗ柘㖁ી떁雼ą氊ᰟ崄灝삈ࠏϛ\uda45䂟쵴೿㧾硠៸耂忢뿍羅䁓ﺉɷﮎߟ췠ᇿ᏾⊑됣鿱\t翗琙ꉳ࠷釒⃐䑿ࠦ⯿到´௚왦￧”耟＀Ǎʀڼ䍜਀㰀沀䠁㕁ꀇ܀邇-縂乞>꫈ŀ ⌀甀Ⰱ곀瀅ⴎ蔞‑¤‸⃈ߜ芠῿\udbff薜㨁؄銐刂怜瀅聂6Şꆎɰັ䱀ހ縺㸁雼묇ࠍ䔃쁗怫둘聆獵勖ꆐᚠ㰐ఄԁનꈅ 倛‸䡦肪๋ㅴՖŴ`ⱌㆀᭉ愻⺄䀍젘쀍肼聦倜ؔ؟ᗀ琄捐鸃ԡ⨌ꀋ쁙ꠠ臖ٖ͂܈ᔸሠ翐␀㄃럸\udc13ꀅ⁚䂐\u0019͔蓩ৈፕᾯ궄㜘欁䭑᠅\ude8c唊\udd2e䁼킒ꍺοຠ䍀輡羃娄ఋ䦃尀ꀗ䃩庾䍺է䍨ᠰⶓ냀톁퓱\ud886䰌讇衟ჺ킦䠻ՎࠟᎿꛀ靎\udb02ㆡ鰋い퉠쇯䑠Ɔྰٰⳟ鑠뭸휃阆㔈瀤羪혂ϳ膼৭꧰⑘㲀ᾁ㘁␃ﰉ樖⠘၃㱸䆝䎺蔆ภȘ㾨䂬㪌蚄㟱䐖蠣ၖₜ䅸舉Ԓतᙈ⢥ꔠ퓲鈀椆䠃ꐞ꼑遟⹣耬苅\udbb2೤ᑅᮐ圀幁溹萀਌堔⠽옿ᠱ䇷쥊ৣ茨㻼㗤ᙠ渱ᷡⶢ笌㯍偀옩ࢵЊ䍺臶靴㺠낱儸騉\udf0eࠁ쀅ꂝV艐஀䖴ዩ\uded0歠❁門崅먈娉綈u繫䀚ȫ옐བ蕜ṣྸ㿈堣က谘蠷뀕뽚쀔腭齃޷㧟魠흾䖂ἀ찛耿뼇b醃節斷恘␀⩠ꖂ떄⟶堵㾺罚솦숛ۧၟ엟鹐놁旼㢆丈䚇応瀀퐏憆冧Եઠ㖨澰절ﻃ⚆츎騑῜群ｐ遗ߏࢿ\ud97f踀嗾䰱ⲅ鸌뿇聃쇭膏ٿᔼᕠᳰ摨௾웉着塄㌌혁ᘆ졉桏ﶟԘռፘᷰ晇῾\udf82씆︍롂퀲堰ó샀׀ᖼఈ䰀젡ࠁ㚄䀗йj胨̰ݠවᚐ༌⧀ꄐ㡂䠅㑷‒\u0012聵â℄ᇨޑಢᵄ㚈䜀긁䱂죁者我応ꡏ惔僱䥢¦ꌨ쁤䙠ɇက骜蒇젋射ꀢ䡛僒䊑ˉ৐ሴň紨┡䘂갂搋〚耄‥胭↷峬ת葰ᶼᧀ䩠嗰♂㰅砈눕搰ﶀ䃛℡ɥ뀹ঔ贸ᔱᙐ뜡焃ᘆ礎䠚҇졟郎밁䋤㯟䟫㍉⮜崈웈稂澂齪悕䌥౨ᴟ\udbe0箰䊡饃㨇쨝Ĕ送傌ꆗ焯톐Ęᘴ㎰磀吜ꘅ\udf08縔䪟倳ꇃ舦螬਎ᣰ⯇밀㐀糃ଊᘘሄ␊洮胢슆虆࡯↨淀胡ᇂ豆촉㤂䀂킏脃鲾ҭ೒៰ツ尀涡淑颈넛〘塵袱憽ÉТಸᲈ㔐瑀瑁颃꤃戈젋蠬Ľ탢䇀藤źᵈ㚐柜⾡䲃纅ӧ﨑젫遏₾䇠쌔䗥આረ〸ⶒु埐겱쨍鐒谡偺ナ肘썕ޏ琛讌㋺๬ᵁ䓂椣霅☔栧ꁩꂪ慆褭Ңަᓩ켨嶠躂뙻댏琙顺뼈ࠠ䀩뎨ژ\u0016譅㊀䟐灀Ⳣ祃렉ⰱ⑴惫繲싣ЫࡌᲾ킿銀㝾섃氆쒁ێꀎ쀼慶싣炙ឬ⼰淔ヾ쮠䶇혏欄갢끲缯Õ莍蛼袅ᣘ⼿鎰镡⻂쪄ꢏ瘟吳\ud840慘ꋽ蟨謜ᦴㆿ鸨탡Ң⯹츈迧吇䀑ꩣ갋艣蝏⤸因듡뮃戇츚떛蠧ٓ︗芯Шꂨਫ쨖ኰㄌ痂渐븏翤\udc3aﶾⱏ솿﷛蕿᜔Ѐ彰ꁂ뜀輊舜栨栤ð䌐蛏โ᪄⪸⋰배턁ꡂ뀃帗萮ЁႝϷ蘰๠Ṳڈ笀﨡ꟃ颇耄븐‣ᑅ傝<瀤Ւטಈ骀▄䄡뿂㾆⠏ሙ␽胿ͷ쏉࣒ḈჀ亀࿾ꘃ풄堊툝怮ў郫Ć䎐䜙཰ᓱ쌄勚Ⱁ⦁Ȅဆࠟ搴뀡ࣧ℠¡蚐蹝㶔亀湑␂桅搉ᨈᐡ葿瀽釹ꅞ䂮Щ࣐殜䜘襑\udc52觀괋愗踎\u0001ᆩ䌻蒈趑Ᏼ謨尀Ს㴃ꑇ栔〡䑓袄棗싔䛟෣菀䑁遨郑䨣鱆踈꿬ሣл僝醔Ƕ䘜覸౲㓤秈ꀦꖅ尋䔗ꈥ쑸炊兏̼䟍ു袴⿄狐\udcd1뼂Ȁ洎퐴⑫摐䅻⊐\u001c訹ᆐӤ沲៑뢐캄㢊琥⑵탴醷䎲䘒෉ᩈ㹜㏐눸꽃\ude86紈搖刯₪酀쉪䖃ࢆგ⸄゠顡ⴣ暴鐑뒙᡼ꂴ愖䋺䖉쀙ᆨ⼘䣈쉡窂♆ᨏ☗鐦摹ꂏᒴ숖䓚ౘኲ⇐䠀噡䟑猊\ud91d欦뼁聉冭M읰ᅤᷤ㮀倁鰱岉ᨓⰶに聸셭岕蜼赖ᅚ㫀篈\ud850鼣비\udb0c쿡갬\ud856悀﹀ꊌ䘛ଅႊ⯌瞿㋁傣ⶄ슉\u0007਼ᑰ墜﹍舌₢訯㥄宰誡⇂‡笈濦阬㡁袢兙拉䔏ᠬઔ垀㗶挨쟺尗ᰱ鑚莓蚧ཟ⽰癰뷾岢祄朋尪똩艓Л큚厥⑼᳿좠Ҩꅐ澃ꕇ簍渓呃䠞䈇蒁ਞẪ∈暨頡궀켋鸒萡硞©↢ɚ袔྄⊀愐騁⑃儌甚쀥푃ხǧ쌽䕐珝ᥟퟔ滀篡䕀ࠂ〆ဎꌔ㑺肋悟쌣䓿ཐጤ⸴坐‑覣䁄Ꚉ脞騺Ѧ條⇰⏴蔸ਲ᳕ව榐㸂꜃夎댋航둣邐D⍜Ҁ䏀Ú⏈獨꼀궢㲆搋ꄔ∿꾅萔⃼킃믮䔪藿{ꃈƠ㭀钐車剉툖瑹ࢴꅚń䗈輑᷐ㅠ竨茈讣嚲➦\udd16稷瑷ꢛ捞쑧ᗶ⩜縨㥣⃅ᢉ\ud813꘯䱰考ㆌ엸ඈ੦㧃ᯨꍃ㽇麉鰛﨩쾜탗膀捼䑠䟱ᨆ⵨䐘쁁偢䄆㠂휝ဟ䱛쁃㇆挍얙蹠༒㳨昘ꤢ溆撋먐䘱ᢂ醤把䑽ऩ᥆⟨甘聡픢䆆풌挝đꑫ᢯p쌥ѱ豆ᗆ⹐樰앁ᣂ唄ঈ軨㈳偈飝䇄쏄얓૕ᣱኘ䲘撚횂ᦆ⦊昚눥䱺죵㆛⊹蕩踖൙⪘佬肁뀂쐁렉ᶅ‱︲c,읋ঌᝲ⛌䏈慨瞩緓⑅弎ඖ㡐\u000fˣŝꁸᕮ»껈戀҂㟄䗐耊缴﹨㪑藌였㄀෠䠀쀂颃戎쀕簆⺖¦ҽ老੤霓ꭠ俱鯢ￇꩵߩ\ude9c茨轮㸳絸褚ዥሀ៸鰀Ȑ言偄瀇飘耗$岫頶䌜ף䏀෠ኙ㴔栓숃湱偆怟ꬽ飤쇰ꍭ葂贋Ꭼ✰纰ﳁ腣얌悝ਪ끇飢성抑䘻൬ᢖ㗘䓀鯡楢㋆ฉ┑㿟Ⱡ烜높Ꮂ왛Ṗㅰ汰뚀櫇㊉丝렽㡑烌聚웧ి↫ݘ鋡鞂뫅悄잊倍㠊㉁뇵쏸ݷ̛ᗿ칀ᡀ귰躂튄\u0013㘠ࡲ꣘䃽쌇蕀ࣕᘼ㨈䓰\ud821몣ꞅℏ鸖萤푮\ud8e3凄ʭ䙯ໞሀ֔㮌縀₸ᓢ〖呺ÿ醤Ι䰓厨뮨诡㋘\ud884쮏\udd17⸺怴脃ꁏ\u001c捽踒᯶∴䮐꣑憢捅栋鈚฿䁲梕Ⅹꏌ݃誰ᬎ✴戈쌡⸂釅ꂊⴞ搤둶᝛ǏƄ蜸䠡ᦼ❰⺠竀ꖢ灅㦋섒㢗⅄䒓褀෤㲜羐ቺﮣ儊䚝‒꠯軅儫蟐쟸اࣱ⥬璨턁맅츬屸邕턒⋗䗴ഗᦺ㢨撸틢勆쮊ꈦꉜ:襵䊒쑛赱ᕺ‸㭐ꇱ\ud8b0㶲贅谌ἒ籹쁩ӆ豀鎺╜䗨花ᤐ\udb8e温桷샀釠掂䝁跀豆㡼稤뇱墒Ꞔ쾏鲎蘽䢫ꅩ⏔d諉ᾈ⨼幈飱ᒂ봎⤟䠻₊鄴持虐؆ᨌ㾐絈곱챣ꆆ訋挟鸽ꑒモ⋸잗軆ᕞ㡌皠턱痢ഄ㞎餜\ude3a顬颵냲換윬賯Ღ㕌䛈칡広ꨃ꯱ዦ䀎肅⁩胲⣓\ud98a✊ೀH㺠秱雽ះ쬉⣧昩Ө놞ﶼ쐂跳ᐟ\ud814瞀偑㰓햅왉ଞ氫艵낚솞戳⛅蹅ᠡ㶰簤끉∓衉씖谏ⱪ룂凪䒖两饮ガ熰镣吧喍킋嘳灦蓖免揙䟨众ᾜ㣿놄鴉鵣饀吅⍅嬕耤ⰳ䃊䒿ᤪ㏿韦契淃絇䶎롯蓕冋揀蛀ਈ閪㜴ሀ萡᭣േ涊帛ꄚ萆䀃놤έ䜝趵ᙶⲈ䎨ꨡ亣辆몌戒儾罰䦕ጡⒽ躘ࢆ腀ᢎ⦀ഓ썅褉梐ฯ䓀ᅺ̔蓴企᪤㈄䚐頑妣昧\ud80d촐踬扝棤燨⊦▣跇ᆎ㲴䰀䫑ꭇ汍괝ဳ졾쓷↔⍒ܜ䶡ᩱ⪜罰ᨐ옐粂䝲섌沁縺퀄컆젤Ƽ蹡ఀ㯄ꚁ튅Ɏ崚머局⓾煋ꈥ쒪䡬餁ᇬ窈耩䁒腎℺䉆삺짗ꊬꆠӴ鷩㟒棐罉┨筃و⒘屩⢚짤ꌣ藾貊譮㷠甤肑恣횇퉏眘攮ꬱ钰¦匃✆䨏ᆆ➒瘘빉ʓ⏄㴉ᒞ䠰ꑄꒄ銨웊䵏ᝆ㴼䌘蔩\ud9e2㔦椐谣ꑷᢒ⎕գఓᐲ㼘棈넱Ꙅ匋㐝椵뱢죆懯⓷赴៞ⷒ斀ᶑ䡀@풠ԋᐙ뤻ᰫ藘ʆ䢯㻤摤蝾톒善꘍섒欇詷ㆹ鍸⟦䱠頊⤲羘퓉獓팤쟴첟Ί㉬⢴쥿⏸⟅訬阪ᅊ俤닉闼⬧笊겕ꔶ쩳傺징鉉╍ട㢬翿䆐凂⫄ꡋ備\ud923䉃墝셽銳蛯ᙎⓂ䩠䯾帰ꅢ䈥婈秖쉸ꣅ즣报䕿Ἢ╲抨쀡⪣ꪏ\udc9a㰼硶꣐觫戢╭誈鎶⮠᯼寉ᯂ浅ᄋ딜濫녴䉮얟෠ᙑ⫸䕄Ʇﾓ捵\ud80b鶟虗˚┴䢂閔㖢怸\ud8d1鴒肈䊚騭䡿䒖邨劆②䤘龚㱢慨댡\ude03约ᅎ섓搣扶㢚퇄⏫䝑䣸遱⠚䟄話䱓爇㲀逜턮⩲肰뀡პ䆤蟍ʴ৒畸ተ乁灷ꠘ∳⒢ꆒ勾❉䦑ᄥ㹊儤ꔩⳒ咧덈곅촡뎵钩ৗ剤⛩乄龥㝤槀皩亠暒㰀웡კ樑큋⤟ꊮ꟝䭱ጴ㲒翨ꜩ䁢᷄膍娔ረ鑃⒈䢰打ꓢ͎闕㌺潔ꎠ腓뤥ꌂ쌖ḷౄ磼ㄑ劈악伔鹆ㄼ璤것ኤ⩏ꌜꤰ做꒦醰쌲ꐗ車鮩㞌奸芩闢蓇ಉ㒛帼摙哉ㅍꗌ讓ᛞ⥤琄┱Ⳃ᪤榏欮ࡩŎȊ뗤හḠ⑙懸郉൉뤛Ⱒ㉽뽐8▀䤆춾⭛黸菱⏼迆㈡㼖縥ɥ씗랺鎠ᇼ瓠柱꿣\udfc4\ude0aģٯエꀀ␸їփ⎐ЄꜾ᎙쇸녥肗ᾂ҆︔ᇿꚠ䱐亁㼂☄﵀\ud813瀤긅矈䄸艆䁒ঌ㏈⓹睔䕁㓀ഄ琒浌蔔섯챁냕ꥢ㏦ꑈ쳠鸖㮂嫔붩ໂວ⬊႞訷퓉ৢ፱䜝侐饺㙂䆌訒麦똅䠅對蒆冫芾ꗕ襥ᣖ❂獘聩浢䠇ಣ㿪愴ᩏ逥恵ၚ穔蔾輹㡬水蜉圤ⱏ⊓ꀓ瀍줞삷◍述鰼㥬懤햱➓涊㔞萲㒎낤튎앯ఢᲑ∂⩄鞼뮡遰좑逗≽ႅዘ⌔䮻ᓍ⯔皌뺒ᕓ㝣퀃੸ᒯ펠ꐀ辍ᗑ㸊犐쐩紒ꁆ쭉蜝騡婞棄焸刦⚫䳁ጱ㝈恼㴤摓숇뚢甆ୀ虺㣍榘ꖬ췖龎ビ黄썩둒䀃᭏洙丼\uda4e耏됢灼腿쎟躰鶊侠䜘쉰ℓ홀㐖ꁧ뒹턲ꈗ䑉䰗ᤢ㼨䛨\udf69쇒控⥍븐Ը꨺耎餿凳꓎੄鱢㋼෴﹂㽎纜〕喙ၜっꘘ촤鑝⠎Ԥ릈咓胄퉋犒ၻ뢔奷툟꘰ɾ鋽✽먐㛩ꛢ睉쌟줯౐꒾⋅╒ঊ酆⑺䩸\uda31Ꮣ銥佌蘓㴧㱸ꃶ㇚銋앴蹞鯒⃒慔鯒완錈錘\ude24䡾憶銏ꛕ书ᔓ㳺協荙Ꮢ贆䎅漅㑦Uㆫ訯牼ຠϺ唇↩쯢䚦ｎ潆砜婫겷㈯薀쭪쩣鞬ﾀ毠ޅ贃\u0006ﰅ㥰怷숲☍鶸᧟顬럱銡赧䶗ᬥਣ≿肒 䉍騛㰶婬꣙猜ꍥ웋뼜䘃ꎎ耸軒ꃟÞҍῠ觰峙酡灤솔Ĺ砫恇뎗䃺目]첆积ᒌエ僎༐㔎舟沲ল(∛䴰᠏Ԑ﬜쏀䒺〄숇\u000e〬৘㲄撈쿖ଙⅆ禰ꖩ릂嚥ᬊ㶙갫橒貜쥲㏖ꝧ鋘⍆煤ꨢ瑧ᵋ톙甤왜璝⦮﯂쵱ᙣⷫក㫐뵐嬧뵍놔쨡왏撧ᤞ㉜搞ୱ鯊⯆熲竐뺀銣䢦䪍툚ᩂऐ⑾ࢉ麳╌箄\ud899डꍌ䦔똠㓣쥓썏⟣䳉鴑㖀㍌㲙੥쿱ꭎ阨찬꠶Ƅ¸ɈĖ찦蘀ሀජ̀螂Დ耍쐒ꌗ餏拃꙱ࢆ쥀૴ഈᒴ散禥䤉驈뒘⦃㏅Ꚅ܇ᯑ㩚磌촡茒Ꙥ₉馝蔵ъ듔燪펳䒬찣髡⎨ૄ᫒쭅授㦑䔯婚꒓饍ꋎ摜쬾詭㎴姄聐륃騢\ude8c逇騼䨻理憗鄳藀삧쇆޴钡㳢쒥籈֝鐿\uda5e傑熲叅쒕༅鼧⨦抜ㅰ禡꧈Ξᰱᙎ샳奠ĭ柪嚷쐓軖䠂柀照槇얚挾쩵뢒鎜Ꞓ쵲鳮⏊仐\udf9c椸嫌殛欥‽곖리댐⑲촊鷋✤瑸臩ʲ螥앎伐锴噢ꒌ劥枥䦕閩㎌杈鸱ꗢ镦꽏吔唦뱺곺劤앚䠾鞫⚪䝸목染\udcf9댍홰띍绳奨Ȏ蝐ޗ陂鉢䉂梄엃㫊댔븴-飑ꥷ熟昹輑镻Ⅎ溰㈲⽥ֈ媕餦풕ᦈꋔ放졳ᨉナЬ饣⫥ꮋﶟ夦璠㦭鈾ꑶ作ᷙ⟪的령ﶓ層ῲᲘ尣왘㧮⦌荴肨༕ᬎ灌\udc39⩃鮇㐌䚞뤹ᩗ蒥凛鏂Ǹ䡛ထ㤦䴜鵑磒െ䑎㔓똹蹔㤉቎웯ഢჀ㪚凰溣ᩧ\ud849㪖וּꙛึ耱煂¸⑈忘젩\uda73逸Έ䴝턤晔들⤙ꋌ䢳閅┄渔즉櫓됥\ud99c䔴詖쒈臄⊨Ꜷ覢钐モ唈蘩ᶣ뀣ㅉ䴒술星溲⧖肝Ⓘ艹Ġѐ\udd88虠䒥ࢉ娟\uda60⳿要퍁搕쨧騝▦搬ﯡ㛲蠱ປᴠ멵岛퇛냼ࠃ쨇郤Œ紀べ됁\udae5鮏➐ꄻ깇裇⥽狋ꘐѷᥝ⺒畴뽳ﯦ전ޒᐈ繨㲟좹▲졛鸞げ狜좩③훦䩍⤙뜬究\udcc9⎧ꐓ趞馩ⶤ燜鲩窒垧底眭噩哉醻펵曌跕钮໒燴锁꽲赧뷋匘픫⋍↼쀚ເି฀ᣄ挀쀃뭇绁༵홴㲕쒼裇鱻⟌䨼동棲\ud826⏏貖ᘩ㾲費\ud9aa㋢쐓칶ᤡ⒞溌쫉鄐⋎㆝伩뉣풺六錾꘳쾫ᖡⶔ翔萹ᳲ伄蹎蜼牿㑴建ᄍΞ䘗鸐Ѭ桌ﰹⷂ뼅䶎鞙뤶幂䳅祉㎨䧆隶㰢窼艩髳⼧쐃䀀笗幹㓓녻슩ꘟ୼驯㏲禼췲ꨧ্⒁逃咋駎┋䷰后ⱚ瀈茹鋓⇄쭍㎛Ƞ㹼㢤ᆳ㎬迂麭∾箜ﶙㇲ鲅쟍爐洯칒粣觤⊂캹闠ڒ⎌壈䭑궇愘ᄘᅚじ䕠๟㯚幜龉剒狤쥎ड䩫⇮ય䎨⛰姟ₖ籴쩹穒솂布䥙朾ꀤՐហⷘ໽鱾筻䧹癒줧ው䬿깹璊奃牗쮀唰넁爂礪᠊적췈먚ḳ陘哞拹杅佛饿♒痼雷㭲劧\udfc9挐眯㱳ﳂ獲꟪䢻鎌㕖䄰귩᪲ⴤ啈S椨ž겗릆닖䑀⥴馦⫺炷⧰簐ᚚ謧뭀礟耞萄\u0013ꀠ䦡阙⠆宬액捓སဪ䞝갴Ґ凨♣캽鵀뛶旬\ud8fe辳ᵉ阥腅풶֫੮ꙓ콠堇㦲漂啕瘲Ж㣏嚚켤䅧⢱Նነ䥃鄡錞㚈碨᝝ᐖ뮍ម蔼幧烉禐鍈蜣鎹㴚廤삉⫳熧ᠨ즑礯ఆ䁳凖ਟ⑓䩼鑯⇁洴鏡츋ᦤ寈薛⡹렒衹ꆁ䯰堭㥀恂텩끒䈕⚎Ⴄ친듳㤱୆✇쾙魧㰾儔輹椋燆兌졐鼴䊔凉੎✅죏闠ᩲ枨剐᫉꿶鲟ﰙ⤛豚䢝恎鎨⇦膐ড漸齩戢닥ஏ桗弳⡘Ⳇ練ᙂ仴嵎䌠ᾢ粊䘕氋ᡒ戵ᅦၦ\u0018误˄ۄ孠༑纠斅䌊뫧갩떂䬧쑋钧煕틫ⓗ䬤ᴸ봑篮秅讋焕콅ꎏ뼾湕싅뤽퉹旜ⴔ郰ꋾ剸锣帖\udfcc켞阿湳䢌ꦲ뉟䬻龕⏾旜╒촦ￊ햝☪ꩡ뤎鋀ែ⯉닺䭔솬ꢇꔣ레ు>ꁺ肵氆ϰ݊<⬁焢鰅⍒ཤုꑔ䂹ṳӤ줁捶ꐰ䫇铈ꜞ洂뱹\ud916恑וּ腕㳱ꄿ뎂䘊⧽ᰨ꺞搜큳駧ࠫ킞켨苹䔺Ƽ摅씪赿\udeb4ႊₙ䨊䉥푓⨷兿ｽ䗆쌍់췜钯㽁凤핹ᚋ켦ፌ벒递셶Ⴘ覇拘䶰塯⃸旘瓒췧먭灚甪恾둧๡栨蝒䂐ဘꁚ潌郅멲䇇豖ȧ\ude54㢉駾蝌쨏遚℡塼떉嫒䢥\ud90cἼ䡯鳝ভ腲ᒛ俌偐꠨䖴褸茡ۣ\udf81漃ᜁ縮뱹롂逾팧䌞͚馱穜훅ˣ\udb15ˍ쮙킾䑷䊭ᥞ䭑䃹⢤ߤ뾾ቔ㡙\udfb3믥ኌ鱙縍ॿౘ䩰闡⠢夐ऀ⫢캹㾲귄쿊낾繢ﳚ䧮叶ᖄ輱ܥ䙩昒ᰃ≔耂磞䥇ꐾⵛ陆㧱炬궹앥\udfcc閐Ｚ噷슬ꤺ鈕昁⭘ಫ㏾栒퍉\udbd2ₖ婉햕ࢮ顂颸╰讻쐢⳻针ꔉ炷榀⬁籰濌ᰌ퀖䂌恐᠀䐤堵⒉临퉅烲᳄䵈\ud895㔶줗죫䨸⒞챌驀떂紒贈貊궇ㄩ摟氭襡풎◲獉䬚净뛪壢싩钣嬀랂ૂ⢤䥽貦祂૾ꙉⴐ婎㶬棤꤅쮂餃벋ꂈ츻豕┚講蚨⢗麠ꤚ䟠鑩㸒ಗᨪ㉕贠셭Ჰ觴牌ᘱ짛ᕤ뮠ᶢຊ㨩牞菉驌鲏䕅犼Ʉə݆屄㬀皰ṉ퓧䚎੕ꜩ\ude50䊰애ᔡ䦊夐괊籒샹넊곤蟈妝ㄭ칺쓴ꖛ጖╥⩇၎✩䔈쫋⹥魎⩓ꀟĠꐽê扦٨ᄠڲ繈耠駁桄桓⹟쳱⧕雗줅鷘ꆾ匂뽥䍁⟹߃马玔㥚┓䬓ꞌⵆ彐ᴙ埈\uddc0\ud8cb艁ᤂ뒷녰싑攎匶靮⠛鮸륾绢诋鞖挫幛貾瀠졫ꗁ劻ꕲ쮼剿㾺姼ꞥ녒鸖轋籖鸩則튦ㅟ䪾៏䮕韰귾秜䂋贤舩뮓봲ृ\udcc0א쯭⒟䱴雷ㄉ戲㳃듅阅⣀」‵]嘢磸íŪꦗ墉埴꓋\ud914匨ꁙ딺襴賦斸鞖໇餖▙繤뙅㳊䞗㟏ꌫ腢Ⓨּ䩩⢃鲸↞坤섅붓鱥돌噗鰦䥰㒹▊诹⎖耠ි銤㚄嵥쨊㒗趉娝꒣롏犭֨튍ᙑ쳆銶␢冂뭥隊ⲕ뉞礅\ud943銃秧掝ᚹ⵴孶⏉猴뜅泒⸇威⨈綯苈隆⯓鸘냎棌⡓♧䐬슖鲡ㅍ鳄藉謣⿎庐묩噂\udca5幃猔ᔬ抐墰ꅈ!낦࠰刌蘙䛻ڒ㱔㜘䔂멁╀\ud909挿倳劝ᖭ䪗䓗젎頼깄佢絊ꨧ쐀ඟ栌ꔉ튑摌ⳁ嶂뜅吐ገ쒄묋값\ude52ⲽ楱瓙拏䯭쐯좮鮴ꪖ宸莅ᠫ悩셐预敁૱锠邯ᙜⶺ川㣾炤뇣쿥뼩籑ﲮ剗뤟௕⓾ⰻ鏰녺習벩胋ĕᩈ\ude91ʧ﹦겈斐讪꓃⡁弄븙爊ꠅ䣊큔﷋렌ꀟ倱둮ĬᏀդࢢЀ戕홣䢕邬㪑䊭큩ꤴ쩾䙑Ⲥ唣㔞洊멥ಊᡕㄪ慗䊥蕾㳶▭⪭噏す伊첫Ҕ窒츻䉔늡ᕢ詄告⥧馿쉅䲢ꕥ讄⨯Ზ뿟爰쩃ゖᇕᖨ꬗醢뫀嚊\udd25덢⣦ꎕ沤쥹ꋓᗦ䫌ᑘ꽂辨᫅纼쩩Ị榤㢨ﲔ衬鲾씾ꎚꁪ隞胨䤀㪲郠㸫䒄蔫瞐懆㥠䪸訓鑄⦌儒녚层賥䦋劕칓괫칑쳂焩⩋鐅쪖镳㊹羲짉渰ǒ驄츛ȅ搦䣊˕࿀͒롄潲뛅뼒㬕䢈ᴸ祱퓏䗶꯬Ⱥꫮ䋪ꞥ傲톅䱆毲蕘쀆ᕼ䉇ðꪓ愢ꨟ줲궕竀ᬋ晔Ἡ\ud858㜯煥㲃얠茡坂굈鏚꾵截좚䏹澔睉뱗璶\udc97柅䥸卲뷡柒쾅༪纔⽋署眵ᣃ䧫펊ꚃ⬄坷⽺忊頥«䀕쌮璒芹꩸⫃惁ꀘीᙈ⮐⚢⤌儍䕕༤饣좲攱錦ꓢ꺦嬵㒕唒ꩅ賊椔ꙋꑙ䊲䙶퓊嗈樟擒ꭡ博꾙挪腥\udc2aꫦﴟ슣镫怜䳖㏩䛲ꪃ鬬걅咢蕥⊫䮕説⪾됒ꡑꂼ삡Г誢뵉抪葩䛊ꗤ鬩鞗ꊼ\ud941諓䗖쭌雪꣗間㴊ᦨ풀욫ἧ묮牞檫\ud97b鋫喾쭜埿麠ჲ࢜颠쮠\udd54믈࡙ꉀ쳰ꕁ⯣閌쬉圔긜摊䥊ꔩ\ud992邲㕦劤閅쮎旆ꨶ陜뀮慒껑밀ꖥ玀ꐘ堗ꂆ쌳葱趁ᓁ❘ň渰譖埉ⵖ풬땇勊헵◒꿬偦뻸冚ꔹႉ瞣㚩敚\udabfꕟ䪀핰ă廸఍挀⨡䎪죔躮龓㊿祙ⳉ핇쫶钟⤛鍖ꀍ絚욵刉ꐀ떫\ud95cᮒ癆锏쮎囲챼堽㧩䇪쿥䥓뾖縫䪖窠տ销譀呼꾽娈뛮忼ꠥ轳ꄖ섬Ց視홴ˤ䖰ி˦랈࿳Ḓ↧掀뢋䳣㐆倏怒൷㗤⫄杢ꫪ૦♪洲칥鈳ꤖ턭醚ັ䙅⪨넔譙ᐑ꾇鯌ꎅ䤚긕簪孔上饜⢹笰㤼ꪪ엲껺霬뱅璢횱ⶣ閖䠪缄숃聁뢵䌂放আ馨뇂䫤镕騊栯啑贶䵶ꪓᗩ㋵唩ꭎ຅ᙸ涒믉竳퓕㤩粒漭쥛ꋝ㖞䯩垸ⶠܔᛆ|₥ꎗ䚎暷핔动얎檢ᒧ⮌咭⹦䱊輵\ud9ca튗䟌䥞颻칑犀뗾犂혦ꢮ巚㪔竲㪥툩튑侅﫧砵夦㢚ᄡ接꫍ᦖ뺥署욕甫⍟ꚣ䑌E甿ā넂콫孙⪭暸﮵윁Ỗ୥怂ɏ땭櫑픊⣜咥ୱ佚薕묋ꝗ勍奛ꆍ㵓\udaccŞ푉㇏婴⩭偔馵⅒띗\ude29\udd56犵量嶺櫅枭ꯛ韼꭭忢\udf85꿳ᕥĨ꼒Ҽ՘ኰ政⨡ᒷ赽异뷵坸쿕ꂫ偖땉⾜֒뀬斻塩֔쓦ⷶ뒅濚챕ｫ鳄↭켗誹蕊᪢啌쭩ថ⾑顊꜍氺艕릖⎨⭕좫襏⊞▔毑휇ೇ嵆ꝀᝈẀ瑪ࢬ❜욨啉㫀槤囈꼜飣¶ቔ崄⴨辡প杖ጣ㪉㖺⫍雈W闎륞岚鵕糫ᓔ骈ဇH몲槶謜闘곶哠꫕䞨魕떪鈧Ȇ셜‖”㥁ꖮꪬ훸겳忢갩枼㫫ﵗ䘯ॐ溥쵑뫸藮欖斛ꢍ兮눦澚鰩㛪댗搭氀骿Ⅸ嫐뤛‶鎟䃚䎴࡬㺂⿸≝籡鐁铣䈖꼂鼀싃횴⻋酚ꮱ獊鲊℧끭ʅ꩛荥점쩻侕௛鶀㛺믫ꘃ꧆䠐饇峭誉普Ⳙ儺뒽哪㎫埦Ѫ\udf5c䀇絳=㤢㞮겈衿⣥緒컵ﲳ믗ཉ孝犭浭쪓헷⫧꒏깹啺꽭擺뀕鼪柖㺩㭓ʪᥰʃ夫햂꽗闈ภस鱀脃焂呄ᒖ焙K金ᩝ朓⦇鹄ꄞ䀺辑샫憬媖蚢ᵦ᫇ਭ蓃꺿徆뷽愼쿵ꈒ凕绌佔挵镥웂奢쭽䕗ِ잎붲䄺넥䓪壔犍❚⪶䥩烱쥛ļ䠦᪕̃纲촥።쓕杖䜣鵾認喆⩒朘ꭉ陹㲃帀蒈阋큯즓抴핦骩疎⨙ꛋꥱ囒ꐎ椀懾溡欲쐁葊꺢쵰披㖚㑋䯵僦꿞纺솫펖☭襞᪪㹆労씻ፔ㟹꽐\uda92ꯣ幢첕䕊鷔忷繏촘숯㱄聼킷ཾ䌢袪╰溔咑蒥眨\ud8a5ꅋ郬딃쯬㕴⳯雁겧顿橲䑸㺆剭婛특㵻傡责᮹e餱똠㓆뮀秪ￔឯ裔庱⍉窝ꖔ뎆ⶴ헀ᑣ䎦覍搀꘵\udc01飐冽陦跛ꭏꯝ兑랽商ﻵ㔛羖麯꣔眴絀ያ핀쪧햴桽屶먅搲ﾕ䯫侧耩Ց紻뽯ꨯ㆕䇜θ૖鿊ᆀ ؁ᾩ⑒纾ṅ૝赔⭐풐⽃坄ꪕ䷺蜚\udfd6ᙈｙắꥧઋ跹흜殜퇖ꞁ炒蘵ꉊ飖쇎胚욳誹䔲⩾㜟ꞿૹ\udf59㝊祕쉪딕⪭岑ꂷͻ㪩㔄ᬌ门⫕媓⺎夆팅覥㶇䊉䀍䵛늉痆ᝋ깠\uda51⽍儦떬傤⤃老묫咝⡳㗾੩㔈榳彉됡挦킕첛鎖뉬뎝ኹ⥼蛤蔹쪔㓣诤\udf1f㷈扼벥쮕撮䵙砬ꀘ娡끢燖花䳵षͺㅔ㮰鬉Ꜥ냕弴땛䊧്⫤ꚸ淪弮ꮶ᠖蠭偛萁튃㲿ꕭ曱⃵鬛㐠٬힀ᖳ泀䆀溚ᄧ늬넘뵶실赽殖啭ཷጥ깋卦닀⶚芠ꥮ늦竘총㖔汌톷㗱䩦랅ኳ팵푪羛噓䛷來ᨎ흝컹师뻮䥦엵​쬴ℯꋤ蒺덶飈喲¢䌌쮰᥀㎇掀쨁ༀ誫덹㊼㕻ᯁ힞졿彻⽣棦䜚✴鱪鳟䪦獯⋡핉훕歘弸╳縺옵ꈪ㜶Მ⢸牷욳৹줴錗襥˒鑔䌺鰹ₚ⼴শړ䗄᩹혢档鶶㦎澠ᖌ\udf9b\ud82c惐ֿፋ۠ⵂ婀̍⋨࿆醐䪈啂〡ᷤ䜫块嵀䪭畞㔲栘鋉롢昖뜵ꇲ炴꘭䡙溰警拢ⷙ譈럑䤔횟❃灐쀐潐⮁\ude43堁꠨층⑒職酚㍟䒰蒕ᎋ偺躁⇫㬕ན풹ⱈᚃ굇宷⫬Ժ텖빳疦ꓩ녛ᄀ᠄閥⭚嚠Ô됣䇞娺ꄣ磪齍謪ﴷ茑魥뀊浔\udbea냓樞ԙꢣ峚銍鼔岩穘窺ꍱⶏᕦ汨\udff0럋淪꿹弫삕쾮૒睊귀ꬢ땾껻顽\udce0㜐찀䂁냄 貜恦᲌}䩥溃唙㘍梌힑ǖ䍕ມ饀超嫾䝃꽦宆됝權짍減쬧鱩꫓熼煀چ궷᪊잋⴨؁둑歖腕ቊ㸶쁨켿蔝\ud855搄ǫ䇋씼\ud981ꃙ亢㩋ℴᨮ蓝⚶፷㪧춶쩟㐻⹚홪㺴᫖\udb15᭚듕の\udad4֮嵡媨屆·ꊔ䚐←ᶽ갖ꃅ\udfc3椴\udd6a䋙ᒯใ훘ꕏ娒镄굺\ud99cꂊ渖㲚뺶횏횘⦾㕽뫭ഡ玂蝺Η諧സᮌ⧤땸쮀潃㐁툞︖䀧냈\uda32ⷔ\uda1e뭓睒썍ꏋ箵嵰Ổ∅慬盨蜛洶\ude6dꏈѦ蔾폩涴流ꛘ\ud923퍘멭ⷛ䫙뗬⠛側ꀇ玴”雛䁴\udb6a挣孌暑浱魎吹氕钙맋磴휭㿋唥ྫྷ쳔뚐ᕾ嫯吅潖퐕맵䋺斛ၔ噯훖뺺⭰띠벼턤̌ฒԁ奉䠼쬀㭬壖䢢襮犪斗뗃꯬\udb7e끳携蔝\ud86bᡔ뾪썒ᶢꭘ盷\ud954᤿晇汜흕꘻呶텥ꥄ玂仝Ⲽ兌᳉䖛鯓똡쯜\udbd5뼵畬幨풐磠킄⻖㖴䵜꣱㖓娫띍澼\ud9aaꣅ憂薭隶᪣尒\uddbb፤뫿쵸驽靷段呖ꔵ໘⺀䬀䘑剫苖㶡େ벡餌鯮뚡決\ude85맫扒\ud85a뎔꽬僖붹䍕몘헅쬂햶踋娩렛罰䕸\uda83偡ࢅ⼇촚鈝葶⵻탴≟䗺鎹橜쵍ⵋ龴㒯䛟ꦥﭡ岨反୉헴阣泲뺕㬃硴搇粈䝭\u0011ᴊҐƖҁ퍥⪍暖뀻難䇖醤湺컍鶂㮶ìꁃᖖ믥휊雤鲯롔뚢孥䚒ᴟ謇푦泲텺믋䴎觵⫚䆕ᶪ腛蝹\uda9d淬㨢띍犊\ud86d믇꾈⟀蚁ﹳᰀ 閖廬汕瓗\ud824盠⩘폙ꢫ抎ﲭ搊윶⣩⫛閫饹囆֕嬱䝿ꩥ剣뾉怆ꚭ航媵깫櫛掣ꭔ銝췝嬜皃䲮ྜྷꂶᓔ㟘ꘑ脵⹍әꊴ뭶諢핸᫥梶價렧䶲땹昫㗧⵪帒윊❣ꊜ䶱㬭噷滼雁누Ề篰ꮀ愃㶀짚㶯ꙗꪉ㮐럤顓빚橲휵ꔺ铨﫝鍆抺鵧㏲鞑欔혖뿿雼╠ሂ𡢆栁⨵␾䢥뇗ꉩ⟺䞠໻哎覝뱚ꙴ뒫ꗘ鎸흮쁓嵢耠Z\udffe꿻纔鑝梻蘀择者讯鶂齪×\ud90e畷컠剳듻謶鴭᜻쯔겨㩚室滌巃讫盢ඃ뙭䷂묭어⇓缽\udaef얔㪼딀꼟囲뽭紎谺齗ￎ藗ʬ⭜⺽洈먍듀⻱హ㓀圠鐀뀁瀁䠋“䠈㹚㣃犱\udeeb⵼掠︘뤀筨動븤蕝颋\u001e닦怹暯橤蟖栀瀎ᒀ陡✆酋爽Ꮈ⁀㷠\ud92b¦˨ᄆ嬧剈먂碠\ude0a䀅ထ✲츰İͨƼರઇ▘ᯀᄃ态\ud88e簁➆踈膰͟ǈᔔ಄㐽諡䲴䈃壮簅轟䃢᥂ꂇ摙眡錁㫛룬롮猚岠Ǭ㬢舻℈踍⦯逌ͨำ峩沀澄쓤睤࣎誏묪䝂㳞쵠㐕漥횣ꃣ楖ȓ䎶९ꗗꎻ襀銊秵婌甁쳥勌ᇣ獖⧚汶મ⊸\uda45㪄൥Ɗꄪ芭辞镏뢮롩엚敆㧌\ude1dጣ쉋抩그ᩦ뙛⹕\udf26뺻硎쪐硡꠶뉖⺩≥灦︗⥘ϰ\u0000蔀ᡠ᭠㐴선뀃쪂)쀻耿⇢瘒毚톢⡐驀Ⲝ팁欲嫨鎸ⅶ뫩㭧디\udaeb룝奎舩攨\ud992줅仮䵹쮪痲泞\udbf5ꍃ夺蚝໪⢷詯\udad8ࠃതⱴꡩ셇䜛∰赡볲⺂Ꮘ探뤣⛯᧖趭㝳\udd3a㭚朵\uded7낷敚觅涫⿁ử鬊箼\udd87嫯皎莂ཛ놛杚뇕\udd6b孷샯淐斤湇\ude93\udd67먯畞\udff7떏ხ鬭렻䝶糯㥑㮪컩\uddff㨼럋檡\udc0b렅栮镙폫ଶ䋯齝ҵ蝶喫㔢ݰѺȀ榀鐁搁谀䱍瀃롙ⶇ餟瑢껬핋꽏侶茽♺⥷꣬㏕ꎶ靝\ude86唌뭈혘퀨ꖗ斎헍㋋㥴积莖우쉟⺕敜比ሷ⸶䡦ׯꞎ襝ꕶꪯ퉐ꮦ䵜훚믹훠๣闿዁為貽ꋪ氖띫㕛覿坽廦餠客p渟讠葕㓀岡⏛㫷嵮თ殪筑鳇巽箝瘛ꤍ凉득䳞蒕絶\udba9챐ඣ═㚽厺䅄ꑷ诏ა䖄ڞ嚒ȁ򐷞⨽耋뵝䭓眂콍퀥묛廖ｽꁑϴ킄눀麡彿⋗뷽⪙굧\udecf뎟䎜䡀\uda84。ߗᆦݷ꛰絥㑗꠺忟ꖟ嬾蹽倀맶迭ḥ竻몟鑣퓥묟哮臵眪㲯鷖㺠᥍紅騡瞃ⲧ홶ꭷ潆睊࣊롴㏯؋눮࠽m쀄\udadbm቙೐܉값嘺ﳻ늵솭罒䮿余⺱絆笃둨픯디槆狻凗멮⛗枻뽃퓖崶㍕弬뻇坖깹塃鏠娍␓綡笥眪꼷\ude5d꽉敶ꭽ헚淴≮糔覵뺪ꓖ讵瑩ꦉ틨믟䮂蚽蕪툀쉎 掜뱾㤝篕햴䮤픟력瑒胕鈚ゴ铮ᯞ筧껼ⶇ㍶⑧\udd42ㆧ乾싅 ሠ襷偆㰒숫ᰘ룽㨭ꋲ䃻䩤ᴪᖌ勘뗻㋦㽬駓瞩뽽琣䴒ڤบ瞈ଠ积昁횡鍊☗翭￘ʀÔ τ@ཌҟ횴ꐟ猶끽瀺말璫ｏﺧ둑߉ꃄḀ㖔ऍ㛾슍㠺糬孙辨蝱ﺷꖧﭪ㞟堂꫿湦⮺햶쾪懑뮪齌⺶ᶴﯺ㞯꽁崛ᾀҜ㣀팀倈㣦囂鄗॒〹趐픻毻嫭돆箶쐵⃫呶汩៓h彀皈너މ琖䬳\udda3ꋏ基ꬽ㿪泵ᣯﶓﶴ읹賈飩䤥钹忊뷏婶캭슛痶吝ꒊ윘攍鼋ࣨᩆ뒋쫱틎놀\ud8bd⫯蓒Ꮃ胢훂槚ꘚߠ㯹뻅皚饵㭚ቷ롭ꯃ\udb50ᘘ鱞䇼䓤൝桐㭫ꈩ犁\udd75桛䡬俒溽䫏굩ﮭ퐊橛퐩붍橼ꓕ᭻虆⯇︄⤂됬ⰷᡥƹℊ䁼ࣔ뉅 ᫽᪛䒦풬믑勛뷇ر྽옟蹎騠⸡閰섇泶萛篑エ惈솱荈&཰፨ര焠ⶺ툌ꑨ젰뾳魲瓫Ⱥ蟆༝4㴰攟滾୫ẖ㥯繒⬶ꃚ曲ᴀ먉\udcd1갗夾ﯽ᫛顷琞翛ࢯꍛﻺ紇몈ȟ蚘࣠ࡴ¼槄ᰌ⼋뀌ê磕腖ఇ떸㈞ꕰꛠ忇ꠄ쳤䞭掾懟Xŏ艵ೡ⼏䘞骠펁Ӏ嘞ῡ밆쀡缍숀䃑豠޶迸颬ᯀ㬍䀂“¦轨⹝섘赅ޘ杰ⵡ辪\udfa2A뇮갼롹ꐀ幠ﱇ朚挝镃㑏瓚좈ᐐ霌ᘚ쀅➿Ȑ剣耒뇊㍽쒠࣭ᣂⰬ夀µ㜹넂⠋묰䙰賡᧚窉矻滶퍄둟盁옥◴⎪㠼\udfb2콿悳莒娗㑠ᩜ\udb80纍笮땽꧚蠎밝䁳赇쇁廉䡦喠㊠뺀飹渒扥〛啓ন荱鋛給䮑㗂Ᲊ톉뻉慌蒀ထ踀잫耆馄준焒뷘췿䯎ր謰ࠪ㉺奶ڻ堶輨턜㐖耒鳨ơﯸ㙝氐턟넋劁וּ絺鎗鈛擕薫䃝鳙褎爦쫙鴷Ꝁ핎舭랴ᱏ恵郐滦偂鄞▩朰転鍺⃜ᐠ渱㈂묅种샃ⴍ謁ేꦗ핑⩈첑䓛픏ᛯᡐ顩ロ\u0014쌽薎Φ᧠蔔飐퍃꤇카䏯鿑\udbb3魔凤쌨郢谥᳌㳨淧揲誃ࡵῪ窭쭯ꇼ紗嬨琮힙떣懚정࿻㖶滩ᡵ･暓奱蜿Ԅຊ\udea0ಶ࿜⠍ʣ㘇鮦뼚㝽⣙蛰᚟꫶\udc40ꠈ훁얣삎쀚䀹ꌪࣉ솘⎌뮰໾쫀や橾狦뙝깺㥵ꄞ❕릠쉧㲉դڜ瓥䟐譣Ṯ㞊ᔕ＆풕ᝮ∱㖦⽿躸북㫡㖚ⷧ嗀憻帘断넁ᄌは滕떧\udf5c鳽㔱㧕ˣʐᶀむ掬懻刼䡵䣬绵⎱訩ྲ檤㇫Ꚑ힮ᤋ絶柪〶랰㝨岘롙》惞䙋囻ໂৈ槰弲㐹㎂긅礂쎘ꆊ女띱汰ퟤ晐틉筚혴䘼豸ᆒ淣ଵ嗀ᠤ∴秉ᝀ熣솢뭁䴘긃㑹蹘麰ꏇ䚛疜咿㋐홑왉峚ᖏചꚌ걵壤퇑颶ᅎ㊰Ȫ㭸빭䏒\uddd5㴎봪ꨶ䎫ເ嵍܃༫涿틔瀫竮펵뀫㪎쌮谳푦㊻딙Ŝ菦๲鞴ဓ幁溘姉촛﷚\ud814‗䡟뮬쐻㳭벑攲诵湢혎䀞ៜ둤镪톪׫䚅᥽霨甀붣䝇ᗶᴟ勘葮壦瀪祖谐᭸흣ꌈ뮣ꃒ⽁쐁䪃ꒁ鲁萐뵄䛍錫ꌭ岮鴅푇ἴ瀛껔౼❏䀼だ욘赥迺唈⍦뼂˰筫⪇䠵㤼ÿꓗ⽠ഌ盕箆贑㮑 〆Ჭᣁ↌挹㪱財槆㠚ꩃ暑역憫㳕㈷ꁿ鍬櫳⍶洰㖂άᫀܘ樠說ಧや꒟騯賵퇾ǳ䛲〬粵傱꫕ņ鮎덊䧖ﱫ뤧揭옵࿴귙᜜愸\ud8aa擣仑绡本鑺ݞㆳ鶴࿩椉ẑꦄ\udd4cᘓ\udc40厏낙木뵾ﻊ莇ﯝ赋浌팭ꚨ썁\ud99b盔ܞْᡵ꣘憮荏﯃蹝겎㧃똰ᤀ匐≡࢟褰梌聘ŭ뀞ڠܴ炗姺꬚꿖쀘\ud835屾ﵡ麝茴ஃ둁ẗ\ude42瞰䑶\udff5鷆⸎蒘曕㾬읈᳎냜ꨞీ浸픁돏嬚釣\ud847䥲벆윝龜䙙⮼疮䢄툈柨\ud821뾣㗚㞍\udbefꈽ梲셅ꣽﮢ痾樐㷬ꑀ욽S䚁茱锈࠿ტ釂䎑ﯿ谺吂絀싶띝潚覍禭퀽᪯쵌৆䏛\udbe0䲅귏퍳㢾䗨ⱸយ쩕\ude85뼞渻軳࢘拼축튛ꫯ䤉벵壚簌䤛椱ᇋ耧䧍⥗߼㞌⬱㺤ऱ㑀⬓核皁\ud89b舀蓆雔ꎼ⟍෩濴\ud9cd뇤얉鞓\ude4e\ud89f넲䓭隙፥䜞ᙜ겪㴭모뽃畆ﶏꢝꇜᡮｶ觎莡잺㓂⢎㷔棄錓䐀܇젅ᬚ夘Y⵫薈Ɲջ쓢濰접ꖣ㐫뱌碝Ȼ끼ࣱ움鏛䛎㖠ᶜ훜枿熎ﶣ듳于㰜胞햳彶絘䙹괓蚩듫ꂚ랣立䷷볗胀仅嵁㬡ಪ㷀灒ᕉ\udf40\udbb5篪椼ꓡ媎锯慤̥坁⤿\udba4ﰖꔣ翆ᤶꁸꝈ짍ͣ➴༓Კぜꒄ䆁뒕姺ͷ㓪깚逗帖葙쇘䗞诌ᬾ嘈ᩈ⠂ႚ쭛ꥩ঳鎢왭䵨Ґཪ涇⎩턀檇쉍萟┾לȘ누\ud8b4ꝶ䀲鱰ෲ殸켉틩툌࢝鵕퐮々⧪폔ꛫ俒黱࿝ⱏ炶溇嶏슜雗\udeb4蝌揾蟪輴ᨌ㠜憇䝁郣崛䬴폪뭓ᡤ铌燯Ḙ\udd62ƶܒ˲籨㶮ㅸ⤀銑簃쩨룴躕赀䲲麡届붔쏩\udae3岦㚌Ҟ䀹鮿铋燹終ꝿ둄骁폲稤저撄焧알⒟峕쮺哆皞굣읈폰ꐒ鶛ࠓ檩蕕㕏ᬪ픹䑪뭚붤᪷軂ᠵ崾೔뵝隦ष媜䧑눏ล/≝搐ɳ乵㖓뗔뮭뵻M窜ᯓ↴㕧⛰Ꭻ\udae6ᾤ㌲沄忖閽ⲇᷕۨ簎娔밄좩Ů敥䇒䃠ሖТ๰ꖱ픴賯ᐸ牲僖槜땃쫈䷲鯼鈍黀㔙򜾂ᣍ際ꄱᑤ쑞퍇ꛎɵ臄鹺栬፩뵣뼧孎ᬚ奘ੴ\ud8cd駃팾캞驳㟢ᨔ\uda3e\ud853雗♩쟗偶孷틕ᎊ\udb89\udaad붣兦ꡝᆇ⾪┷뮽｟冒º䇦쪬윘ৰ㢐嘀踀揗唅滪瀊쇵莀䛙䱡꯶탄궙審﫣ᾦ뚏鲞䝐⩠읟ꌢꙺ춊鯀㿜槠쮣쐇꒖砾鉱⨞む䂉倍鋤餓合慸\ud976ꊓ\udaa7纎免䆰ᣌ⇵崆꯹ꌑ鷕\ud8d2杍娡턃褻熵琁쨎⨙ᩯ❿貱鴐훆珔펚䍻搵漢䡜摿賔ঢⷂ枖䲦も笥熄⧰ั첅␦\udc8e娊樺ꉩ∰膚砽咡鎓穧獏ᏍṞ癲犴➅䵙鲿ీ༬췺ᷰ쇉諎閟⬶퀒곋駆굮曧鿡㗦皺矎扳զ짌閛⬳ᢊ鳜╠뎣ꙝ谦歶り揘툩꽣魪캟詩瓪펝ᩂ띓풂뢔鿕\ude3c餁࿟怎嶙E쐓葹쵖慨ﰚ閃爻쮌汫ꬴ視곏觎卾❔琷ᣤ吒癟俩愧Ⳍƚ㧒鑸೧塾桽웎躡Ṹ㺄林橉肋寑䪡룂확尐裞䦥댅♖칡鲷\ude08潔쀱킝檻킇㇉掍䈆쥫뻚ථ쯖뒑騻㪈殻槙獡\udf77\uda9a᠚耏苹⏔骘컴鳆㻪恤鞳鱧⤌跬אּᩲӔ짨Ꮴ윴㓯桙㩠硎ᚄ䓮ࢱ痠鬦锎ᡮ艌錈ᷚ섣鵆튎笴ퟭ頻쯍粈꼵幥뇞ﴻϕ츋⁓睜쥊暀ۦ砀펝룒\uda7e鳇駶消㬹럯鳗㑾淠ẹ폳瘅ݴ鐞賜㮵탿㦂ᴓ꙾璟㊊皨鶵㹚ꗎ梞씼ᱮ峖뚞茛꜌䵥鸱㎺梀׀圠詰퐂❀遛ꀗѮ‛⋌Ề壭빨髣䨻綴\udb9e欷湢룃릤痓驂侜ίチ渻砜솳ﻦލ⒞茸㤺䕤\ud9fbꎣ䆺䍲䇎퇣Ⅼ\uda19\ud8f3骧뺍궙⤱뙬ꓔ⇍染켩ꯃඞ絸昦鍕㪻Ќ媫⌲癢賻蛰⻶⢇ໆȼࣆ竗疚띓㵺揷㶛黒賒绪䌓➻촆鷻㣚⦐ꩣᆧ℧╀ᒊ驱⨈㧏⎌심䐩寣ק鍢鹣촊Პ弶蹵糈ᛝ௛膛\u0018夂缜\udb50鋝犈퀭豔삹됋ꀎּଗී鮙卾狧喡퍣⠗투恞ᨵ酧⋅懞珟㞎㢊煄녳뻇䀬苨䬵詨㣚ଝ䘉䰘鳋㗺鄗乙\udd91ﱘ銷赃퀆」\f耐Ò뚁ΈѮ撂홓囦蜴뺟\ud8d7屿쓏⧏팲ﮪ둻顭틷꾬\udbb9会╎⒚锼⪦响퇘㌨牒ꃺӟ䣎᮳낅\ud81b脌➙怴鹳泼훨䍡㨈츋ꭀ᭒溃䞾쎳ᨗ軏ឞ킸晣䑓〮\u001e䅯瓝鶯㦓룂ﺓ佦寎塘俐䱣볜䪻௟晻츸帧៫겋喑ꅳ㐠뒠ຂຂ㸺舣ࢀ聛썊檨哌ᵌힴ굍韎烟ꙣ곈ᛨ䬙š⺰ބ랎翴\ud841톋ਡ鐀䱚颳ㅮ拘세聹᝷铵쬴ノ怔윶퍣ꊗ옮츄钻ㅾ拤煘肵ᙊ趎頗㟾戬쀅ꔓ䀖呌㑮ꇟᙦｄ׮讲㓀岌㡊楜숅ꫦ蠂偌〛ճ\fᩙR畼쐈㥀₂싆艝첧䠮鋮긲녭棋姭謴뭶ⴻ鿘듁翴퉥朖⃏ꯩ砳쮶哭톴鏷䝵䌨偐⿠탘肆\ude2f⶚帷챦\ud9eb紴䟊业鸆㥁꫅倥볳ₗ퐬ꈜ˘殢䣓Ô膗范魶旔썹팋걧찯ꉘᯕ慽볶醜䬐⛱ⰸ姺ퟶ秂휋謦밁悄鲑딉䫃태懊಴䫅⎜Հ׳ป衎䑜蹩빏▀⦽韻⸛믖悜쓂콋\ude97紭ꐇ㋜ꖦ浞鬕ⴔ岇\ud822略毥鸞㼮ٛ풼ꋗ캬絍ឧ䷣낭닒鍊洬瑯뒷텢姧䭃៷皒鼆֠ᦀẞ伒倁␎年㘈傳䀙茧蛦༟꧌㺑헷碄⾑蚝\udbd8龜ꂖᥪ㋿暯Ꮦ乐幤彮涬茳먻皎ﺙ㢼饹归蓤⍬ឆ츏ṉ㵱箂쾞蔢䈦퐓䁥ڵ׋杞ꑑᱏ㩒綀첅誓䚦㏏빪ﳒ\ud961쥠鰔胜䇍⍱˙椯䏝輀໤\ude81粣夂❇耘惧攧ᨖ酯쀯Չᖀ㓪啃捻⤞Ჿ癶㥘闬杛쵎嫄댹殓橾脳줫恌匛ጾ램㝹栤肪騋怤䓩չ찭Ҝ⯈ダ㳶ꙷ飝蛭㎂옯⿱櫤랚焧羕腗\udac0蕜粿牤쑑ᖒ⮽돈꿻쟻鬉ᢀക鿋줆Ｍꔘʹ鑪ὁ튞ꮮ䅈꿵岢됵暊텭掺悮㑞᜼텴峬譪⛀ⲓ벺挊봓ﴖ炬烩璲깽律尔ჿ센䄾ҐՎ辝ꬰ⽸䆒阬ಽr㋅營ᎂ垨⼉屷㨥砤흙莋㯋饵尘ᬻ╼ᦍ絗ឮ輩崞㝱捺᱀൤\uda21䰒⋆튶ឬፅ斋綟ᚌ귖夲냙簧樦谨ݧ\udb2c睭\ud97a怫G⁛ࠢ婷逡눪﮼螳示턬䡯誹襫䣇\ud9d9쭼暣吮寯㨚瀜笧웠굆ꈇꀞ奄䌽⣊ȍ쟀Ґင⧥鵍㩧鰴㕚벼ﱪዀᒚ欛韩깵媒펰⛪婢㮫鲕Ậᾇሂ紞Qꮅ듏㑬掴﮸ꛖậ㵜뚾늺\udaca햼ᴇ悔ഋ顑㼅泿䱙譋䓺傭㔟⹸ﺰ坵뗓뺯첥ـ榀省岀ꐀ䲯သ଀벬婢⌆廽햕ꅠ龫雦\ud8b9䮶㋡쇞叜險럐姟㱱爤퉁鎣갗ꆬ晚༹⊻㋭엦僫퀷ꈣ淣藉ẝ䥥땓琇잜겷憴ც괄혍䰩ꬲ뺅ᦎ䬨㉫ദ섭រ㎾ꠒꁕ솿崊壞泂謋鎖릮肙ꆶ潿㖕ഄ陈딋峊뵌羯꼰䥍ཱྀ虐⢠讅ƀй䀀䃷興媚芭濚秥蹋᫗ꈮ뒞\udeb0ဒ렙伶\ud98d힟⼧嵎뺝猺왁蛂\udb5f혰勓떦獤舐涧壎롣଺ᳫ栶ﭟ䟛≿\udae4⵿㮃꿿ⴎ냔斠꒳\uda8f蘝㪽蕾㫿䇮ᶰ஀髈ɼϋጵᜀ㈠愡˱蔕逍쐝ƙᶥ웖㑐屽㹝絢ꫫ䉖瘯떚檽塚䫫맦騻軨\udaf7㍰毀ᝈະ继\udbac崟磜㱮ͮ旐榳臉拃ܹ┌\ud9e6힋멖➮픻好磡㖅鞗겻별籝䐱譓㞬腩Ј栋耄ꉵ\u0010Ř䐟弞ퟒ榼וּ뵵柗獚廙\ude77ው鷓✅궼Ἅ㚹搀㗤篸먑응잶ᩣ夬ﰫᢦअ있Ѓ线絕챭૖䓛\udcc3፮⛷䨃殫㭻萑뙺氷⢍쫀蚏焀솰兩⍛溩ꭀ嚲࿰\udc19밣摦ᐷ䋎᩟ହ㮻탩ꗖ譳ꟑ俭峨봮綠楦亵異欴䁓胍怆̜טࠩᚼଐࠀ쌁泋⪠⑗䕰苌㳌㎘꾾랜楼䅱齗㘏絘뜰╣饚趸쬚㘱칵饷㠪牊폥큫儦堭䍟䲱捨磖斛诼멐仉㑧ᖘ㉒棳譧쬭잟튺뙫೫Ɯ㏺Ꚓ鷛㢯ؠ൉鳳⨗ꠄ\ud95b늳老쫵1륜꽥掖䐪頜랕鸀铖랭劇\ude33䣳귡囫켢娤㲓籲융豋⾯⟪דּ鍻䷤率ꙉⵥ崋鳎ᝩኒꌈ먑惀횠ᎄ唃搪ణ㠬煅ൕ嬈뻠浚옶귑髖\ud834梎⭡䀘犸ᬩំᓜ\udbb9냳槦ࡐ漶㛈긩혴酿⋕蓼讇쩰沪幧〛疀㷍잛᥌䍮볟禼ል曩冰돟㮍⽬\ud968뎵潦﭅ꭋᇖ\uda0f▘Ꟛ獳蛬⺾荛ꚮ求ꭣࠗ荧垨᭭\ude80\udb02愮葊䛋뛮⭤ក貨𵻺絆좕뫫큇堓䖲뎩彄㖁ᕭ휱渇鴛ㆄ箺\ude2dཱྀꍌ퉄᫝ᚓ᫧퇷询ឩ浼庐뼽礯翅謅ꙁ垯∘ꚼ퉦ᣍ⡗ʮטരĦ흞轧镮ꓘ툲擦䷞殕㯧⻟屜듡撹䮅ꁳ鑛봀弛㩁尭ా聕㘥䖋ݡỖ쬥놝沗鵮㟬檿୦쀻\udb29冽넾\uda8d늋摒\uda8c\udb51埃설叐㨃뛭Wₓ㙣潌\ud8ca㱬穪鈻䶷죮뛚ꎱ㺆軶涃䮿泔ᳶ㌺甔젅붫ᴗ傯㔚㪲陦㫾⦮ᬗ㙸汿ࠐ⢦ヲ娀̀렡瀆檣 ˏx㳝랋蹂\udc51벣ꝣ绁\udfab킷ﺯໜں㭧棸㶾뙓⹃开틱ꘚ껫뢶砮\ud8da鼏뤖㈜苡ತ뙄⾒\udb10닔멺򊸶转㋟邳됒셞孁㙿㒄\udd23㘓籈ﺚ膥摖賡瀆隀䝬⫏\ud888꯵곺ꦊ늠敖\uda4d逓\udfb6쁍彙䪳໡▌ꮀ\udbac躅즐줗㤠ຂ塘模Ⱓ\udfc0뀲撁⨲ブ捍㘢⺀\udd69댳ꐋ橝㋮防戩仜怕㭪眨i\udd05⑎芢㰞㨻ખ⚭웜魬遴\uddd9믪眴\ud9d3뻾禽筴튃忧ﾘ梱味櫐痺茡횐궇屪㫐疆\udc53殧䊶⮘몷蕻ⳁᗂÖÜ֤膙샫᷀橨ᠴ䲰湣砇Ꝧ뚷Ᏺ㭋꺬婑늣븞ꨋ騺Ʈ큟꺲൥㋸㗻㵘힕⌱뼻摬혶秤ꄅⵏ뤂됭僤㌣흐캸\udc36厍惊\ude35ꤋ왗십졙ᝳ갹굱㪯浫墡ㆢ㞚Ȁ塋授퓥๛쮲쵵㗷\udb64蛱躕\uddf5㏻礪풫礶䍌ᓟ햴ﵿ렛䠕끄薅輔№↾타茡샯ﰁ耇흽鋺뗁묘픋\ud8c8ȯ罆⾹숻嵗酧쇠޼૊䀐筜Á몷捩忉魶鬛﮹ỏ뷐筕ᐃ녷絪헝샫琷滬ミ뮴썱瓡햨皫滇嶓뭛樸샆솬영頰젃ᨇИ⫋᳑Œ脓ꊇ뎧꓎\ud975ꌻ赧뺝䞸聽ỊƱ⬶睠跜颣岋懎ஶ䧮맘䚳捿᛹瀥僙\uda05≴菳냏撻匽꩛虗姭콟ꖱ콶勅䁺⠼跳\udab5㵻潫棨ᙽلᱳ\ud844贋⭧⻼귃雟沟墜맻捀ﯙꕻ뱦ｭ櫛㈻㉢죊㭬虺㌘渪踛뭲ཀܘ跋ퟓ湞梐刕뷴㯾䛝溏⤿봰೾졲鎐䴁差᭟樖影滥緪﮴ū\udfa8П殭䡽즫䱶獪쁱彻撮ϼߥႺ餝㝑汛牽邏厦폯䖘쾸侫㻆覴⮒眫汰\ud82f덛獴膃Ⴊꦠ亃㒌ꀀ박ᥙ莈ǆѯ뿸榬ﱖ凭ﵛ䞱杮\udef5鷺랱\ud831봃Ꙋ뜽쓷녬俘鬲ꕩ읈鰴챚ဤꘚ흏旆캕왻駮磛怱뽯ೖ﷘肖୎ժ몡恀\udaf5軋扇皷\udbd8ʖ῎榲裏래콋\udfb5튓湞큪꿛諷쫬꟩垵坧囈ᶑ殔媕䍭◣讯Ģŕ칰뭈㚑湔∑⨇堘ݵ嘆\udb69뢓ꍄ呃鵹簴࿛䶼䇤嗒༘苀༠鈇᭷濎搙掽탲䇟䏷䐃࿤ḧ\ude82땐放󐱽蟖柘崳샢仮緾޺✄ỴḐ粮撾쿜닌幖벬⟶ဖ怭᠚鲆5跛Ὂ䫀ᅁ쮉\ud91d旇혶噹䛯淕᯦睡沎\udcd1볜筆툭쌇ℇ⸎Òܵ頚鲴쭎瘻긮\udd27릝땙䃜珨㒐抃ᷬ徲绛菕שּׁ满黛㟱獞澃鷻㭀蓘\udebc靻໘❲頦흵Ǆ㤜뫍無ꝝ刜뿟䡹ꭧ쵮䷞෕\udd24뿗쟈㩄抨낰ᰀ꼍夒岰뒼燗ꅟ먑疒펭몇㛶᨝ෘ膳蝩貴쀺䞷⚙瑠㠈핬ී㼀இ爁尻砋烠숭놭揃๒ຌ㷫弛簾\udd91䚏츝 롾棦腫䟓䟭谬㹠環햇혝瀼\ud87eŷ臎쏶᭻๤㾀뗷焂\udba5\udf09๊쐆쒏ဖܯ\udc38⃆ė抋⎟ၝ洕儅큛붶⌯㺘ᶼ枵곖莞﯀휑潵鹅뎏瑔豛炎녮⥟蚹惱᫪ꑌ솫怐Ԓ谽滂奥뜛腷橗ךꈺᝠ釪移緛뒲\udc09끼液졃쯛蟶׭䰊䧈㜄䆌ꈷꢕ耙ῥ\uddba\udf7f梮쟭뙇쿷료櫚ﭧ針㌀궸崎ؖ賐㸀羀픃琢彃鐛넝⤀࡮铔ۧ㤁뚨䚣ޱ䘿朎ቾꏎ蟣૓᷁Ì皞묱퉐㳇벃ꍡ\uda3f᪰䭓ꎉ螦쟠鸡㫌煻ꔉ㐧鲓軬Ή⠴샭櫐掀ຢ켨鮻넘쇕윶࠿豰烱㇛ɡ謿瞢®ႂٓḠ⿿癮揂茤饤焴壪൏췧\udd2d‮䄬裢로暬鸫弎釬᧘ꃫ뻍掯퍀軻ᱬ灠흱⏶ύ頸셫뇔ﶞ읉凕˃ƍ秆쟑翽㫀磙겹⻦ﶢ䟨䉉ᴷ栉뼑㲚巘ࠈᤄ怀ః䀕瘐⭂7ƎȾو赀Ȉશᜈ밐앬腯်쀃ረ舫큙㥯ꁋ\ud855뒓磺쀧\ud91f鸽낷㥣ﻙㆾ䜹ບ甔\udc86逽쇰㕬紤！榏꾦낀昝⨁\f㐕ꀀ鳥ꨂ紳뭁ﮆ첧\ud94f䷂ʁ㝷系僾❼პĉ㤒痐౉\udc7dᡏ﹛᡼兤\ud8e2涁⟳仦刭㹚焤뤓둎䌟턻㒸쓠テ⦖⟛໘黬㯅㺺揮ﰮ꓇觗큕\udb22趏羣老䪃龍໰ė೰⩏㘬왙薳嵾㋐㗧珀踛Ẃ㼊㤻擐꬝㠭썚뉳꾪쇭趲탻酡捱궮᳤뇇蜦✟憚鱷䭻쇯鏜Ǿ佭ᘄ㸉빪焮褺⌒〆얎礌ꬠ瀴ߙ眚⛥\udc2a瑽炮홇⤎켜\ud85fᤵ哻釶귚ꜿᱭ䆬賃謜⫘糐ⓢㅨ䪃윔젻䣁䠏臺鷪殀磐ﷃ笳칧嬨릝됅勈ြ덟俲⋽㸷䋈ќ᫓펝堷䠟㭝契\ud9cf폱䒎츁鰻ᡠ祄ﳮ펧㐷⋎]\ud9b6詤뛸疧믠멱亮龗㬁秩힧ྺ㠁ᙍ乛尘w鲸⊑ᘝ೻茸諤澻墮绯頻䢤ᛗᖰ查踫깖㫘뤌﵆搑ꬻ娷䥘䙾ቾ컋掓ޣ鹰夠㎙粞엨ૐ훨癎戺욵⮯䫋㲽\udb6bᵓ㰤皞皙闅᳠횴狟늸雋閞堂똼꼊\udd88ϥ羞ﮭꡙ숑앃䰃㫗쳳乏笅皏᲋㮏\uda78윣쯫ᤎ䦍툛䪵ｨ鋞귕쮦ޥῼˉ荞鵨⵬碨ⳁ䯁㎄プ㻏稢ꎇ寊蹼躪㥵밄ﯡ埌몃鼼빵泳僆玱젊ꄒꋧ㼘䶋ቺⲸ唎醷陴騟ꎺ춽듮෹瀸⺳鿠룽\udf9c控绗׍蜹㒸孶瓔珑㮥띣鵨骀릅泦쎇靗踞έ멩⍼ﰧ逑꒔䂼ꈍ얼㊐࠙\ud963꾫ᖎ縞ໞ걿컠⏞﮺ཬ㺝너੖ޟ趚왽\ud8f6꼌꫚밀ℍB₞玻敾쟅輇뒶収ﱚ幽뽸驺割䟌켻ⵒ㯚퉬פּ楬倨㇫\udf3c㱳⽡ﻱ嶧﯏츪鹋㯦봬틥狏頚긂甯᱃졥䯒⍦쌓跾袖ἠ龜龷ଜ쎽祰◢鳠韎䣓㉠렱紴ｊ撋툮镧\ud9ca瀁䗉店柍믖㬏뮄列쭋뚗눯㩟璻鉈ᳬᗀ잡쿿찖\udeda뷂\udc59飧ⰶࢹ㪿냮ˠ얞⟸嚐⾃3\u001f氖阀ȉ蚇丂ᕗ赉⍤讒ᰨ\udd52皱絉쟃\udb73婏큝걻೽많跣❝쾤괘\ud903㐱႞\udb63뇻前鏞䑽愍톡궄캜Ჹ㽃㯣뙹\ude23꼧펎㱞츹⑼䴺娯诂⽙鲿ᶼ벀ĀސЮ浵ᔾᙾ↤뎸霒쿽佤\uda49砦杖횆不䆺礎贇娈炈ꨰ㩒䲻ꆗ鍲腼碐पੜ鐻ኆ탬₸쎿ü囸쵳瀤꾿듁㲛륾ქ掗ꜯ鲻氉狻蠉졞霆윶鸁峭㲪슞ᜯ\ud801岽䂕㋵Ὗ㦐㟦帉\ud842땴췓쎛㧷옼穾꣮ᗝ韟矶屫ಠМ៘᠀斀㷈䮀챼嚛∣\u001b霚任沭ὑ畘諸\udaeb㨮쌺䙴害㗑菴嬦⿘⹜妀\ud98cᑒᦅ짆᧤垮⼩龸붐덌혐鱗ꈜ㌻ᅱ전옜ঃ霑ⵚ듈憎瑋敏얞ጟꕵ⳻흍叴ꮆ߯ᴔ\udfd7딵ެ䛴⿸剝囂ꒁ㤽∶衙ⱥ⼼౔몕猑绔鞰좉筝䴿ꄲ麨㗑뀸삡꿃弌᳤ꊭ鱈⌀嵗滏쳜눺殰휋뀟嵆빽竂﬋ﭗ⋦蓯]謼蕱쮁᜽ᚄ彖\udae2玲⼓ｗ묢〄謇臊郓⼲聐刃åဠ֍狲螗㯯벾ꓷ䗶⣾﬊꿴滼붧㊌＀\uda33苗坆譝༽噚媇젢吊퀺䣓腖뱅硒旅뜗学期≩⑲䣰⧦庺鍪ᙗᵃḾ稼꘨쬜瀈獠쀀刁取䫤싐䍔꽊鼌魻㼒鿎剟翙ﹻｨ㝷㩤ꢉ鲭큅쓩੟㎜ᔤ㷴㟼馌潃\udd7d⡧㓑돃㏊濧僺䱊膦捋쯗㞢ʠ綍匌瀋෻\u001c㞒ð\uddc6啽熴銋⺏시憺譲슛෮᯼㝀满俱\udb82뻀ܷ쓮䝟畳ꉳ헂맯垟睽弦㧙ᝰධ〆㊔䎐툁똷䉤帉⤔B㟍\udea8㲮놢蘆쌂귎ꍿ둩뇿妞俳嵁飆砼嫔㴁ꏅꯀ⛴䋍殠믅♧갥縦ꪤ궯䈟ꔼ푲逊㤴㈎࣢徇炐쥓텧掯楜人즵㫴飙鮠㬖澅꾤뻉喆褠᲼ὀ牽礣붥噋挙ᘔ媥恫ƥ轕嫢\ud99a払逧䴏漯嶾鉀耘ⷝᯐ랤󶯰ᒉꁃ莭\udcbe䏧ꈴ鸟镼\ud8ee\udaeb뎤럘伆庥묤᦯\udf1dꉷﱅ㫞鎼婅櫥탰珙靶꿳氺뭘縮罦\ud89d닛콷ᅰ飩෮尔㜩踃嶩얯➐ᡀⳀᯀᤁ萁緄໋ㅷ귀ᇾ럽뜓帷㯸甌핋뇛፮ಞ眼悿ᇩ莳ឋ測弖뫣婞ஒ⼴㲎탚뛜י\udb7e㣯淈嶃뜍꽌갻⤻箓↙ﱝꙧ뢮순皼ឰԡ瀺ऴ肝셌逕㰝瓶쳶\udc63㒯ೝ튼ﭲ曻臙휏혅ᰚ\udfeb蚄㖴\ude60ޑ먀鹇鮆炁偺憎㶪ᆾ曀뵃늨ꆧ鼮ꨧ䞽᮷Ợ鄊嬫뵗纮眐妋襯艹펹䭽등鷤투邫룵о쐀㲷릷悯巚⭹瓤귳ꮲ랢巁볙秄ﭥ쾫笮䨠℮蚸諈승ථ論쑻왶痟꠻㎹ꃫ䗲௪㞆僴ᷙ\udab7缒搕ｳ뭷顆㣞㮽━봀В鉾ᑌ醷潖멅箶ﻛ衃绮覮ፉ⑳梦萙\udbd5쟤暏ꠎ嵎幰㧤Ѐ踰드ꉚ喲㫿䷫\ud9ebଟ潿潟履珶\udcebﳷ嫷ꥆ銂嘃됇ꀔⰿ湝㭶蟘䷰竳ꨌ伷꣧⼬隸ꄸ䇮瀨ᐎࡤῐề㤱ᅾᬶ悐、濞༂쿎␊ﮬ✳㛈Ṷ驐慎ﯷ娞꺕玾⨳㋤㮭鬂ᴋ뺎紆ﻻ뭋蟮麞햹穿园띴ւᾝ奰䆛૤ގᄺᩲ惕讝ｏ㼔୧籵䠑ﻻ摀抳౾㝤ᐌ헰〲嬁샍ꫬ塮ಔ您㋟쑿輿᏾㺇苡軙鈁&჌裾į轓戁㷻螬례Ɑ豏崌垆庑恉삕⬃虁Ӯ凜㍸摾ῡ針\udbf0䷷\udfdc뾹⍶ꃳ䧧ﯭ⟟带堀疺魷ଢ଼ⶹ嶻蔄禓䥰꾇ᾪ鼉龤樯䞓줋퀾\udb19臷刡à㉊枤伩閑⛠ไ벉딳ᑏꀁ盬䃉⛢爔骚艹ܠ碩쏳퓷潯폝큼氋ꑼ潩ᆃ⎫ዟ紳玞䎞뿢爝淀큝Ӎ慄灀乹ò৥ꕇ路㞼镱⇪恱ꚕ烄þ㸰\u0004Ａ좠㒎왁ﰾ\uded7ꢬᇾꀨ䟬乤⾕믡㲩科񘌏沟쒀Ѽ띇鏪ﮍ魹띬㶁뱵綾\udf0b頷逖࿟䧟烴귩﮿坲䒍⭸πហ◤ᡙ≱뜫\uda98肄﻽뻼殈孄渿\udd07橮父﫣꾗曮㮜ㆾ䢽\udcf9揞殖㜋濖㿛뼀ﯧꪳ뺂҈卑ꟃ뮽ᱹ駷믉잾\udfa2뢓祠ꛑ䱜ᰏ੮휝끯ᘿ眀풵䒹⎌혅鸧뮾甒듷됟넯⯟繺꽸㓮箻재ḟ῅䎑䧪೐ۈࢸ䘐䓢″⡮耾腄㲴\udf54現晧\ud99f狼瞻\udaac뀁ꞣ俚싀ʚ綌衚焖ງꑩ鳼槾珮ཱི侈끥㷱\udb94慓\uddab⬮鰽瑛宭侞ṵ㰵밚쾩䥑㍀ⰼ諪ὀ舂‌/ⅉ❟㙃ⶑ⦮眚룗뼎뿝᮸ѵ蝳ỽ揬흠轠벙㷍眶ｏ怟雟塆⥘꒨\udf51ྂ濣컖뤓罚︳켗圞펂ꙸ㾷臥폕䒮±ŐĢ蠉ﷳ봷꽮ೝ険䪿৲껾◪믷흫㺢簔綯穲䨧Ḹᬠ㻒橠葂瞲렭豯䂝⇋䌥⟬ｐ\udb7b뜕둟柜ㅻ鷥苿ꕓ䦯鸐慱돟寳喧粞阾惝ꝷꇣ\ud9c1튝⼯鸅⿩磼ﻧ쮻솏쎜ⶳ심෧ྰ潜㱪竵筹힇듧\ude3c렉阃砄묦ꏨ耗쐙㈨괂謚잶皞☼ම湱೰\uddca毑띩꽝㳑뼷燩聯⁧윧ʽ壺웬泿⏷㬨玗鉂⊋䋣ꡞ渗蠞뷟⁹臸诿믋輱Ŏ֬¢ﰠ紳辱猩ꦭ 骉ࢋ\udbf4挑⼧뜧뭒㐲暃鹫ᖟ͌ꡬ寞曮Ӽ鞾ࢧ솚쇣蛻સҜ㹈㱫䊽ぇ퓴鏘ꮦ乛\udecaᦆ玠ᑫ쯐鍞眀乻࠾ᗲ⯡︘꽱库挛│芹﫼\udae7鳚뺽䕽﫳ꪞ⯀㞅搖ẝ躭孡瑩繓훕衖颜몿⭾孭蛕寫콉츼㼅羼﷡纠໤\udf55됈䐥꽕唵း⁉幡鮇됅ﵳﵷ奟삼瓹쒦௾菸⍃澡腕퐯⇧㣜䧃낋ᤛ㭛퐈켤캣㼯Ậ멱蓏읮諾ꗬ᫹ꅢዾ߄鴝㘠Ψɦܬ㡿錗ꅧⱞ叝⵻漸镵毗៌蜽뻽뻚佐隷ꀘ鐋\udf40퍤숋䨇겦৹ꏻ꺺籕씧鑷䎟允㛱逈\udbf6戀뜽ʓ罅曹造槀⩯眀榽ͽ趼雫槳ᷕ䯱\ude53刧碦᩷ꃁ⹞堝鴿狵싸令ᮇ묾帯㳆㧆샅鏷㋮쿞땈衣瀇栽\u0001䱩¤ᰒᙠ΃靠Ꮓꤧ蠬絙㜻ཱུ⯟宕ݺ鶁綘﭅퐗퍷՟\udd3e箚㢾࣪鷼畂₅뺘뭘ﳋ鴠䓠嚁㲌奿揘⾓흍锫紓珱撋옫颀⮋如歺䮿諥׵㖘⁦녵꛾퍯䖞䄼學䪱鍳釥ꞵ㫹Ჲ렇祅븪Ŋ묑໶\ud81eﰏ푺䣷夁阩簚烵ﯡ콠ﾼø﫹ꡱ蓴൮\udffb벵刞ﶬ抝\udfcb쟝她ꅱ뀧矚ὔ䇨縏硑\u001cﲉࣟ胝⍺㳲跱司插뜢嶪翲ﾟ棽쮛뱺ﰌ瀂踉㞲ìŏ⫌ňಠଙ孠忈ꏞ᢯轹醼闵惻쎙廧뺁稛磩唛\udf2e䄝ᕹ䖵篸늽溆칊鯴몯뒐䀝횆얇뇱鵱㏬䞤츕뾓㦥둅콗谏君産䦻矜ॾ꓅코廘㗹밞䬾䬰፯矶쁾녹⳶ৣ诵랊뮶\ude83俛繠ﱽ셻볽敫椢ⁱ楎烙☔€ꦊꇏ쓓〻슷\udaab⇞ཝ剽䔀叼䭛庝䲔㸘䷵涣ẏ\udd54蘿豼쀀컰읺藖\uddd8㆚㺖绨￑呂এ닯㑎㡜ⲽ䛴只쯟⼊㹎汱㳔ﭓ󭵏혃⻃舂愒㬔쁔瓟僧癶労껇쉫璘踿늽㩼苲滧䇚霛\udee0뵸￞Ｖ큏됯⟞犠썬寬俹潕阒簞\udb67돤\uda4f鵹쇯艟㭸꛿䵤耦Ǣ⇔Ȗ驊윱諹螷ޏ挝㺻ዼᏹ枛澕麲ị㲳竊懲㕤변ꭣ괄ﺳᜒᄵά裶폍ᆫⅈCﻫ좱闯褺楽ཨ啀쯩䤓⾭⼻Ϟ罬鋹殺ሹᕶ೴㮙쿍饺ㅵ㍪藣㦝齜ႌﮩ葫컊Ꜿ㳿懴ᮺ㘫浞穮ﺖ箆\udd6d딟䐁즠刅Ѓ瀆Ы삆耭䧎䄗띍쌷洽ꢽ״髩쟡᪽謍흣뿁絳㰆眃ᚨ싟྿啻ᛸ똱遢搉傾킵磷盕勉읗\ud8cf嵟鉿ꁾ⑼쭧攇朑״Ґې״ჶ౮ᘇ㋺暹⽼门࿦䝔Ộ뼭窶﫿皧\udf2f뭯㹳ྜ䇱랸頸肎㇏⁎옶䃅ጋ췤櫘ﮑ谢寞᧵奴柝퟊侨㐎精ￍ༎₰몿\uda87蛼跽᯹溛怸\udff4큊慰әﵫ탋뉁ι؁䛹盍ﯷ澮n빬㹈僚뇀컻뤟ꪟ킯넻豸鼏龅릁ꋫ䨲䧠͜悠괮嫡᭧曨௦ﵰ៧鞶㻈\uddbc뮠圱﹗뿷郞燝潹魽ீ俤忕得滕簾薲撥䢔ை඿⌽㛿觳᧢駜柶\udf17ὒ罯\uda35噋辰칏쨯娖疼኿븓砇搽䤯醥㹴\udc72ﱿ듼ﮗ꼞뱻ꭿ臬闅冄㊕躍\ud86fꗍ켴䡄떨臒隦ࣦ选埭ኴ﹈ᮀ஧퍋ѿ栁ᇹ歆䀔还䇙먁ﰔﲸタᅾ䣽调⏻៽鮜ᾐ㜞뺤粞縭믂ﵷ쪷꽷Ϳ鳚⾴烴䇡聘ǌꤢ⏠Ȇ몫␞古忢䲳葾潊堜䐺 載芔鲗嶑띲﹆퓇ⳟ㍼ᮿ曱௹篔⾶齡縜待離牀寨ꖾ྽啺놴裱\uddd6ࡘྻ큸䌓杖巷줵葞擾턛鏹\udbf6務䀵굇鄲닀주ԫ㪐Ⴀ竢먂뤂᠊稝칧ἒ痹봜褠݉ᙳ봿䧮೼쒺㏽叩矛㼋竗糖禪瓀욂Ṩ厽Ā幢꒎꼆䔒鉞砢缒²蛳精\ud9fc湐턁ǿϸ唇㏧恭忺뿘ĵｊ쳭๟ᮐছᚿ랽嫼䯿仪緼렚翳샩ﰳ參ﳏ๟褟蕯䌝⇸烴埼꿬潥縝ⴆﮓ눛絛䗄﮸☴䒇\ud80bₜಜꈜᱝ纼㸛暏\udbfb昼冹퉻鯫Ợ쟋忀暹䎤䑅ﲅ궿빻ೂዣ\ud9e8制⾭▻뚐㿮\udfc6뷤滋ꄐᘪ筿뚹⼸晨◎뢬贁쥳㴀梅끙ꂟ\ud8bc굾蟵죱Ꮿ⎄缈㹬﹑濊襚齉㧴捤酳ꐂ큎뺏㔂呍⒄ￆ緞摒ﵨੀ巺竍믘౉\udd9e耺뾻肚２닸ᜲꛘᢚ嬿츿ᙟ\ud87e㇝ۺ汵忷羣ꂽﻖ㯷ﵻ蠿ࢿ芷ᯯ엿ᖾ䏽珺忛꯿徍\udfe5ﱕﴑ窜秏쵔폋뱾된笝눗\udeac钨︒긷栗\ud9bf蝏鱽対濽鿟边⬼羝ﴩ庲燧郖䗦ә㔨ڠㇷ뇄瘓灾늻偄㉓눚뗘ְ菰Ꭷ솯㏌됬㒁뒪狏烾牄劀眛葊莰蝊䎶采톒٦ʖ똰莯灯⋀ࢴ蔠ʧᔿ协倂曼ᖈڿ쑠դꁋ닧㌐༿િ䖐൤ꅟ璎癙燵땢痟늗畮薗瑫癐\u001a㗝ݐܸғ銨Ꙑֶ쎁ڣ螿홦㑣딅璲烘藤芞㘙䅕㞅熉瀢༻뒻瞢蔻癀ஓ煓୓რ햌莜܂탅䔇๻瘠೦덕댫땾狏皬鋿膟ㆡ̰플若ťϐ莭䃢풽똎儨ཚϑ范핽떰ઠޜ໢ٰ൰໺ꀃ珩痐厰୘ੰ൲ŰஂͰඃ㇍떔畏띟瓟矟盢琦댬ŏ䁔閘ǭꊲՄ葻嗦쏲̀ߗ랽㘆獒焷燦盿焠䑷녷甭畁蔪蔨םʉ퀸畈ी㛪ନŭ痈จ矈૖듔璩țژ䇾Ҩ๏ࢩঁ뗏홞䃻䝱퍑ü燨ȰҾ藱蕹郞聰Ħ䝟䇠य़㏠൩鋤ࢆ쇀פซ玖㐄໙ިĄ࠹រ윴䞆䋴镲̀Pഏ뒟癐ຟ爄ࢴഄິࢄழ਋䖸অ㞸࠼஢炎瓲ථ஺田૸༰ృ環๴ᝮ옸\u000b➝䉪׿䆰ⅸϵ͈½햘폼넬琂ㆱ癄࿰ࣦལ瀅烂蔪藄ࢸ됉狣吁Q䎱ᐙઞ犀ত೪ඓૈઅ虷휏璏ㄶ痈艙ҠؐҐҾ灏焁ఔࢁ램ࢼ灥盏끼犤蟢鎟胏耓ᖕ偼쀘슍㙡ᛤ蕦۔ઈ뗔ࡓ郦疜൶聜ࡩ熬ଈ㑌౫왌຺拀͌৾ͬӌ৷둴ྲྀ瓡ધ㉀Ō௼ීဂਂୃᘑ嚵犢瑆࿐ऌম犌炌೸ࢗ灃瘿癹ྌࢅ囜ҵ꜈ꋪͮ읠߻釠Ԏ䃗⃫蔮煢냽흢늮焘牦냍돍ईూ珄ࡄ炰璱熲玻݄狓ټ痬ࡠ㚞焸໸뎀ࢋ뙞熡ٞ᝞獤蓥뛥뉲돥뗞睲눕닲됾甕능풐u吭㗓ֻꉻϤཥ㐳੨়矻㊳倴ᐜ焻퓅耩啍㕖䁑囡ي䟡䃂螼༐ངຩ䓨Ӣ㛇犛瀴玖㔳ᄮ앏↽ň莗욢ජฐĂआॊଢཊಢ૊ঞ蒛嘝㈎犰ැୟਖ਼瓂ಌ疺炫璌ூ૙煑뇋〰׿➑B熣䟵Ȏ삂䂀ٛꇫ猱혮뙘떮狰ඣൢ啄࿢ືఀ㘀ט蜭䉕Үʆ鐻ৱ넜དྷ৉遜爊狉ീཤࠉ琫兎늛ΊÙ킈럦矀ྈ犨࡚땕끗녾盜ૻ璠๨ຠ൨චಢ큈脼蒒䂄䝱䔯눔蕁ٻÃ䈙熺ྯ傾疏啺௄ꈟ捽铪౽ሶ썼솁苫잰\u001aਚ්૎睷ጦ໪ದ௪দම√৐ఌ༺瘌பౡ끪൵焰ෂྃ番࿆ۢᚘ˗ㄊ䄇쐞엢ᏐΌƤ胸捬ð઀㓢ଛ࢛ປࠒొ෦甸눀੝덳냚஻Ͳ㙊艊芥䕺㑈ತ༓࿷癖ඔ땋퇨௻瑓镚䇹薤臭ꎲ॒ひࢇౝฆબ๜됕疤蚯패țǼ焚蔪苣瓅蕦ۥΟ虥ଁ늊౴ဎଯݐ؎ಶ牘೔㊖খ୪싨ޖઞ쉖ௐŖྦ࢟盎甶㚮ઋྮౖ๖ཐͬ˦ࣚ덂෦ຮ๢琖ূॻ늌ಗ熌ఢ஌൹퍐잚셦チ얘Ǘ㚨鑘ޢ௸퓣헫ᔃ휃팩҃햖ᚃ탣훟柺잃텍ႄ훈펁ϨპÃ틃퓛Ӟ׃ퟃ퐜ʬ㙰휣퓿\u000fڣ햣탷拷果㝭韶啃퇣훂鋲ᗞൗ\u001cまࠈף퐝醨邽툼ト왨斁฼쀘韀膓횮⚊S퉓퀘œ탃옠ݓ툘퇼㜰׹녽휃茮癢࿞ຮ甘皴छ௠钣獄ୱ烱珘໱홚ଶ෣痐䓎ௐ풆鈜皉๨ႋ튉鄣靰猻ৰ皡ʲ埛㖸흁⚢荁\u0018ý왩쌕쌨ע@̬͝䟽▦϶ళ㛍偀䈞픷̳冚皝ࠔ༶೜ୈ璾댛퀰ಛ퐲㍚냚੩ࣛ큓㒉䗤蓬໎ퟜ蓒썎ى࿸.භ똧ฒ莀ñऐദ퉞ྰŞ࿘䍞ࣞගҐŮ࣡ࢩா鎂ݞ൪놩ఞ๘燦ࣲࣘ眞ೆ烙瀊࡞ถ◲蓠ꄽš씸ȗܸ߭k臛ↄਛ॑烖໰ணລ咷೿प㇨ļ艬๳럄ໜ풭훶䊭菎폍蟚่࿬൶ॅ瑾੭痰皟ѻ藶ଲ௚큽蘰胓땠ˋ뙜ࠠ࿤෺೥ഔ൲आ௜ಳף珥瓳됴腓㛤虷狩ޭĺ䜊ଘే癇㖀燆วඤ눅ો넦༘劙ஂƙ਎옘ޙಎ쉙੽쎩ਸඵྥங࡙॥৛ⓩ୲瑙甞௩ࣆ珲ࠦ͍嚟Ꮳ䖈֒탿Ā㝊쇠ՙઞഷఛ燢ಛང૿྄真뀤೘莵ଞ\u001c烩ಀஉ७ࣈ೶೹୾표疓畤஺೾կ톰葸¨ҕԎൄ녤璩অ঎ઁ㞅ࣲ౅ఒƊJ蟘䚭蝫ѱ蓦ㄺ䍺蜨狤㝲㋃׉జࢮੌ씊뚥જ๿ㆊ㕕ીݕঢ୥໙ၭ๕๭൭਻뜪഑뜑਌৩ตཆ瞑痆༙௃댬쇊Տ⋲臠б̂䜒ؚ덖ಮい੿팅௢আ皬శೄଵഈਧ땚௣઱琄Τ뙞䐳ͺ蜤ࠄㅑ࠺ॶཪ눏煾흈臹บ랷扪ވ۩뚍ಠநਉਆࢠඎࢳப皔ল㇦蔋脺蔥۩䀬돤蚭蒩Йԇ珱錭๒ୱ匃ங䒃ิ৯玸ŝௐ͝ંӝඏ꒚䘚띭঵૦힣ౣࣝ๐˝ൣ๨ߥࢮಹ༌੪ถ୰ྜྷ༖෡뛱Ɍジӧ❞றಮ܁ꆛ써ϝ೸特瑄๿࢑郹癣཯玅炒১醤虧ޛ舰ھ荽ബ냽੹൵ઞ똺ࠥ矽ౌ퀱උ뉜煀࿟뀨໖੉휂퀵➷晴芃คࠉஃఆ༠ཿ뜔ആࡶ఼਩랿臊茮ᒰ虻ۨˁӁㅥƵ뉕䓃醁甕爎甥༣ࢋළ씶쑠Ƌণಜ甫ㇱ˄肘䕓࿱Ĉ荵십ݣฃѓ࣫॓ଠ͓෫೓ਓ༹૘璓ઞ४๑ཪ৻랆䓮윲Ǧ蜱ᖗ۠≄蓗≵ۓ९냊眬છ࠶ളਸ਼ࣱ넒๬ຑ৅뒟뎳ଓ舤۴얧뚾㖾జ॒૵୒ඔ뉧ƈƸࠍ੄㈍෭൩释ѽ녈艠ᖋಥ矱ඨࠆਲ਼瓏煋໏൉灎ୃഋ鐢䊥䀳ܰ艢퓈ް芬囚䋓䏐蔣൯玫࣑ᎇ्䈝郼મক웛ࡔ遴⋴隫蝁薶Ž痘ึຍ덛됸࣭ःӛஓ⒦胧௛໧఻ౠڛഃ矋૆ख൛ਊࡓ둶蕜ۂ莀טՕꛩ䘤ጠͫ퍮ꋕ्ૡಚ௓਽࠵৖಻྘ల疻༳భ盩Ԁ횽ग़༭ඵ࠼萙ӝ矎틻๑া๭ସೈ๞焇ೇ蘃ཀ࿓儶瘲Ѡҕ뀩옞틱஻㎚๯ゎ઩ࡃೇ੨्੤㍍३횶鉷焓萴ᆒˤ蕖爑ؙ䔵틔థॆ팼뛆෠ෆ॓ᑓ镏ཏഥ煫ଈ㗗ॲѰష஠ᜊ眅̷஭ퟧ஻ଚ덡ࣣഗࠨ艧턟࠷਷࢟ഷૈ难잗ோ౛ୗ༗烗ૃ瞓ਠЋ䟋퐄ܕۥⅲԷ֔䋓चਮ낱낚೙ચഷପ퀈੷࡚ఒਗ਼஝뇷ࣛఀઐ冡݈΃똯鋤ྒ಼헅ཱུऺ೵଺ਇࢰ唒蝂菵຺൬똋ࢤ炏낡㓏厳虀Ĳ䄚ہჺ຾盏ৱ࿓ഝ瞍औਯࡄใྎຳ࣭銱蘄䎻ۅ茤ந螛蜺萼莱癫ї蒪뒫ङফ૯ว辈Ԡ踚߰ᐟ೔㚿౸ߠοຟ䚢ѿ௔㎡䀛ੋՐ趿੽Ӑ迒ƥ譨ǟๆॸ࠿ਰਿఙཔ౗ࡓ듗Ⅴ솶혘퍁슀دś쀔옘ػ෗焅୦ਵଽ๷ࠗೱ襘輒ࡷ灀튀裫ԓ莭䋞聈໻এ㊤࿂஭町ཧ뉭烀覴匤煤ಇऋྺ૾૫⏘ޜ࿢ɇଶେ࣏瞠뀕轍ਬ傴䚭胂蟾дန茠䍧ᑡƧਡ閨詌䘐h蹐衡㎸Ӱ袂苹膀װ述贿ؠ鏐詐཮ॴ煘踽͘觰躯㋘谈誰衃瀰ྪ࿩କஹ珆ཛ࿵瓻႒ٵ儰❇恫勴ꐄ፠ᘚৌฬ璑탡਷ఽ੿嘽࢈贽มಷ爹ฒ๣甒ີࠀඳಀ軩䐼蚼蛙㒊諺㟈諑ਜཹೱ炰圼螦眇঺఍ನ踍ই൅ۜՓ璮ᘚ䂀ܝ໺༅༇踔ଠࡉ瘯आ໇௻狲ಢ토蟺䔓薭菳헪烒뀭ࡒ冓㓖劘襕㞤觴鑤襗ј१࿩卸輒ø詾ꇄȂ怒֐ϸ跘蹴࿘謤ᓔ軔諸诔跸転Ⴘ诐ञࢃ猞കઝ಼ࠢଙྞ੝໱區퐖솸ڛ銍莰⒈ɖ༈ꛞ൰វ˜㎥Ȭ㞿Ꮻą쇟̜㒬㘣휌袼㞬㔬ɬ㉾ཐÞլ㈤㋬㐐闬゚៬㔬րȜヌ贤ʐތ賬㋝횜㊂Μ㉣파覬㐈՜㝯㊁෣وᓜゼ㉁ො㊀鄑ປજຍ䓬趬㍨㎼㕠|㉼㛑˨ռァ송ુ턮矹뜮煢໽퀮ちඒ炓킾ఁ铜褃턣퉘肃험芃퐔ਃ튾཭䆾ࡁ鎾ཬࠈ݌賃홰ᇃ튾þణ혣훾੘茣펰ᒣ퀁ࣂ퀄Σ턁ྫྷ輁ࡁ੥醁ࢼ辁ൣ튨ଅ䏜㍁ഝ醗䂑ㅯ唼㇁ࢼ譨ஓ픡౓퓠股൓횡௡适퍜苓현辄ී଄踪킄襄࿿ำຈ踑ଳ࡛ശࡈ輶ༀ轄袕勤कᏤ聅腂ǂ獳໸ጉร霢㗄瀨赀訨褤蹩艂荚툗隞菍醖쌖신˙愒䑎⟠̬߽␜蓲ʄ䐂郈ٱࢡクŁ萛芜袪ޏ둏ච诏೤貶辐턉ढ㟎圉஄༳獉珇࿫鋞老ۥѨ얣䀼聊艊薌艒䚟Ֆ䂽ફ૆ຐ觔໯ल谄̲蹀޶℩༘围賒䗴迴贸Ќ諝錀܈ꈴ譮೭㛊賙đ돊蠪踌让ऋ㟴൲ࢹ衛ໂਜ਼िຓङඓॸ讗爪q膄잭ٞ쀘L䒒䖈۵ܞ삷ॊ๿ೊකࡢ蠑඄訑྄賴풵ཬ眱熪૤࠙됴߃䙵௬ࣳ྾ఽ눥甤詞ዿ葏నୠ퓲ˠޛ랣㘒版ͭ镤豻燺ࣤ躠軤踳痤説ங㐔衉ட萼蜴䕩䋁ㄼ荫뚏䁈ݞ莸㖌耚Δ販看੺襺谍Ꮀ➳蓊褱៪輴獦씂ҠĚ谿怏낚跤땡真ਛெ谚谦踦謚謦覴親ழ譆ࠍࢰஞࣻ邙௡돔も荈ڷ蟡₝޶앳䖣ͬӤ蛥ؼ䑛䘈趞觰෿ള헖઻ఀ袽ྣ獚迈뛷ઑຳལ燮다ຜ釣蒥䜼菣脺衒๹໽୶୹ఇ૟놺跞㞺謋ୠ퉔裋났승쏟䑨輩࿺༪獨貉઼熖灇࣠諰ԩ뛚䋒욖荽蜭䜨ƅ蝰苖煆谽珚흶轘⋲✾蔜咮๘褖赲✖袤Җ袤ږ輕莖辧䓈=脪豦࠸嘨숨耮袬숮衭씮趖讈®豛䕦踞ଝྴ褕ಝୃ謰ঞ୴衝ࣴ讕ਠ׽옸ٌ䍨ޅ凓ş욱䐶ē옸ߎ뀄躒甌뒢裙आ盿੄஢袻ಈ躄襣蟿琹භ迱శ貈௚襣薌膤蘲ߛ芶血谺ੀ誏ྲྀএ೶ത轼팇࿵ತ袨迀貜ఠ踜剠ᖈªζ䏭珀າ謅ྲல跺贠૜๋๠诤赠觇໨袯࣐왊藱蓡៏혶䓉㕳蕥\u0001֭䝾䊮၈Վ袙؁趃́豠̃鎭ಿ語覞褑뗒Ș☛ĩ䏐ڮ製睷ၡ袜䉡讞赡豞輡뎪覵痧痋誸裂ࡴ诮軦蠞躞࿂୪੗೿훪쁓휩䓤ᅊ薘ǲ݁⊼蛷瞶㉖踅৞豚裖蠀蠹਀豄貳੷঳่觸풩݅༆퐽萄τ请赹඀ࡶ踨躸其裤ࠠ唰䝰쀨ȶᓺ譥ੈ瞝衁觤詁詃໲跇༎褃㘡誮͖功㘪蜀睾늚耖腩䃃䃞螯炐誽輩熐讫ఠ词镯띔襏凈蕑返ݑ诐ӑ趻꘠Ǒ辸疴熟ූ辔똏땜ૡ赙垩讶ѩ诤왩諑譩軁僩迴瘑蹂ฝສ૮誮袝ൃ衮辑譛౑術뒭Ꙭի䓻М蜽퍏◈НՕ1贛ບऱ诡௙ઈ論覻ಽ഑૚輈৚轚໬琣෴ڴȑďࢤଏ෈褻㟻಺踏跔藰电㜨衋댏爲誘ᑀ疅腇䜄ʕǶ譜௶褫뀎袄睋༆ೋര㏐蒑䍺荼獖冠荺蚅肄䎻\u001aކ謡訮ෲრ脏혏쐰ቅ詘觘ᇙ辒݁藺꜒튕蘸ع谄ዀӡ轜靥诙諥谹跥觀Ĺ貼㆙觧皰貸蹸ຸ誑襙褫ിও༿ફ谠ݫ熸Ѝп؏脉΂숀쐿啿ௌཞ賿ೞ趷༄辷ྡྷ謱豢讹襷ࡹ覈辻ไ輾趱訶襝뒩Զ訯閫씵荱襈ࠤ譈ຒ誺蹄픤贤貲낤跀趺຤躇ఁ貙ӓɊ胛޵㙅诱๨赇ཅ觥踎軅豩਍퐔蓧ի딋膔쌟㛴Q䎰芰蕳荱葨얥軯චٍ賱荍辇疩轪ᗕ迕跉엦Ĝℵ讻䖈Ӧ␕貟㛭諠5语踵諭Н賦⓮贝ౙ裦襃赕誓น੸躕໗घ떞♨π¼曆掫鈕蘤✸¡ธ퍊蓧ޖ끈螈Ԍ諰֠ڀ̣䈬㏵鐿ᐍ逮螈뚄Ԥ耂耣瘛ǟԈÈ鄬㋄틮ԾʹԱָℚ\u0001ඌə៿ጨ钂諰ƃ謣䇜㒀邆잨蘜讽褚ͨᖘڐ˭✐■۴н㑰߾Ƀ䄢諼㎡ୢࠛச謻ࡣ豷ੵ袱軖詮떟ૣ༹଒૗ힽল痵赼牊舙ג䑾謒踸഍訤軱趒賂ᙬ농豈隖蔾莂׭Յ푰θՠL䞎㞛쟘샫䄲䂪âؐܛঅ赅ݾ틞腡⛠횝Ҡ襥謇讁谉ੋ૎噲謒蹘邉೅賲褎趉ਭ诅軉喌花菌蟊뚖藜䐄ҩߖ䓥燴μ胓詭踧貜鎤뇆貿יᙖ쏝謅잴௣䖹끤씽蠰茨½趰芽褝踸ঢ়跋蠽蠫踽踫輽誅蜫觨ޝ軩ౝ誹ࡰ襰౸讝ೕ謑炖࿪㒢۹윛艊䇄鑕䊣޾ᜱચ躱獣輛衵諣蹚覅赢诹犱蹛㒑࣢詻૳퍬ै豗菆瓒䅽ส舍覶貏ஶ諱譀豶迀፞璅贏獭瀁轓㒂ய臚샧ǄÍ袅౲࠯ࡍ੠裨躉୐툋蠼෾盉匴Ɉݟ荶錴Й,뒮Ǌ致Ư灓ڰ虋讫୻裝閬위䟤荔跣趣ป裕✴狌猑숟쀘ʛ讌ҫ衩ஸЧ贛褧袛輧赆囝醕貪ங軦ಮਖ਼賦踫૪裝觪諙觋㋊써݊Ԫݙ兊薈ߙ샲芾懭ƽ趖酀כ菈ٝѽ趈遈蠸艗诃茚闼苍铗謍鍒臗讘耜鐃趼蠎ᆭ鞾蓭ᘖσ퉭阰Ђ词锂贎Ƀ諭靬跕ᄷ覌σ蛬賃踑谼㕂諁ࢧ炠蛗觷覀ͨ앪또Ƹ̖싵晠͍셷☐ư蝇鑣輢觼㔬皵蠽ബહ跙சඹ解边觖轛讬ฃ鐂蛨ɹ褀衱起䟘䕼퉱둶௹賈裑ಒ谤蠇঻觱賈ڡѓ谩雷ͱ耰⛠⌠߽⋄茀䌁ٞ윸̬ֈѠ܈꜒֘ٻ輋श琄Ϥ葬㍣ǻ觺躉辁较ੲ誄࿒㗳轲覇裞톉ଆஉऋ貆ࡼ蕨솧咿෧艋鈰Ĳ䃫Ƕ퍯࿦㉇猙谊㘮ࣦ狟袃ৄw霡狍猈ㄗ謗蠲‘җ躗趘֗袟틩輯貿㈗௩赮ম蠺冀䴰䎀䡀䮚뉀䫀ǭի裧贓൸ગਖ௧轝诫走諕術넮讚뚈՟ꖅ萢蕲ɝ醦膩잧谬஛贄迏辵跞誄诊ॵ謯踇풄版靆ᆯ趽௷ࠓ䗎텦޿蜻謺贻路覒贅蠟趈队豦瀯㉻誳贊쌐ዀи䚰藤Ꮯ譳蠿裳轇ཨ让衤㖿裗뜇衿訷픀猤䄤ຢ휰螖蕣蜰膭蓙٤뀹㒐身ഩ詊謥ര估䭈Ұ䵥轪በ䪈䕠佪胠䢲Ҵ畄薣땀䲐䬟ఛ࠰辈䥠䨟ቈ䳠䵈侧䤓४辛ૂ౪฿ਙ๰裕辠䠛軕裑ˠÃ䆣㔿㔒ִ膈䀑낤נ侹焛謈衚躹訯连謐䦈褑୵迦ឭȟ暱襄謅璹ྯ跪풩Ԩ僼瞿䍐䱀輺訅谥袍轉䟱衺୦犪ᚆ䟷킈赳趁覰䱋ர䨎趁ഇ輯ཨॅ㙎脜웩䋍ৎஔ퍎ʭ䋿腦݇言䥓ᔸ䪧㋑Ŀ揔矇赫࢘坠٨䵨䷘ݨ䮖䃑Μ譪슧賣੨䥨䶤虄䫀è䭄仨䴨乪蠫轪躨䩰衹䲫䡓뙲䍩讇⋮쑒ΰ쁳ط䙜к̹蠘䵖蠯谳࿡ี఑ඬཚ誱轢轛詈谌輨Ȕ耭๒关ഞ뇻༏ை裱誒豓误蹓近ངퟐ䤏琰䲥৆폋ㆊぼٟꚰ膂틏๦녳軺躰䮍૤趉蠆辉迥觲蹉趔ᝫĺ䛙㗘萀珞胒쏶蚜銆෱蔄䩷㇐׆튱薏疨얏瓋轂荜❓猺۶胪왰↸ݤ䯤ܦ轂貧猵ࠔิ賭つ䶌乤䡌䭤䶏煌两䶛࿟ࢨ䠖࠙໫衸趝ࡗ䨿豓뗲ڼ蚛dᚘꏑ䎤쎄ꕱ摰ר䰷赿熢輗툐䳣诞贐䩢軩袘俣謑૰Ⱦ햐䷷ౄ瘶訔聵੒䓧:乾軘䵭仐俘䠚П訸亨誘ᄶ瓙ۗꟀĎ劰䮸䦴䦉訿讉訇觤瘆辩픆譥玡萄ʝႁ瀚ݚף蓒䌞¨̴ؼൖ䝆਩輘ഈ保琀丌一䶭䇦蛘ʞ劌侣䅖솉옱ꖾ憝䙠ì䣼פⓄ䩟ං乬䡂䭬乂䬖䕂䨝ェ瑠疕說ཧ謨䴤䴌ನ䢞࣪覨交仪迫辬仕誀ɸ͚脿掐ບ䆬Ҧ햊¤ܸˤ䠐䧡෤䯿౵襛赣甯诣軩轵謾訓资讱貔乘亜鏤㇄앯軈謥뙶๔䲻賱谨輍訵グ嗜䭺蟜䤍ಉ薒ۅ膼وB༴䪝疸䪉貼䰿賳辴䶼䰋蹰䳲੶㗛킨副迤荽荳葰㓔엤ㄈ욖舌䱺唲䦀ܲ丐쎀ʥ෎觘ቢ䥳̷͡쎊眹ݚ葹뛢ۢ伸݂䨛ొ䥢䥊佢佊䫢䧢䤬䳵๗༤䪨䱰豑䠗辢䤊׆囶肊䌞ީ⑰΂޳荊ǭڭ螗豢ࠅ낮矜迎㙣輚ఛ࿠䫿ඵ趢訜丘䩚蠔䥚訔个貯败֜䱈覵ࡐ䶴ဈ䍜丱놞焍袺跘䷳௒䭋틏㋒඲듞燥뙲럥됲ೲ넕똰伂䷟鞃ᅷ➏皲䰖痱෻迏ࡠ迺裇ࡴ䵝譲䭸䡼甪莻x뛣瓙ʟٯ୽脓茌㜆蹎茊俞踫郦発佐պ䪌乪䣟鑓䳪䩀۪伨蔸჈䪟퓌䩴പ轷዆䵪䦿䌦쏆䠦亭蔪䱗༪䬤䭪說䪬䦝༫ທ瑝ଞ輆ۄ倨왿ポఞ율臡鉧ˀɘ⟀녞謞஭ᗁୡ఼諼跟ļ豟ጾඃ풾ఆ욾ি斾ື达ୃ퉼襾ർ迸ݼ諾ଃ훼跾௼谁ਂ踁ࠚ蔁ผ袂躁่ᗁং貁୔跬谏蹂赓Ꮓ袖䭌䬼㗁ໂ賓ءྒྷퟂ蹓툢豜謼삢轢ൣ迢俕໖ਜ਼褜䵕赚譀䩚䫄஘䳵踓譄辱蹘乧Ք픽䡶୒俳냯訸躀਺䧳਻灶埒乚획觾赶傞㓗蒂ࣲގ㎊䍈\u0018߽☯ʸචθѠɼ߽➬읂Ѻ䩉푅ؙ䋠܍쓱ಁ蠝熸䪴䢼䨔઼䩲䧒㙙隄趄钿迍覝甇謎觨谂藞茓耠ݟ䙎芰햊᝞葋垥䜴䎏惙Ɇ䦘譱傞佤᚞䪌䯦䭕⛥Ꮕ䆻Ϟ莙ֈ̖䳎쇊䠰譾䠖䳾世䧾䯾估າ훧畧迋瞙衝賧詝諟䲞೪趠䶬䰿䡬䢢᜷ӭ✦⑌࢈Òߖ蒶Ȉ袵訄躎䮣丱覚䰯讚丯褵฾裎䴔䪳૵貾譹蹧Q䍒에䃖䳒䲓軳௽ম仛Ꭾ䯠ほ跔䷀贞坟㚶޵㋰呻圼侲䩞䱲䱸俳觞䩠࿞佁謰㋓䝴串߸֚䗤聨囑ļ茞ݡᝫƊ޾䩎䰳㚑䡄Ԓ蘠ޑ䶈俒雁䷄傝ý쟁乒Η替쉝䀁䥴ྗٱ䷁䭱仑ჱ䨡䩝䁦䦰評跮襕跧赁䶨䮢侨䡢䡓닟蝕癠ꛋ꜒ߣ鍝螰䜩苏삮攡䭞輡丬ඎ侚裣趚丒侚䥎䱚䶈褔䧛謔䯛褓襻ಀ蠕疕䃎臣葰焮䩟띳૘䣐䪮䰑䵖䪩㕞጑䢥䵶贞哜炰菡옠ÐĀ聑䶍ੑ䶰䰎赑乸䭋భ轲䭨ࡼ燣虧݊䃔୶鏐萔薃܀煰㗘芭臎क瘈丩踂䫳眈䮫ଙ䵠䪙䡳貀䳞䩉䶫圖읉䪧䕜쏚쑗凱䤴辗Ź䥉佹䣥쓹䫉䱗匉䢑跩๙襝躉䦢䲕உ䮬䳁仕輺刄➰ݭ✹ˏ셝玀Н⌥‘Ϣ䲚䠜䮀㑛踐伳펡䰔䣄࢐䭅듎䦒䡘䮒丶躌耨ᆘ伭ǹ载཯註௡䵾辶轔䴅讨荄䈲䶤誈Ᏸဦ험Ѥᕧ폤膙䮝侙䣅词詙俤軾獁轸䦠膤胫׫႓艦〥蹫á䦋薜赈ʱ蝍㗿訹㚷뙕诲눕侣㔕䶭䓒佪ᙅ侨Յ侜䁔䅭轈˅仢ǅ䷹䳭㎵䡵佅乵伐㛅䪣܅䱕貑貉亅䣸ঠ䶉䮪侉䱅佰辂䉍苊爕䏐ϜЁć싉압ꏅ䦵蠥䴳땿थ䴘䬜䭎䲩乚䩡䦱軎䶥䧵谛葸阔赚䟟䑾迄襔䧯踅褺䯩䳏㜢伦뗉俓囍嗘Ȁ䚰菄ꊲ䶞䵥঍ಕ䮙䡸䡙䶕䵋ྕ䣋൰䣛핐ᇲv逽肸앁脀疱芚蜴䙦\u0017逵䮊褈䡊謈䡼໯໭䷭䭈߭䪌䷙ᐿԭ英ט艍䭹앉횠Օꃵ佈풽侍䦽䩁ㅍ䡽亡१謑䴢䤤䩗๦䲢䲬伕ຬ䣦俦轴谖賴訠ɼΜÆ营䗉썓蚔䋀ݙ判Ǭ余ා躢谐侎严䥮甜乵輘䥢賈䴪膬跛袾踉伾蛚䂉ǡ䠅豖䭅百䲠퇱獭侓畓伕띘⋗䗘⒕낕䦃२觍褳䩙侼䱶䫋ະ蒄䕳蝞苽䈭䔝ᛅ虦ÙӍྭұ䡔迠௣䳸ۀ醄伒乼놃䱬㘐ރ仂菿䅃䢤Ń䡓험ɽ亇햃䴳䤪윳䩃䪳䵃䷘Ѝ䶪༝໧軟䦉䶪䮠䡅䯸౪䷙Ⴆ솃䜒Լꘘِ獈ć섃坍䯏蠒亡䯤䦹词䠣乢起࠭䪒䷿䶒仵衐䭼씭肮ũƞ㘒赥䳽෡䭵೥亻軜䴺䣂蕾䱍踜֠ކ㒬ؐÝ閊ȓ䦨࿶輝痍輓䪝䥁蠔裲仉冉د疒ప뉺・䎒얱膋薃뙎諓伋༖ㄜޭ哫䢒통䠈픋䳀邋䪋䷂♎莋䩡䥡຦軈俐跱䫡伋䢢ϛ䦋䰻䣳佦裫負䵗ສ䧫覬䠿ඕ࿸༆ӐƦ蘸βԪ˕₀ʸ┽퉼&咖伱裢࣍仃䨥东䤐䪱䷿琾譣䨒થ䪵থ俋䯚衽萯횭芚蔓䱔俹读೜䫐䷒䡶冴唤熋둮䫄펍迾謞䫢ኀדץ넢莻琝乳趲䡞䱑䶃൨覕䠛䫇ਛ䡕䱼䴋鞿蝐䟍嚼葊荿諈ǴĹʮ̋䜠蕁虃댹䨂保䤂䪹䬄乧䵧䣷杧䪌䯻䢋␇䱤዗䚜̇䲠䮳䠺吷䠇䮗愷䤇伷䢇䱻仮豁䳫袤䭻䴃䯦趞ࢃ䲀劃伆љˠ莌2ֈǭ햐ꖶ٨ƪ\u0014ꁋ䫃䩋䧃䱇䷍促䤯輐䢒䫋䶛琓談䢈ࠌ较ㆼ蓵ʊ裱햭佱諒䵔䢧䯘䨵㚧䥜唥ɫ䥻躜౓靏ೖ內훫例ໍ诫䬓䱨แ豉豕䡼熑䘓膰㑍㘪茓藧肌썫띝䰣ࢠ亽谽丧瞯䭼쑯䱱优倏䱼㘏䴏䷗藜ҏ䴸ʷ䳦홟䨏䱟譟伏䳟乷佫謓ॻ䫫褃佦䫷丞諝觻끀ˎ뛊ڼD肵ꎂ֐Ѷ쐋酿ઇ䴚୾蒬艵Պ萁䦈읗輁鈃菿䥜ø肭銷貚ᆷ蠳鄾Á銴ᛢŜȨԾ΀Աݾ๖䤨埿丿掱蛀츟敬ɀ쥀쭢Ԝ贡閨蠼ㅂ輵謏迀肀저췬옸ĀౠϚ⏐ѝ˃쓠肎䲹䥣袡䰩佣輷䵍癇䦄輩伥䥏丣䨭ׇ嘭侘䳏䷚譹袼쟜둸으莀䧈謮䦄軯賐䱭䨑䰦隧侄㉐뇀轓迣瀞ᅟ쟪釨䲠َℯÒ⇈臹蜕߽℄఑팞䪣ㅴݨѧ≙휉踝亃৫䭅赯䦩謿賙邿软䨆覿觅访趝䦲㜃윮Ⴣ䍼옯瓥狩ҮԲֱ耽蜛脇艛䭠헰쳸ǭꆪК劌䮿䴰⓻Ҵ螏裢տ专ꁰ཰ꛟ䴶㊨졿䶨칿䡨콿佰꘿䡁乻䰿ཷ䭦䷦赴衑議觋㈞ղ߰怘¼攓웠첮ܾ̚읤ᚏ俬侇䨘䦡䴩䴥䡚䮐죣輣䦩䲣䵅並䝔ঠ萗鋈贏ध䣒䱣俅䥉隧䷰甥伥代䠉譇瞾ᘐɀ˰唨߿ɯ䵅諥ృ౴䯞乴䠾䬋䄐쏐蔭芨盜藝܏ッ䟔ᄰ藏䱷葕䤩賗亟䮧ࠂ雸췸콘⇎賭迒邘쪘즘챰Θ쮟蓠臺燘ࢦ豹䧹㔦䴂ඵ젘ژ콕眤챤ᒤ챘즸ಁ䵹힆෽䨞ཱྀ传䵪訃䮸触襴訞贘졠䧋㊢˅䎗撠ۢ˦⛑ᛑؤˠѷ蚄෉䠂趇䱋䮎䡇䤩乛謩䴒䰪䨣䲥䥐췋仇䵡䬓誚蕖䊭螭՚䉧c䬧䣵૜䲧仛ᚧ䢰倚䭤ত蹫䭱吪ɠᆷ쓉င쫍跫佻矫䮈쬄쭲䳑佸䯩䟔ᕈ ¸苐芥迄쌋䈨쪦됌쭗痗膎쩟䶏炎⇦葔중슻䗵ڞݔ쥨칧㖔줬졔쩔좬쵔코취츔켬䶸詴譙讑贖๸託觻뗙჊֥聴₽야①ˏ쉇▪읃䱦俅䵘츩佘찴쳘춐촵ෘ젅燔ᖥႴ캥䭐쪹ࡱ諈У䏮틖䒶诐콒䭥䪫䥾誻角䬯䪧䩌薧亰쨈現诱睟褾甡ꋾ툳唌쯺༈좌쭯䬔ොࡈ쥙丆乶떫욟ߢ鉶铘䉺苛톤苢陎脲䛌켕눞썦숞탼챟䪜췕쇪쑥쉠ܜ쿠▪솬캟烂츜컂쬜춽폂쾠լ켨䢪䥦䪢䲤䦪䮅䲍䰋任䱪䠶ʨ쌆抾怘¶ݛҳ萨苠٘처쭘쥋䤘䱏価䲱設亩乡䴭䧇䭹諈Ē䗐荘҄䙴쾓蹣䥖伯䦼쾻襸칓ࠠ覯䵩釜ܙꜮĚ䓼첅ಎ౲覼䡰䫲諨贗䰯甪匌Ē뛜螛虦ݾ䃃䈎°聢聂컃똲쮿侈̲쭂첿բ지ݢ콦蛢쵓ƀϢ젢쾗̊좊쳢캊췢츓䒢켢䦸豴迮諬쥛॰詢컦䧻䰠ū嚘[Ն偤ቼ͈ڒ䌽㘪ը 퓔젗킞䥘춏俔졜챎仓䦐츴콞䢜䲒䭏䣵諜쥹贓謜锒耖臅蘕ᗳ됯不辭䤰츺䬰졸콖燴쿒칼촙仂呍㚄؇샂蜲쯻觺䮴䯺䥲䠭裑䢄쫑䩦ݞ膊ѷ蝅ං젗镣菤蝟䓗虥٦㏲쯚탩넒죲Jళ䮄个촪젵ҶҪ콈聫䀱芘ފ켤쾢ᗺ켪젆캪츆쮝雽俤쭟琔쭫诨촿䠘쵦䢿丘첔쳙謘쿬쬬ܧ䁝蟯耔뜛莂ב됅藼辢뛿䦇䦜쮇䥪츒쨒䱜쭋䩏䰣䳋䡐촾觋䰚촀覴쩡蝹隭䷗蕒츰콒죶ਇ঴垭ţ陚쾍蠲켋௵ᗗ䍵֦ㇸ짚컺䶴亼乲䦲쵲䱈츋蹈즦㉷炾蝕䦷䚯퉊莪募蔰䙎膼臝䰂䨥౟ㄥം伊俿ᙊ䖷遊葖줊좘叆챝ݫÑ잰ئ춛؂拗䔆췙ჶ젦컶췶촦쫗䝊젃䢢䢬䬔춑跊즤䣁䨋䡬䯋㗜쁱茠ڣぱ䁄蚈ض؅ළ侪쫖㖖䲮瀼观遖䧶蘧ľ஬Ŗ䯞ୖ䡃톼諈侼輂诖䥼谓ݾྤ証跟Ǽ袣퟾ࢶ䲀ʶ䡣핷軣푁୬輯杣퐃홶䴞쵶侂蹉䃶仃贵躽䤻뜓퀎䤢躓툎䷂讋甎䰢誡ఐ철雏谂췔쨩䢐쾏䯃亐젾轋ፇ䫺죇䳜죏䨚쾩䧢輽䐁Ǌ衊聟놓輮䢒貮䧘亮䷩䣴콖腮伐≀畠î䪮ۮ䷮䥀倞䨞䤞䳸ఫ偽▭⚭讝체佤躴䬝俧䷍誈즄諞䪌짢侲쿮ڤ脼蓰냏肽ܝᑉ藞蔣䚮ኾ藓튶콯ൖ뙇疫଄䵁쮣⑤ᆐ슌䥎콈苗ノ캦딜ꇎ쵆唆쨑쭎촑쫎좑첲퇤짟풰䡆쫩ଠ䪢찃䦎쳬촫쳗ೝ跪轗輵犇情䌴ټu싨\u0018ƻظʜ쵍ଐ졛辦콖豦쬒쬥䥜처䪐乎蕦͚伔䣚䯚誖뚖艋䇶譯貸촼캸쫳ම죒쾸콂጖쳕톼钖챧乁챉헀ؾބ胋똢螥쾲蹑䢝䰗䤯ࠂ쿜ਂ촰㇚ҩ̌䤾䢰薎䝱䆤臦脱乞䇍蔭荡쭗亶죯ટ䲊໯൉줗땠É찿懕优刱쮎옇씱졵邱쪱케䔆찙줱츰죗䜙츸Ҏ쩦于죬컊집쾎쾅䱎칢졬䷙ᘃ잂쒗ꚯ㞨˭޷杂显䖦쬚౪짔즏䨒쾜줒춡䩦켒콇䮈觴쩾좀觢轈гҭ臱雖䊚좻裥䢼쬍誼찁쩤൭䷒쯀詼쬞䣩뉉삽힊䊎콳輝䠗䴡쳨詴䩉蠾䨚핎യ鞿蓎ຸ閨啵䂽裂耒諳좹䬐໯຅쾛뒮ՑĀ听쪜쨐ⅴй젎⌜케씒Ў켲֗ɥ젹쨹콥촹챙쬬亢촔컑쭕迧蠋䳙젪츋䷯蜌謱๨ď횥ꌫ㝂쀒촻౱춹졦콪쿖ཋ䴴쵦켴쪒줭䯋亴줚챧ឿpғ襒嘼촮伉쥴쥀譴츅켰쿝蚋뚯伋তǽ襸_䪸䫺ૺ见챞䯧䴓䦩죯䮲줛䲆া但눯闧藤脨勿蔪荖ᜭڟɍ픥죗䲹仄쬄䣵쫵척䮊侥쫋趕캈俢U쩕집ƃ䆀݂쐎쨭쾕줚謭쥕청쬢瀝ੂย䭧豆콑죊칕贍䷳䶅䷫轁䫻井졬䩟譐ୠ쎲θۢŇ䎌ˌ쓩鄞䭿຦촐출쮦쫕칱징쫦쮾칹컣쭐컦쬵컜蛴Ɯ鐳Ӿ즵콩䥵೩䰅輧䴰적칵쥚퉧͵쥼쳮䍌샧Ǹߊ睺䩏跧䤓䢈쳏쥠輡좍죛혰蕖䜝䑗薃օ蘢藤蝜䁬琳«๩죡츁듯૗䬂䩉핐鐁ވͽ쪌丝츘䚞۝膘풝츐ڝ췺ꙶ瘦䥮니䳀侩ೣ௃총찣좝쪝증줗ȕ춰转쫊쵙譙콕裙젝촞谪쬬߯耘ל쎋熣。D䶍䉸ڙ얱즚躣찘䵝캥ힹ쵱쫘콱천伵ೈǱ충䱘䵷趰蘈ᅥذ萖췾캽쮚춽졚쬜๸쮧䡼쪅訰义콰탩뀔둧❦E쾸俁췼춅ྈ찆䳖쬇誳熦㙔탙צ聓䱱舙Ӹ㔤ཫɧƋ٫ک坍쨡㕃쫍콃챳쪇␷█䟍춄䬈〓쥈ȓ쬨쐃勼àϘ율쎀ڙ씆쫋짋줓쿋켓쨫캙앣좉䪅䧧謍䯳䡢첕췣첃䧦䰠ث핗䁚枙࢞б䊬욘Uث㖘ݕ쾱之仕쩇䣪캾쨾袒챡䨵쵹쫦츚첀赸逴ᔌ蘳제ള쿾쳒캼찴Ұ囀覓痾足쯔䩏ं큽ë삈̚Ё讞亁貉趙䨍췽줄찆躌췳춌졼珼䐄ׁ㉈Ե녴䆤떅耽荘á䴯μ஋쿿衋콩좈䰝췔Ú䄨쳫젢߾䂻㙀ӱřЛ쵟贆쩇컫쵇쯫죇접땟趫츍侫짳䥁䷭죻䳦䶌୫찪쾖㕤ꖱ㋏싄хۢΊ珔㞆䄛쥖誡䮏䠴콝츣叕짪쬴첣쳓져쿝칛쾖蒩됴ճ蜸췹謉첫䢉쿡䪉줖쫟닀䡮侼젰䨙䣭䧣仃땑ͬセ㍺䳧仱໧䠍컽쥯䧼줍쥅젃됃캓䴰㚖蓷̓蔍헆ᓁㅂ蜛菞蔓螎蹺좈瞾ᗗ졄ߗ켽䠚㞧쯼ெ쁚䙙է좬썫那좡烀丆訕辙끀؏챧쬏쥧젾ҏ츧첅仳乁亢䪤乫쿭쫦䯣챪䰕聱솫휋䢀Ң蛄咐Ԕ씳Ꮆ힗辡鈀쩽蠍鑈陈鍈辁遮춀쫰ف鑬ㅿៈ鋁镀쿭鏁靷袨邠쿣핁௬諶䫙乵鉀镨칡部韀鋡鄠鐏ၣ謢覐舑雜觇莀ޒ獡࿪쀿칯䗜訃튮瞖䤶䱖举഼贾༼赖䤆슼趌싾ڌ訕ց虮칾൮쭾୼裮츶䧾෼诮젂訁ྣ품膶乣펶䭣퉶䤞쩥負즟쳶䦠컶乞챟쿶䫂襟쾞⋞줡৞켡ಡ୓퇟춡૏褚䲹줾캹쬾컍䲄衏䪾쬘䣋䵵譓쯘캒줵쫏䧵輒轟斆侀賯觾쳛쵴촯䩭䰁쵋큽쬥蓗蜕蚤QԞ|фʩ쎸թ೧恟鏀̞䣑ቫ৹荿ဗ捳쪕䩅젡줿襲貉鍲褡쿽쬍쭅쫯䡝畢퍟斛䒞䄲䟾ذ퍘ܮެ匴 Ĉ뗝伹䣍켥쯉ৄ쾾ᝐ⢬㝤቙펡貰办蘈팺ѣү쵉톯쬏Ԇ줯줈⼯켈⺯춘֯켸历첡뀔쭑쬢䪎쳊캑赝輍俳䠯캧췷佫췙ឃ䅧쳫蔬윲ߐ恔쭑¹⏪䭜赡ฮ츚俫䠬௨䤄蹝즹켾짧첛췕칦쮠⢥䨗츃㌃㄀蠶襡䪣䬓誋噧Ձ舙̭菹쯿넳쯠⦽짛찐⼅諔亳콥뛒઺䯒৞獲됕랺䤲൐⣖䇷臄ߔ֠ݐ΀ɥ츷쫽챻짽켷쯽쫳칍఩졅ઔ้趌蘐쇴섓蚵뛜菤㗨䊯膋쭽蛷쩨瘸⨾̸⢸⯩젭좘唨⣫萹컵ؘʨ⤟珐¹⋥쮄⼨ⱄ⹄⦨⹧豑촻녭즁䵑정࿽䩙컈⪉䱫좧쬃价䤞覧츋䬬ِ֘ظƀ腳柆䲢菌搏䅓퓹낦컹돉䤐젩䣨⢠⯰ࢾ쪐쪛춠⿕쾠⯪젓蠚챾챛칾쥈豥䏐虰⢃츮䢸쿐쮵쭒쯾짩䥘⮽죀誺఻춍誤詉쿔䳔畉퇗뎜ú製쾞䤷쮸⬷츳줰⡉輍즷컉嘊來ベ䠑䘐썆ன랪ā牊ᜇ츥ૡ쮶칆䭱唴⪀뎤챆皶灤⩤⠥䊹٠ͤ⤽❎찗嚏쥊つ쯊ࡩྤⱤ⹤⾌ⱌ⣤⭎ӏ쫳九衫짭쯏쯭쳻䰯춤⡬业䐰ۢ䆴ٖ윸٣ިܒç쨱貹輛쭝짨⣝쭱졡䪽ས쬈ද譚ਜ਼짢诟䛩Ӓ䇒䜞玘ⲽ쩣䳔⮸졤වዀⳉⱼ캅辳컾Ģ薢ΐ쪁譤趸ⴝ䩻졸⥻쿺䵅켄콅쫑䯃䗅ो君茾ӹ켜釠茙苟蔄⣓㞈Ϝ⹐쐈⦬ⲭ톉쟘Д葬ⴙⅬ⼒Ԇ찂⮬⤂ⵠ̂⹬⢖윒Ь⫧踬⬧췏쾢켬⪧젖訨Ⱚ짽䉰쯑잠ӱ@<쑰̧̘睬⫢ଛ컧쭪짬⯧쯨⼔⠘⹆琜⦽ஜ䢔丶躝ᐄݐ䅣蘲٥䵳ࢫ䣩作䫩侜⺉챜ⴏ蛭첅쫜⢡㉪Ɵ搰탠蟯聿蚸⢠ఄ쪅ࠇ豁谺췞䦌줺쮌쯮넲䎟斃ѱ蛈졸딓蝴亜閱蒆詩컮垊辋쭩좥츧⪻쭎ַ惻䊌䯂⢇䢃䋣枰آⲙ䬢⢢⼧瘻䲦贻䠸ຣ콥ೣ૲⠢ⷲ⿲ⴢ⥺䈊⹂⵷䬿䰘콆좔죙跬컆쵃甖쒴耰Ꙑն쌪杚콊虨ޗ訿찵Ŀ쥜跌㔜谬㊿컯캭鍛̬ガ袜㑌豬讬㈄Ռ視왬ヌ諌转㒬㛬㐼ߌ譜㏃투衮ᘜ㌬诞ǌ説貂֜㖄⡬袌蹬轮լ訠쫲ᆪ⮥ހ⺟챂趟칀⾟쵀⸜輼㌜賀⢜貵銜観膜襼㍼〾쯝鈾컔쬠⹪쳨Ⲡ⡎侢⡅득칏䧘죱츱燝쳦쵂쬜ⴺ݆뛑ڗ쥥䶗켋훾캋퐺䴒⩗쩭狀呗蛼툑Җ蛧艊荾䋮䤞Ս엿\u0018ήྠԗ趷霱୵Ѿ㖒⨲췞艽ǥ藦畒⨄ଌ컼쮴⩝죞両쨲ぴ⭻쥙䣻칶㋉蜯闩E蚾퓩°螭ӫ҄䖲ⴙ퓆ࡲ⠽䪇컰⾚茦Ⲳ̑윽䧊ⴐ䘑䍬*⹨Ȫⲗ초흄ⷊⵖ⽖Ⳗ⮖萓ൈ⽙뀌཭쳈ⴤ⫭줬⼧쬬ⲧ켃䦤⧂⩄和Ȁ\u0000";
+            window.__GITBOOK_INITIAL_RENDER__ = true;
+            window.__GITBOOK_LAZY_MODULES__ = [];
+        </script>
+        
+                
+    </body>
+</html>

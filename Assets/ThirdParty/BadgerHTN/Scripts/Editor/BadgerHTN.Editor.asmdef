@@ -1,0 +1,23 @@
+{
+    "name": "BadgerHTN.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:27a3056e321bd104bb95007b0931e4d0"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "BadgerEditor.dll",
+        "BadgerLib.dll",
+        "BadgerRuntime.dll",
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

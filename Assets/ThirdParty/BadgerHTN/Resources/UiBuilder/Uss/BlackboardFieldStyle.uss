@@ -1,0 +1,36 @@
+.blackboardField > .mainContainer > #contentItem > .pill {
+}
+
+.blackboardField #typeField {
+    background-color: #293b4c;
+}
+
+.blackboardRow {
+    padding-right: 0;
+}
+
+.blackboardField > Button {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    width: 20px;
+    height: 20px;
+    align-self: center;
+}
+
+.pill #contents > #top > #title-label {
+    text-overflow: ellipsis; /* Possible values: clip | ellipsis */
+    -unity-text-overflow-position: end; /* Possible values: start | middle | end */
+    /* Conditions */
+    max-width: 80px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.pill #contents > #top > #icon {
+    margin-top: 0;
+}
+
+.pill.has-icon #contents > #top > #icon {
+    width: 8px;
+    height: 8px;
+}

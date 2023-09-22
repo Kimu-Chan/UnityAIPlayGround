@@ -1,0 +1,12 @@
+.pill #contents > #top > #title-label {
+    text-overflow: ellipsis;
+    -unity-text-overflow-position: end;
+    /* Conditions */
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.pill #contents > #top > #icon {
+    margin-top: 0;
+
+}
