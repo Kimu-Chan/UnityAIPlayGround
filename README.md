@@ -3,7 +3,9 @@
 - ThridParty
   - Behavior Designer
   - Behavior Designer - Movement Pack
-    - astar integration
+    - A* integration
+  - Behavior Designer - Formation Pack
+  - Behavior Designer - Tactical Pack
   - A*PathfindingProject Pro
   - Goap
   - BadgerHTN
